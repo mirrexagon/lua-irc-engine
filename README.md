@@ -94,7 +94,9 @@ Handler functions
 
 Each IRC command can have exactly one handler function.
 
-They take the IRC object, the sender of the message and the command parameters as a table:
+They take the IRC object, the sender of the message and the command parameters as a table.
+
+Here are some examples of how the message is broken up:
 ```lua
 -- Example: ":nick!username@host.mask PRIVMSG #channel :This is a message!"
 
