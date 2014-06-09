@@ -175,8 +175,13 @@ Handler functions can be set with `irc:set_handler(command, func)`:
 ```lua
 irc:set_handler("PRIVMSG", handle_privmsg)
 ```
+`irc.set_handler` returns `true` on success.
 
-{TODO: Allow overwriting of handlers?}
+If you try to set a handler for a command when one is already set, `irc.send_handler` will return `false` and an error message:
+```lua
+print( irc:set_handler("PRIVMSG", handle_more_privmsg) )
+	--> false	set_handler: Handler for "PRIVMSG" already set
+```
 
 
 Sender functions
@@ -195,7 +200,7 @@ Sender functions can be set with `irc:set_sender(command, func)`:
 irc:set_sender("PRIVMSG", privmsg)
 ```
 
-{TODO: Allow overwriting of senders?}
+As with `irc.set_handler`, `irc.set_sender` returns `true` on success. On failure, it returns `false` and an error message.
 
 
 Modules
