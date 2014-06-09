@@ -159,10 +159,10 @@ The handler can either send a reply, parse the parameters and return information
 ``` lua
 -- The PING handler just sends a reply (namely, a pong).
 function handle_ping(sender, params)
-	-- {
+	--[[{
 		TODO: How to distinguish sending from returning parsed information?
 		Use IRC object's send_raw?
-	}
+	}]]
 end
 
 -- The PRIVMSG handler just returns parsed information.
