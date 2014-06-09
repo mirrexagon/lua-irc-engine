@@ -97,7 +97,7 @@ Handler functions
 
 Each IRC command can have exactly one handler function.
 
-They take the sender and the command parameters as a table:
+They take the IRC object, the sender of the message and the command parameters as a table:
 ```lua
 -- Example: ":nick!username@host.mask PRIVMSG #channel :This is a message!"
 
@@ -155,18 +155,15 @@ params = {
 }
 ```
 
-The handler can either send a reply, parse the parameters and return information, or both:
+The handler can either send a reply, parse the parameters and return information, or both. The IRC object is exposed (as `self` in these examples) so that the handler can send replies and read things like `irc.version` (eg. in a CTCP handler).
 ``` lua
 -- The PING handler just sends a reply (namely, a pong).
-function handle_ping(sender, params)
-	--[[{
-		TODO: How to distinguish sending from returning parsed information?
-		Use IRC object's send_raw?
-	}]]
+function handle_ping(self, sender, params)
+	self:send_raw("PONG :" .. params[1])
 end
 
 -- The PRIVMSG handler just returns parsed information.
-function handle_privmsg(sender, params)
+function handle_privmsg(irc, sender, params)
 	local target = params[1] -- Nick or channel message was directed to.
 	local msg = params[2] -- The message.
 	local pm = not target:find("[#&]") -- Whether it was directly to a user or not.
@@ -191,9 +188,9 @@ Sender functions
 ----------------
 As with handler functions, each IRC command can have exactly one sender function (although you can add ones that don't correspond to an IRC command).
 
-Sender functions take whatever arguments they need and return the raw message to be sent:
+Sender functions take the IRC object (again in the variable `self`) and whatever arguments they need, and return the raw message to be sent:
 ```lua
-function privmsg(target, message)
+function privmsg(self, target, message)
 	return "PRIVMSG %s :%s":format(target, message)
 end
 ```
