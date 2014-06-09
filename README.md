@@ -2,7 +2,7 @@ Lua IRC
 =======
 A (soon-to-be) Lua IRC module that tries to be very extensible.
 
-The construction "{TODO: [text]}" indicates something I still have to document or figure out how to implement.
+The construction `{TODO: [text]}` indicates something I still have to document or figure out how to implement.
 
 I'm writing this README before the actual module so it can act as my plan.
 
@@ -49,14 +49,14 @@ At the most basic level, sending raw messages is done by `irc:send_raw(message)`
 irc:send_raw("PRIVMSG #potato :I like potatoes.")
 ```
 
-To remain usable in more situations, the module doesn't make use of a specfic socket system. Instead, you set a function for `irc.send_raw` to use with `irc:set_raw_func()`:
+To remain usable in more situations, the module doesn't make use of a specfic socket system. Instead, you set a function for `irc.send_raw` to use with `irc:set_raw_sender()`:
 ```lua
 -- Using LuaSocket:
 local socket = require("socket.core")
 local client = socket.tcp()
 client:connect("irc.server.domain", 6667)
 
-irc:set_raw(function(message)
+irc:set_raw_sender(function(message)
 	client:send(message)
 end)
 ```
@@ -84,7 +84,8 @@ irc:send_raw( irc.senders.PRIVMSG("#potato", "I like potatoes.") )
 
 The IRC object's metatable is set up so that you can use this syntax:
 ```lua
-irc:privmsg("#potato", "I like potatoes.") -- {TODO: I'm unsure whether I want to keep this syntax or not.}
+irc:privmsg("#potato", "I like potatoes.")
+-- {TODO: I'm unsure whether I want to keep this syntax or not.}
 ```
 
 
@@ -154,11 +155,14 @@ params = {
 }
 ```
 
-The handler can either send a reply, parse the parameters and return them, or both:
+The handler can either send a reply, parse the parameters and return information, or both:
 ``` lua
 -- The PING handler just sends a reply (namely, a pong).
 function handle_ping(sender, params)
-	-- {TODO: How to distinguish sending from returning parsed information? send_raw function?}
+	-- {
+		TODO: How to distinguish sending from returning parsed information?
+		Use IRC object's send_raw?
+	}
 end
 
 -- The PRIVMSG handler just returns parsed information.
@@ -166,7 +170,8 @@ function handle_privmsg(sender, params)
 	local target = params[1] -- Nick or channel message was directed to.
 	local msg = params[2] -- The message.
 	local pm = not target:find("[#&]") -- Whether it was directly to a user or not.
-	local origin = pm and sender[1] or target -- Where the message came from/where to send a reply to.
+	local origin = pm and sender[1] or target -- Where the message came from.
+	-- The origin is generally where bots should send replies.
 
 	return sender[1], origin, msg, pm -- Return parsed information.
 end
@@ -199,5 +204,5 @@ irc:set_sender("PRIVMSG", privmsg)
 
 Modules
 -------
-{TODO: Come up with a good system for modules that can add handlers and senders.}
-{TODO: How to handle conflicts that modules might introduce?}
+- {TODO: Come up with a good system for modules that can add handlers and senders.}
+- {TODO: How to handle conflicts that modules might introduce?}
