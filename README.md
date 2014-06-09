@@ -65,12 +65,7 @@ end)
 
 ---
 
-On top of that, there are __sender functions__. They take some arguments and send a message constructed from those arguments. They work something like this:
-```lua
-irc:privmsg("#potato", "I like potatoes")
-```
-
-Sender functions aren't actually stored on the top level of the object (eg. `irc.privmsg`). They are actually stored in `irc.senders`. They take the arguments and return a string to be sent as a raw message.
+On top of that, there are __sender functions__. They take some arguments, and construct a message from those arguments. Sender functions are stored in `irc.senders`.
 
 They are meant to be used with `irc:send(command, ...)`, like this:
 ```lua
