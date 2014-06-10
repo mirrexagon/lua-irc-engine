@@ -36,14 +36,14 @@ At the most basic level, sending raw messages is done by `irc:send_raw(message)`
 irc:send_raw("PRIVMSG #potato :I like potatoes.")
 ```
 
-To remain usable in more situations, the module doesn't make use of a specfic socket system. Instead, you set a function for `irc.send_raw` to use with `irc:set_raw_sender(func)`:
+To allow greater flexibility, this module doesn't make use of a specfic socket system. Instead, you set a function for `irc.send_raw` to use with `irc:set_send_func(func)`:
 ```lua
 -- Using LuaSocket:
 local socket = require("socket.core")
 local client = socket.tcp()
 client:connect("irc.server.domain", 6667)
 
-irc:set_raw_sender(function(message)
+irc:set_send_func(function(message)
 	client:send(message)
 end)
 ```
@@ -79,6 +79,21 @@ irc:send_raw("PRIVMSG #potatoes :I like potatoes.")
 
 Receiving
 ---------
+Like with raw sending, you have to set a function for the IRC object to call to get messages from the server with `irc:set_receive_func(func)`. This function should return a single message if one is available, or `false` or `nil` if there are no messages waiting to be processed.
+```lua
+-- Using LuaSocket:
+-- "client" is the TCP object from the "sending" section above.
+client:settimeout(1)
+
+irc:set_receive_func(function()
+	return client:receive()
+end)
+```
+
+To process messages and update the IRC object, run `irc:listen()`. This will call the function set with `irc.set_receive_func` once and process the returned message if one is returned. Usually `irc.listen` is called in the main loop of a program.
+
+---
+
 When a message is received, it is first processed by a __handler function__. This function can either respond to the message, it can parse the message and return information, or both. They are stored in `irc.handlers`. There is more information on handlers in the "Extending the module" section.
 
 If the handler returns something, the appropriate callback is called, if it is set. You can set a callback with `irc:set_callback(command, func)`:
