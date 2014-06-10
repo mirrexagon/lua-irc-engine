@@ -79,7 +79,7 @@ irc:send_raw( irc.senders.PRIVMSG("#potato", "I like potatoes.") )
 
 The IRC object's metatable is set up so that you can use this syntax:
 ```lua
-irc:privmsg("#potato", "I like potatoes.")
+irc:PRIVMSG("#potato", "I like potatoes.")
 -- {TODO: I'm unsure whether I want to keep this syntax or not.}
 ```
 
