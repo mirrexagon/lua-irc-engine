@@ -70,7 +70,7 @@ irc:PRIVMSG("#potato", "I like potatoes.")
 -- {TODO: I'm unsure whether I want to keep this syntax or not.}
 ```
 
-For consistency, there is a `RAW` sender. I prefer using `irc:send("RAW", ...)` as opposed to `irc:send_raw(...)` because it makes `irc.send` a consistent way to send things.
+For consistency, there is a `RAW` sender.
 ```lua
 irc:send("RAW", "PRIVMSG #potatoes :I like potatoes.")
 -- is equivalent to
