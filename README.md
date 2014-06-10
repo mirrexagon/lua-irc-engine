@@ -132,7 +132,6 @@ To replace the sender, use `irc:clear_sender(command)` and then set it:
 irc:clear_sender("PRIVMSG")
 print( irc:set_sender("PRIVMSG", handle_more_privmsg) )
 	--> true
-
 ```
 
 `irc.clear_sender` returns `true` when the sender is succesfully cleared, and `false` and an error message otherwise.
