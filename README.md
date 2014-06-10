@@ -141,14 +141,14 @@ irc:set_sender("CTCP", ctcp)
 
 If you try to set a sender for a command when one is already set, `irc.send_sender` will return `false` and an error message:
 ```lua
-print( irc:set_sender("PRIVMSG", handle_more_privmsg) )
+print( irc:set_sender("PRIVMSG", more_privmsg) )
 	--> false	set_sender: Sender for "PRIVMSG" already set
 ```
 
 To replace the sender, use `irc:clear_sender(command)` and then set it:
 ```lua
 irc:clear_sender("PRIVMSG")
-print( irc:set_sender("PRIVMSG", handle_more_privmsg) )
+print( irc:set_sender("PRIVMSG", more_privmsg) )
 	--> true
 ```
 
