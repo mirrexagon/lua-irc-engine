@@ -127,6 +127,16 @@ print( irc:set_sender("PRIVMSG", handle_more_privmsg) )
 	--> false	set_sender: Sender for "PRIVMSG" already set
 ```
 
+To replace the sender, use `irc:clear_sender(command)` and then set it:
+```lua
+irc:clear_sender("PRIVMSG")
+print( irc:set_sender("PRIVMSG", handle_more_privmsg) )
+	--> true
+
+```
+
+`irc.clear_sender` returns `true` when the sender is succesfully cleared, and `false` and an error message otherwise.
+
 
 Handler functions
 -----------------
@@ -213,12 +223,13 @@ end
 -- {TODO: Example of both?}
 ```
 
-Handler functions can be set with `irc:set_handler(command, func)`:
+Handler functions can be set with `irc:set_handler(command, func)` and cleared with `irc:clear_handler(command)`:
 ```lua
 irc:set_handler("PRIVMSG", handle_privmsg)
+irc:clear_handler("PRIVMSG")
 ```
 
-As with `irc.set_sender`, `irc.set_handler` returns `true` on success. On failure, it returns `false` and an error message.
+As with `irc.set_sender`, `irc.set_handler` and `irc.clear_handler` return `true` on success, and on failure they return `false` and an error message.
 
 
 Modules
