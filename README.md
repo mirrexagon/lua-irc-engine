@@ -271,14 +271,17 @@ A module does not need to include both senders and handlers, and so either the `
 
 Loading modules
 ---------------
-To load a module, use `irc:load_module(module_name)`. For example, running `irc:load_module("msg")` will make `irc.load_module` look in a specific directory (more on that in a minute) for a file named `msg.lua`. If it finds `msg.lua`, it will run it and add the senders and handlers from the resulting table using `irc.set_sender` and `irc.set_handler`. If everything was successful, `irc.load_module` will return true, otherwise it returns false and an error message.
+To load a module, use `irc:load_module(module_name)`.
+
+For example, when running `irc:load_module("msg")`:
+
+- `irc.load_module` will look in a directory (by default, `modules`) for `msg.lua`.
+- If it finds `msg.lua`, it loads it. If the file doesn't return a table, `irc.load_module` returns false and an error message.
+- If `msg.lua` returns a table, `irc.load_module` goes through it and adds senders and handlers defined in the appropriate subtables.
 
 If a module tries to set a sender or handler that already has been set by another module, the new module will not be loaded and `irc.load_module` will return false and an appropriate error message.
 
-`irc.load_module` also keeps a record of which module set what handler or sender, so that a module can be unloaded with `irc:unload_module(module_name)`. This will remove every handler and sender that the module added.
+A module can be unloaded with `irc:unload_module(module_name)`. This will remove every handler and sender that the module added.
 
-By default, `irc.load_module` will look for the module in a directory called `modules`, but you can change this with `irc:set_module_dir(dir)`:
-```lua
-irc:set_module_dir("ircmodules")
-```
+By default, the loader will look for the module in a directory called `modules`, but you can change this with `irc:set_module_dir(dir)`. For example, `irc:set_module_dir("ircmodules")`.
 
