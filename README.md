@@ -283,5 +283,5 @@ If a module tries to set a sender or handler that already has been set by anothe
 
 A module can be unloaded with `irc:unload_module(module_name)`. This will remove every handler and sender that the module added.
 
-By default, the loader will look for the module in a directory called `modules`, but you can change this with `irc:set_module_dir(dir)`. For example, `irc:set_module_dir("ircmodules")`.
+By default, the loader will look for the module in a directory called `modules` in the directory the program was run, but you can change this with `irc:set_module_dir(dir)`. For example, `irc:set_module_dir("ircmodules")`.
 
