@@ -96,7 +96,7 @@ Extending the module
 
 Sender functions
 ----------------
-As with handler functions, each IRC command can have exactly one sender function (although you can add ones that don't correspond to an IRC command).
+As with handler functions, each IRC command can have exactly one sender function (although you can add ones that don't correspond to an IRC command, for example `CTCP`).
 
 Sender functions take the IRC object (again in the variable `self`) and whatever arguments they need, and return the raw message to be sent:
 ```lua
