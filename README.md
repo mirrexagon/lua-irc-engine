@@ -107,12 +107,17 @@ end
 function privmsg(self, target, message)
 	return "PRIVMSG %s :%s":format(target, message)
 end
+
+function ctcp(self, target, command, params)
+	return self.senders.PRIVMSG(self, target, "\001%s %s\001":format(command, params))
+end
 ```
 
 Sender functions can be set with `irc:set_sender(command, func)`:
 ```lua
 irc:set_sender("RAW", raw)
 irc:set_sender("PRIVMSG", privmsg)
+irc:set_sender("CTCP", ctcp)
 ```
 
 As with `irc.set_handler`, `irc.set_sender` returns `true` on success. On failure, it returns `false` and an error message.
