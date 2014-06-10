@@ -96,9 +96,9 @@ Extending the module
 
 Sender functions
 ----------------
-As with handler functions, each IRC command can have exactly one sender function (although you can add ones that don't correspond to an IRC command, for example `CTCP`).
+Each IRC command can have exactly one sender function (although you can add ones that don't correspond to an IRC command, for example `CTCP`).
 
-Sender functions take the IRC object (again in the variable `self`) and whatever arguments they need, and return the raw message to be sent:
+Sender functions take the IRC object (in this case, in the variable `self`) and whatever arguments they need, and return the raw message to be sent:
 ```lua
 function raw(message)
 	return message
@@ -120,12 +120,18 @@ irc:set_sender("PRIVMSG", privmsg)
 irc:set_sender("CTCP", ctcp)
 ```
 
-As with `irc.set_handler`, `irc.set_sender` returns `true` on success. On failure, it returns `false` and an error message.
+`irc.set_sender` returns `true` on success.
+
+If you try to set a sender for a command when one is already set, `irc.send_sender` will return `false` and an error message:
+```lua
+print( irc:set_sender("PRIVMSG", handle_more_privmsg) )
+	--> false	set_sender: Sender for "PRIVMSG" already set
+```
 
 
 Handler functions
 -----------------
-Each IRC command can have exactly one handler function.
+As with sender functions, each IRC command can have exactly one handler function.
 
 They take the IRC object, the sender of the message and the command parameters as a table.
 
@@ -187,7 +193,7 @@ params = {
 }
 ```
 
-The handler can either send a reply, parse the parameters and return information, or both. The IRC object is exposed (as `self` in these examples) so that the handler can send replies and read things like `irc.version` (eg. in a CTCP handler).
+The handler can either send a reply, parse the parameters and return information, or both. The IRC object is exposed (again as `self` in these examples) so that the handler can send replies and read things like `irc.version` (eg. in a CTCP handler).
 ``` lua
 -- The PING handler just sends a reply (namely, a pong).
 function handle_ping(self, sender, params)
@@ -212,13 +218,8 @@ Handler functions can be set with `irc:set_handler(command, func)`:
 ```lua
 irc:set_handler("PRIVMSG", handle_privmsg)
 ```
-`irc.set_handler` returns `true` on success.
 
-If you try to set a handler for a command when one is already set, `irc.send_handler` will return `false` and an error message:
-```lua
-print( irc:set_handler("PRIVMSG", handle_more_privmsg) )
-	--> false	set_handler: Handler for "PRIVMSG" already set
-```
+As with `irc.set_sender`, `irc.set_handler` returns `true` on success. On failure, it returns `false` and an error message.
 
 
 Modules
