@@ -166,7 +166,7 @@ function handle_ping(self, sender, params)
 end
 
 -- The PRIVMSG handler just returns parsed information.
-function handle_privmsg(irc, sender, params)
+function handle_privmsg(self, sender, params)
 	local target = params[1] -- Nick or channel message was directed to.
 	local msg = params[2] -- The message.
 	local pm = not target:find("[#&]") -- Whether it was directly to a user or not.
