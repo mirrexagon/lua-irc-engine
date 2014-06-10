@@ -77,7 +77,7 @@ which executes the equivalent of:
 irc:send_raw( irc.senders.PRIVMSG("#potato", "I like potatoes.") )
 ```
 
-For consistency, there is a `RAW` sender which just returns its argument. I prefer using `irc:send("RAW", ...)` as opposed to `irc:send_raw(...)` because it's a consistent way to send things.
+For consistency, there is a `RAW` sender which just returns its argument. I prefer using `irc:send("RAW", ...)` as opposed to `irc:send_raw(...)` because it makes `irc.send` a consistent way to send things.
 
 The IRC object's metatable is set up so that you can use this syntax:
 ```lua
