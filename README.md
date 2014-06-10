@@ -239,13 +239,13 @@ A module is a file that returns a table, structured like so:
 ```lua
 return {
 	senders = {
-		<sender> = <func>,
-		<sender> = <func>,
+		<command> = <func>,
+		<command> = <func>,
 		...
 	},
 	handlers = {
-		<handler> = <func>,
-		<handler> = <func>,
+		<command> = <func>,
+		<command> = <func>,
 		...
 	}
 }
