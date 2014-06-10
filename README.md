@@ -56,6 +56,8 @@ On top of that, there are __sender functions__. They take some arguments, and co
 
 They are meant to be used with `irc:send(command, ...)`, like this:
 ```lua
+-- PRIVMSG takes the arguments (target, message), so this call is
+-- irc:send("PRIVMSG", target, message)
 irc:send("PRIVMSG", "#potato", "I like potatoes.")
 ```
 
