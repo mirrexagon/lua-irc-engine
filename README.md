@@ -29,19 +29,6 @@ The key-value pairs in the argument will be set in the resulting object.
 From now on, this README assumes that `irc` is an IRC object created as above.
 
 
-Receiving
----------
-When a message is received, it is first processed by a __handler function__. This function can either respond to the message, it can parse the message and return information, or both. They are stored in `irc.handlers`. There is more information on handlers in the "Extending the module" section.
-
-If the handler returns something, the appropriate callback is called, if it is set. You can set a callback with `irc:set_callback(command, func)`:
-
-```lua
-irc:set_callback("PRIVMSG", function(sender, origin, message, pm)
-	print( "<%s> %s":format(sender, message) )
-end)
-```
-
-
 Sending
 -------
 At the most basic level, sending raw messages is done by `irc:send_raw(message)`:
@@ -91,8 +78,45 @@ irc:send_raw("PRIVMSG #potatoes :I like potatoes.")
 ```
 
 
+Receiving
+---------
+When a message is received, it is first processed by a __handler function__. This function can either respond to the message, it can parse the message and return information, or both. They are stored in `irc.handlers`. There is more information on handlers in the "Extending the module" section.
+
+If the handler returns something, the appropriate callback is called, if it is set. You can set a callback with `irc:set_callback(command, func)`:
+
+```lua
+irc:set_callback("PRIVMSG", function(sender, origin, message, pm)
+	print( "<%s> %s":format(sender, message) )
+end)
+```
+
+
 Extending the module
 ====================
+
+Sender functions
+----------------
+As with handler functions, each IRC command can have exactly one sender function (although you can add ones that don't correspond to an IRC command).
+
+Sender functions take the IRC object (again in the variable `self`) and whatever arguments they need, and return the raw message to be sent:
+```lua
+function raw(message)
+	return message
+end
+
+function privmsg(self, target, message)
+	return "PRIVMSG %s :%s":format(target, message)
+end
+```
+
+Sender functions can be set with `irc:set_sender(command, func)`:
+```lua
+irc:set_sender("RAW", raw)
+irc:set_sender("PRIVMSG", privmsg)
+```
+
+As with `irc.set_handler`, `irc.set_sender` returns `true` on success. On failure, it returns `false` and an error message.
+
 
 Handler functions
 -----------------
@@ -190,30 +214,6 @@ If you try to set a handler for a command when one is already set, `irc.send_han
 print( irc:set_handler("PRIVMSG", handle_more_privmsg) )
 	--> false	set_handler: Handler for "PRIVMSG" already set
 ```
-
-
-Sender functions
-----------------
-As with handler functions, each IRC command can have exactly one sender function (although you can add ones that don't correspond to an IRC command).
-
-Sender functions take the IRC object (again in the variable `self`) and whatever arguments they need, and return the raw message to be sent:
-```lua
-function raw(message)
-	return message
-end
-
-function privmsg(self, target, message)
-	return "PRIVMSG %s :%s":format(target, message)
-end
-```
-
-Sender functions can be set with `irc:set_sender(command, func)`:
-```lua
-irc:set_sender("RAW", raw)
-irc:set_sender("PRIVMSG", privmsg)
-```
-
-As with `irc.set_handler`, `irc.set_sender` returns `true` on success. On failure, it returns `false` and an error message.
 
 
 Modules
