@@ -9,6 +9,7 @@ I'm writing this README before the actual module so it can act as my plan.
 
 Usage
 =====
+{TODO: Stuff about raw printing and logging. irc:listen() returns received message and sent messages?}
 
 Creating an object
 ------------------
