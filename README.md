@@ -77,14 +77,7 @@ which executes the equivalent of:
 irc:send_raw( irc.senders.PRIVMSG("#potato", "I like potatoes.") )
 ```
 
-For consistency, there is a `RAW` sender which just returns its argument:
-```lua
-irc.senders.RAW = function(message)
-	return message
-end
-```
-
-I prefer using `irc:send("RAW", ...)` as opposed to `irc:send_raw(...)` because it's consistent.
+For consistency, there is a `RAW` sender which just returns its argument. I prefer using `irc:send("RAW", ...)` as opposed to `irc:send_raw(...)` because it's a consistent way to send things.
 
 The IRC object's metatable is set up so that you can use this syntax:
 ```lua
@@ -200,6 +193,10 @@ As with handler functions, each IRC command can have exactly one sender function
 
 Sender functions take the IRC object (again in the variable `self`) and whatever arguments they need, and return the raw message to be sent:
 ```lua
+function raw(message)
+	return message
+end
+
 function privmsg(self, target, message)
 	return "PRIVMSG %s :%s":format(target, message)
 end
@@ -207,6 +204,7 @@ end
 
 Sender functions can be set with `irc:set_sender(command, func)`:
 ```lua
+irc:set_sender("RAW", raw)
 irc:set_sender("PRIVMSG", privmsg)
 ```
 
