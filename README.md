@@ -94,8 +94,6 @@ irc:PRIVMSG("#potato", "I like potatoes.")
 Extending the module
 ====================
 
-{TODO: Is exposing the IRC object a security flaw? Should handlers and senders only have specific parts of the object exposed to them?}
-
 Handler functions
 -----------------
 
