@@ -232,6 +232,53 @@ As with `irc.set_sender`, `irc.set_handler` and `irc.clear_handler` return `true
 
 
 Modules
--------
-- {TODO: Come up with a good system for modules that can add handlers and senders.}
-- {TODO: How to handle conflicts that modules might introduce?}
+=======
+To add new senders and handlers in a portable way, this module uses a module system.
+
+A module is a file that returns a table, structured like so:
+```lua
+return {
+	senders = {
+		<sender> = <func>,
+		<sender> = <func>,
+		...
+	},
+	handlers = {
+		<handler> = <func>,
+		<handler> = <func>,
+		...
+	}
+}
+```
+
+For example:
+```lua
+return {
+	senders = {
+		PONG = function(self, param)
+			return "PONG :" .. param
+		end
+	},
+	handlers = {
+		PING = function(self, sender, params)
+			self:send("PONG", params[1])
+		end
+	}
+}
+```
+
+A module does not need to include both senders and handlers, and so either the `senders` or the `handlers` table can be omitted.
+
+Loading modules
+---------------
+To load a module, use `irc:load_module(module_name)`. For example, running `irc:load_module("msg")` will make `irc.load_module` look in a specific directory (more on that in a minute) for a file named `msg.lua`. If it finds `msg.lua`, it will run it and add the senders and handlers from the resulting table using `irc.set_sender` and `irc.set_handler`. If everything was successful, `irc.load_module` will return true, otherwise it returns false and an error message.
+
+If a module tries to set a sender or handler that already has been set by another module, the new module will not be loaded and `irc.load_module` will return false and an appropriate error message.
+
+`irc.load_module` also keeps a record of which module set what handler or sender, so that a module can be unloaded with `irc:unload_module(module_name)`. This will remove every handler and sender that the module added.
+
+By default, `irc.load_module` will look for the module in a directory called `modules`, but you can change this with `irc:set_module_dir(dir)`:
+```lua
+irc:set_module_dir("ircmodules")
+```
+
