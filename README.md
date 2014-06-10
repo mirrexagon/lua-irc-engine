@@ -84,6 +84,8 @@ irc.senders.RAW = function(message)
 end
 ```
 
+I prefer using `irc:send("RAW", ...)` as opposed to `irc:send_raw(...)` because it's consistent.
+
 The IRC object's metatable is set up so that you can use this syntax:
 ```lua
 irc:PRIVMSG("#potato", "I like potatoes.")
@@ -162,7 +164,7 @@ The handler can either send a reply, parse the parameters and return information
 ``` lua
 -- The PING handler just sends a reply (namely, a pong).
 function handle_ping(self, sender, params)
-	self:send_raw("PONG :" .. params[1])
+	self:send("RAW", "PONG :" .. params[1])
 end
 
 -- The PRIVMSG handler just returns parsed information.
