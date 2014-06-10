@@ -77,17 +77,17 @@ which executes the equivalent of:
 irc:send_raw( irc.senders.PRIVMSG("#potato", "I like potatoes.") )
 ```
 
+The IRC object's metatable is set up so that you can use this syntax:
+```lua
+irc:PRIVMSG("#potato", "I like potatoes.")
+-- {TODO: I'm unsure whether I want to keep this syntax or not.}
+```
+
 For consistency, there is a `RAW` sender. I prefer using `irc:send("RAW", ...)` as opposed to `irc:send_raw(...)` because it makes `irc.send` a consistent way to send things.
 ```lua
 irc:send("RAW", "PRIVMSG #potatoes :I like potatoes.")
 -- is equivalent to
 irc:send_raw("PRIVMSG #potatoes :I like potatoes.")
-```
-
-The IRC object's metatable is set up so that you can use this syntax:
-```lua
-irc:PRIVMSG("#potato", "I like potatoes.")
--- {TODO: I'm unsure whether I want to keep this syntax or not.}
 ```
 
 
