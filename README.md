@@ -96,7 +96,7 @@ To process messages and update the IRC object, run `irc:listen()`. This will cal
 
 ---
 
-When a message is received, it is first processed by a __handler function__. This function can either respond to the message, it can parse the message and return information, or both. They are stored in `irc.handlers`. There is more information on handlers in the "Extending the module" section.
+When a message is received, it is first processed by a __handler function__. This function can either respond to the message, it can parse the message and return information, or both. They are stored in `irc.handlers`.
 
 If the handler returns something, the appropriate callback is called, if it is set. You can set a callback with `irc:set_callback(command, func)`:
 
