@@ -49,7 +49,7 @@ irc:set_send_func(function(message)
 end)
 ```
 
-`irc.send_raw` will properly terminate the message with `\r\n\r\n`, and so it is not necessary to do this in the function you provide.
+`irc.send_raw` will properly terminate the message with `\r\n`, and so it is not necessary to do this in the function you provide.
 
 ---
 
