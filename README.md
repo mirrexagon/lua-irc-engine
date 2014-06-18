@@ -107,6 +107,7 @@ irc:set_callback("PRIVMSG", function(sender, origin, message, pm)
 end)
 ```
 
+{TODO: Section on standard modules supplied with the module.}
 
 Extending the module
 ====================
