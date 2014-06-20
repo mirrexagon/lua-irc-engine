@@ -1,10 +1,8 @@
 Lua IRC
 =======
-A (soon-to-be) Lua IRC module that tries to be very extensible.
+A __work-in-progress__ (ie. not ready for use yet) Lua IRC module that tries to be very extensible.
 
 The construction `{TODO: [text]}` indicates something I still have to document or figure out how to implement.
-
-I'm writing this README before the actual module so it can act as my plan.
 
 
 Usage
