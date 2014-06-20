@@ -62,11 +62,6 @@ They are meant to be used with `irc:send(command, ...)`, like this:
 irc:send("PRIVMSG", "#potato", "I like potatoes.")
 ```
 
-which executes the equivalent of:
-```lua
-irc:send_raw( irc.senders.PRIVMSG("#potato", "I like potatoes.") )
-```
-
 The IRC object's metatable is set up so that you can use this syntax:
 ```lua
 irc:PRIVMSG("#potato", "I like potatoes.")
