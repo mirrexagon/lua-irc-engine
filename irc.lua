@@ -85,11 +85,6 @@ end
 ---
 ---
 
-function Base:set_receive_func(func)
-	self.receive_func = func
-	return true
-end
-
 -- http://calebdelnay.com/blog/2010/11/parsing-the-irc-message-format-as-a-client
 function parse_message(msg)
 	-- Prefix
@@ -120,10 +115,7 @@ function parse_message(msg)
 	return prefix, command, the_rest
 end
 
-function Base:listen()
-	local msg = self.receive_func()
-	if not msg then return end
-
+function Base:process(msg)
 	local prefix, command, params = parse_message(msg)
 
 	local sender

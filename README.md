@@ -71,18 +71,16 @@ irc:send_raw("PRIVMSG #potatoes :I like potatoes.")
 
 Receiving
 ---------
-Like with raw sending, you have to set a function for the IRC object to call to get messages from the server with `irc:set_receive_func(func)`. This function should return a single message if one is available, or `false` or `nil` if there are no messages waiting to be processed.
+To process a message received from a server, use `irc:process(msg)`. `msg` is a raw IRC message received from the server, although if you pass `nil` or `false`, `irc.process` will just silently ignore it and do nothing. It is usually called in a main loop, like this:
 ```lua
 -- Using LuaSocket:
 -- "client" is the TCP object from the "sending" section above.
 client:settimeout(1)
 
-irc:set_receive_func(function()
-	return client:receive()
-end)
+while true do
+	irc:process( client:receive() )
+end
 ```
-
-To process messages and update the IRC object, run `irc:listen()`. This will call the function set with `irc.set_receive_func` once and process the returned message if one is returned. Usually `irc.listen` is called in the main loop of a program.
 
 ---
 
