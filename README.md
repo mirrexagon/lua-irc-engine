@@ -53,9 +53,7 @@ end)
 
 ---
 
-On top of that, there are __sender functions__. They take some arguments, and construct a message from those arguments. Sender functions are stored in `irc.senders`.
-
-They are meant to be used with `irc:send(command, ...)`, like this:
+To send things more easily, use `irc:send(command, ...)`, like this:
 ```lua
 -- PRIVMSG takes the arguments (target, message), so this call is
 -- irc:send("PRIVMSG", target, message)
@@ -67,7 +65,7 @@ The IRC object's metatable is set up so that you can use this syntax:
 irc:PRIVMSG("#potato", "I like potatoes.")
 ```
 
-For consistency, there is a `RAW` sender.
+For consistency, you can use `RAW` to send raw messages using `irc.send`:
 ```lua
 irc:send("RAW", "PRIVMSG #potatoes :I like potatoes.")
 -- is equivalent to
@@ -92,9 +90,7 @@ To process messages and update the IRC object, run `irc:listen()`. This will cal
 
 ---
 
-When a message is received, it is first processed by a __handler function__. This function can either respond to the message, it can parse the message and return information, or both. They are stored in `irc.handlers`.
-
-If the handler returns something, the appropriate callback is called, if it is set. You can set a callback with `irc:set_callback(command, func)`:
+When a message that your program might want to process is received and successfully parsed, the appropriate callback is called, if it is set. You can set a callback with `irc:set_callback(command, func)`:
 
 ```lua
 irc:set_callback("PRIVMSG", function(sender, origin, message, pm)
@@ -109,7 +105,7 @@ Extending the module
 
 Sender functions
 ----------------
-Each IRC command can have exactly one sender function (although you can add ones that don't correspond to an IRC command, for example `CTCP`).
+Each IRC command can have exactly one sender function (although you can add ones that don't correspond to an IRC command, for example `CTCP`). They are stored in `irc.senders`.
 
 Sender functions take the IRC object (in this case, in the variable `self`) and whatever arguments they need, and return the raw message to be sent:
 ```lua
@@ -154,6 +150,8 @@ print( irc:set_sender("PRIVMSG", more_privmsg) )
 Handler functions
 -----------------
 As with sender functions, each IRC command can have exactly one handler function.
+
+When a message is received, it is first processed by a handler function. This function can either respond to the message, it can parse the message and return information, or both. They are stored in `irc.handlers`.
 
 They take the IRC object, the sender of the message and the command parameters as a table.
 
