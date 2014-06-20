@@ -140,7 +140,9 @@ irc:set_sender("CTCP", ctcp)
 
 `irc.set_sender` returns `true` on success.
 
-If you try to set a sender for a command when one is already set, `irc.send_sender` will additionally return a message saying this as its second return value.
+If you try to set a sender for a command when one is already set, `irc.send_sender` will return false and an error message.
+
+You can unset handlers with `irc:unset_handler(command)`.
 
 
 Handler functions
@@ -230,7 +232,7 @@ end
 -- {TODO: Example of both?}
 ```
 
-Handler functions can be set with `irc:set_handler(command, func)`, and this works much the same as `irc.set_sender`.
+Handler functions can be set and unset with `irc:set_handler(command, func)` and `irc:unset_handler(command)`, and this works much the same as with senders.
 
 
 More on modules
