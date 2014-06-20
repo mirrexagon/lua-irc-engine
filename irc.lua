@@ -27,10 +27,6 @@ local function string_explode(str)
 end
 -- ================= --
 
-
--- TODO: Make error message creation less repetitive.
-
-
 local Base = {}
 
 function Base:set_send_func(func)
