@@ -106,6 +106,20 @@ Modules and the standard modules
 All functionality in this module is added with modules. It comes with some standard modules to provide most standard IRC functions.
 {TODO: Document these.}
 
+To load a module, use `irc:load_module(module_name)`.
+
+For example, when running `irc:load_module("msg")`:
+
+- `irc.load_module` will look in a directory (by default, `modules`) for `msg.lua`.
+- If it finds `msg.lua`, it loads it. If the file doesn't return a table, `irc.load_module` returns false and an error message.
+- If `msg.lua` returns a table, `irc.load_module` goes through it and adds senders and handlers defined in the appropriate subtables.
+
+If a module tries to set a sender or handler that already has been set by another module, the new module will not be loaded and `irc.load_module` will return false and an appropriate error message.
+
+A module can be unloaded with `irc:unload_module(module_name)`. This will remove every handler and sender that the module added.
+
+By default, the loader will look for the module in a directory called `modules` in the directory the program was run, but you can change this with `irc:set_module_dir(dir)`. For example, `irc:set_module_dir("ircmodules")`.
+
 
 Extending the module
 ====================
@@ -268,20 +282,3 @@ return {
 ```
 
 A module does not need to include both senders and handlers, and so either the `senders` or the `handlers` table can be omitted.
-
-Loading modules
----------------
-To load a module, use `irc:load_module(module_name)`.
-
-For example, when running `irc:load_module("msg")`:
-
-- `irc.load_module` will look in a directory (by default, `modules`) for `msg.lua`.
-- If it finds `msg.lua`, it loads it. If the file doesn't return a table, `irc.load_module` returns false and an error message.
-- If `msg.lua` returns a table, `irc.load_module` goes through it and adds senders and handlers defined in the appropriate subtables.
-
-If a module tries to set a sender or handler that already has been set by another module, the new module will not be loaded and `irc.load_module` will return false and an appropriate error message.
-
-A module can be unloaded with `irc:unload_module(module_name)`. This will remove every handler and sender that the module added.
-
-By default, the loader will look for the module in a directory called `modules` in the directory the program was run, but you can change this with `irc:set_module_dir(dir)`. For example, `irc:set_module_dir("ircmodules")`.
-
