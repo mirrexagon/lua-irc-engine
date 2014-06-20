@@ -106,6 +106,8 @@ Modules and the standard modules
 All functionality in this module is added with modules. It comes with some standard modules to provide most standard IRC functions.
 {TODO: Document these.}
 
+---
+
 To load a module, use `irc:load_module(module_name)`.
 
 For example, when running `irc:load_module("msg")`:
