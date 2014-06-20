@@ -96,6 +96,8 @@ irc:set_callback("PRIVMSG", function(sender, origin, message, pm)
 end)
 ```
 
+`irc.set_callback` returns `true` on success. If a callback has been overwritten, the second return value will be a string stating this.
+
 ---
 
 There is a special callback called `RAW` which is called whenever an IRC message is sent or received, with the message as the sole argument. This is useful for printing raw messages to a console or logging them.
@@ -138,20 +140,7 @@ irc:set_sender("CTCP", ctcp)
 
 `irc.set_sender` returns `true` on success.
 
-If you try to set a sender for a command when one is already set, `irc.send_sender` will return `false` and an error message:
-```lua
-print( irc:set_sender("PRIVMSG", more_privmsg) )
-	--> false	set_sender: Sender for "PRIVMSG" already set
-```
-
-To replace the sender, use `irc:clear_sender(command)` and then set it:
-```lua
-irc:clear_sender("PRIVMSG")
-print( irc:set_sender("PRIVMSG", more_privmsg) )
-	--> true
-```
-
-`irc.clear_sender` returns `true` when the sender is succesfully cleared, and `false` and an error message otherwise.
+If you try to set a sender for a command when one is already set, `irc.send_sender` will additionally return a message saying this as its second return value.
 
 
 Handler functions
@@ -241,13 +230,7 @@ end
 -- {TODO: Example of both?}
 ```
 
-Handler functions can be set with `irc:set_handler(command, func)` and cleared with `irc:clear_handler(command)`:
-```lua
-irc:set_handler("PRIVMSG", handle_privmsg)
-irc:clear_handler("PRIVMSG")
-```
-
-As with `irc.set_sender`, `irc.set_handler` and `irc.clear_handler` return `true` on success, and on failure they return `false` and an error message.
+Handler functions can be set with `irc:set_handler(command, func)`, and this works much the same as `irc.set_sender`.
 
 
 More on modules
