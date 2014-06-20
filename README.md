@@ -100,7 +100,12 @@ end)
 
 There is a special callback called `RAW` which is called whenever an IRC message is sent or received, with the message as the sole argument. This is useful for printing raw messages to a console or logging them.
 
-{TODO: Section on standard modules supplied with the module.}
+
+Modules and the standard modules
+================================
+All functionality in this module is added with modules. It comes with some standard modules to provide most standard IRC functions.
+{TODO: Document these.}
+
 
 Extending the module
 ====================
@@ -245,10 +250,8 @@ irc:clear_handler("PRIVMSG")
 As with `irc.set_sender`, `irc.set_handler` and `irc.clear_handler` return `true` on success, and on failure they return `false` and an error message.
 
 
-Modules
+More on modules
 =======
-To add new senders and handlers in a portable way, this module uses a module system.
-
 A module is a file that returns a table, structured like so:
 ```lua
 return {
