@@ -9,8 +9,6 @@ I'm writing this README before the actual module so it can act as my plan.
 
 Usage
 =====
-{TODO: Stuff about raw printing and logging. irc:listen() returns received message and sent messages?}
-
 Creating an object
 ------------------
 To create an IRC object, use `irc:new(args_table)`:
@@ -97,6 +95,10 @@ irc:set_callback("PRIVMSG", function(sender, origin, message, pm)
 	print( "<%s> %s":format(sender, message) )
 end)
 ```
+
+---
+
+There is a special callback called `RAW` which is called whenever an IRC message is sent or received, with the message as the sole argument. This is useful for printing raw messages to a console or logging them.
 
 {TODO: Section on standard modules supplied with the module.}
 
