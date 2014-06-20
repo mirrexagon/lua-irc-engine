@@ -92,7 +92,7 @@ When a message that your program might want to process is received and successfu
 
 ```lua
 irc:set_callback("PRIVMSG", function(sender, origin, message, pm)
-	print( "<%s> %s":format(sender, message) )
+	print( ("<%s> %s"):format(sender, message) )
 end)
 ```
 
@@ -123,11 +123,11 @@ function raw(message)
 end
 
 function privmsg(self, target, message)
-	return "PRIVMSG %s :%s":format(target, message)
+	return ("PRIVMSG %s :%s"):format(target, message)
 end
 
 function ctcp(self, target, command, params)
-	return self.senders.PRIVMSG(self, target, "\001%s %s\001":format(command, params))
+	return self.senders.PRIVMSG(self, target, ("\001%s %s\001"):format(command, params))
 end
 ```
 
