@@ -11,7 +11,7 @@ Usage
 =====
 Creating an object
 ------------------
-To create an IRC object, use `irc:new(args_table)`:
+To create an IRC object, use `IRC.new(args_table)`:
 ```lua
 local IRC = require("irc")
 
