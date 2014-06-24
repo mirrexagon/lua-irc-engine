@@ -105,7 +105,7 @@ function parse_message(msg)
 		prefix_end + 1, trailing_start))
 
 	-- Returning results
-	local command = theRest[1]
+	local command = the_rest[1]
 	table.remove(the_rest, 1)
 	table.insert(the_rest, trailing)
 	return prefix, command, the_rest
