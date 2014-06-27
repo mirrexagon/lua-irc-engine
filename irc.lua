@@ -172,7 +172,7 @@ function Base:set_callback(command, func)
 end
 
 function Base:unset_callback(command)
-	if not self.callbacks[callback] then
+	if not self.callbacks[callback] then -- TODO: Fix
 		return false, ("unset_callback: There is no callback set for \"%s\""):format(command)
 	else
 		self.callbacks[callback] = nil
