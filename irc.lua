@@ -259,7 +259,7 @@ local function new(t)
 		}
 	)
 
-	return setmetatable(t, Base)
+	return setmetatable(o, Base)
 end
 
 return {
