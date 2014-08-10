@@ -69,9 +69,9 @@ function Base:set_sender(command, func)
 
 end
 
-function Base:unset_handler(command)
+function Base:clear_handler(command)
 	if not self.senders[handler] then
-		return false, ("unset_sender: There is no sender set for \"%s\""):format(command)
+		return false, ("clear_sender: There is no sender set for \"%s\""):format(command)
 	else
 		self.senders[handler] = nil
 		return true
@@ -149,9 +149,9 @@ function Base:set_handler(command, func)
 
 end
 
-function Base:unset_handler(command)
+function Base:clear_handler(command)
 	if not self.handlers[handler] then
-		return false, ("unset_handler: There is no handler set for \"%s\""):format(command)
+		return false, ("clear_handler: There is no handler set for \"%s\""):format(command)
 	else
 		self.handlers[handler] = nil
 		return true
@@ -171,9 +171,9 @@ function Base:set_callback(command, func)
 
 end
 
-function Base:unset_callback(command)
+function Base:clear_callback(command)
 	if not self.callbacks[command] then
-		return false, ("unset_callback: There is no callback set for \"%s\""):format(command)
+		return false, ("clear_callback: There is no callback set for \"%s\""):format(command)
 	else
 		self.callbacks[command] = nil
 		return true
@@ -237,11 +237,11 @@ function Base:unload_module(module_name)
 	end
 
 	for sender in pairs(self.modules[module_name].senders) do
-		self:unset_sender(sender)
+		self:clear_sender(sender)
 	end
 
 	for handler in pairs(self.modules[module_name].handlers) do
-		self:unset_handler(handler)
+		self:clear_handler(handler)
 	end
 end
 

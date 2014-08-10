@@ -94,7 +94,7 @@ end)
 
 `irc.set_callback` returns `true` on success, or `false` and an error message otherwise.
 
-Callbacks cannot be overwritten. `irc:unset_callback(command)` is used to clear a callback.
+Callbacks cannot be overwritten. `irc:clear_callback(command)` is used to clear a callback.
 
 ---
 
@@ -156,7 +156,7 @@ irc:set_sender("CTCP", ctcp)
 
 If you try to set a sender for a command when one is already set, `irc.send_sender` will return false and an error message.
 
-You can unset senders with `irc:unset_senders(command)`.
+You can remove senders with `irc:clear_sender(command)`.
 
 
 Handler functions
@@ -246,7 +246,7 @@ end
 -- {TODO: Example of both?}
 ```
 
-Handler functions can be set and unset with `irc:set_handler(command, func)` and `irc:unset_handler(command)`, and this works much the same as with senders.
+Handler functions can be set and cleared with `irc:set_handler(command, func)` and `irc:clear_handler(command)`, and this works much the same as with senders.
 
 
 More on modules
