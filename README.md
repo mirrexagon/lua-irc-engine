@@ -156,7 +156,7 @@ irc:set_sender("CTCP", ctcp)
 
 If you try to set a sender for a command when one is already set, `irc.send_sender` will return false and an error message.
 
-You can unset handlers with `irc:unset_handler(command)`.
+You can unset senders with `irc:unset_senders(command)`.
 
 
 Handler functions
