@@ -87,7 +87,7 @@ end
 ---
 
 -- http://calebdelnay.com/blog/2010/11/parsing-the-irc-message-format-as-a-client
-function parse_message(msg)
+local function parse_message(msg)
 	-- Prefix
 	local prefix_end = 0
 	local prefix
