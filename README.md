@@ -98,7 +98,7 @@ Callbacks cannot be overwritten. `irc:clear_callback(command)` is used to clear 
 
 ---
 
-There is a special callback called `RAW` which is called whenever an IRC message is sent or received, with the message as the sole argument. This is useful for printing raw messages to a console or logging them.
+There is a special callback called `RAW` which is called whenever an IRC message is sent or received. This is useful for printing raw messages to a console or logging them. Its first argument is `true` when the message is being sent or `false` when the message is being received, and the second argument is the message.
 
 
 Modules and the standard modules

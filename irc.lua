@@ -35,6 +35,11 @@ function Base:set_send_func(func)
 end
 
 function Base:send_raw(str)
+	-- Call RAW callback.
+	if self.callbacks["RAW"] then
+		self.callbacks["RAW"](true, str)
+	end
+
 	return self.send_func(str .. "\r\n")
 end
 
@@ -112,6 +117,13 @@ function parse_message(msg)
 end
 
 function Base:process(msg)
+	-- Call RAW callback.
+	if self.callbacks["RAW"] then
+		self.callbacks["RAW"](false, msg)
+	end
+
+	---
+
 	local prefix, command, params = parse_message(msg)
 
 	local sender
