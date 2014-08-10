@@ -57,7 +57,7 @@ Base.__index = function(self, key)
 			return self:send(key, ...)
 		end
 	else
-		return rawget(Base, key)
+		return rawget(self, key)
 	end
 end
 
