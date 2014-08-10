@@ -92,7 +92,9 @@ irc:set_callback("PRIVMSG", function(sender, origin, message, pm)
 end)
 ```
 
-`irc.set_callback` returns `true` on success. If a callback has been overwritten, the second return value will be a string stating this. -- TODO: Not true anymore
+`irc.set_callback` returns `true` on success, or `false` and an error message otherwise.
+
+Callbacks cannot be overwritten. `irc:unset_callback(command)` is used to clear a callback.
 
 ---
 
