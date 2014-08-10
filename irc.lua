@@ -69,11 +69,11 @@ function Base:set_sender(command, func)
 
 end
 
-function Base:clear_handler(command)
-	if not self.senders[handler] then
+function Base:clear_sender(command)
+	if not self.senders[command] then
 		return false, ("clear_sender: There is no sender set for \"%s\""):format(command)
 	else
-		self.senders[handler] = nil
+		self.senders[command] = nil
 		return true
 	end
 end
