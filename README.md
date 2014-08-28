@@ -89,8 +89,8 @@ end
 When a message that your program might want to process is received and successfully parsed, the appropriate callback is called, if it is set. You can set a callback with `irc:set_callback(command, func)`:
 
 ```lua
-irc:set_callback("PRIVMSG", function(sender, origin, message, pm)
-	print( ("<%s> %s"):format(sender, message) )
+irc:set_callback("PRIVMSG", function(sender, origin, msg, pm)
+	print( ("<%s> %s"):format(sender, msg) )
 end)
 ```
 
