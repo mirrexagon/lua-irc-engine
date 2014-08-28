@@ -188,6 +188,10 @@ end
 ---
 ---
 
+function Base:set_module_dir(dir)
+	self.module_dir = dir
+end
+
 function Base:load_module(module_name)
 	local searchdir = self.module_dir or "modules"
 
