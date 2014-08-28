@@ -1,6 +1,10 @@
 Lua IRC
 =======
-A __work-in-progress__ (ie. not ready for use yet) Lua IRC module that tries to be minimal and extensible.
+A Lua IRC module that tries to be minimal and extensible.
+
+Lua IRC is a basic IRC "translator". It provides basic message parsing and a way to add sending convienience functions and command handlers, but leaves the actual processing of commands to the host. For example, it does not implement CTCP or keep a list of joined channels.
+
+It is still a __work-in-progress__ and has not been tested much. Bugs are most likely present.
 
 The construction `{TODO: [text]}` indicates something I still have to document or figure out how to implement.
 
