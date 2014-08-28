@@ -1,23 +1,4 @@
 -- Utility functions --
-local function table_join(...)
-	local result = {}
-	for _, tab in ipairs({...}) do
-
-		-- Deal with number keys first so we can get them in order.
-		for i, v in ipairs(tab) do
-			table.insert(result, v)
-		end
-
-		for k, v in pairs(tab) do
-			if not tonumber(k) then
-				result[k] = v
-			end
-		end
-
-	end
-	return result
-end
-
 local function string_explode(str)
 	local result = {}
 	for s in str:gmatch("%S+") do
@@ -266,22 +247,17 @@ end
 ---
 ---
 
-local function new(t)
-	local o = table_join(
-		t,
-		{
-			senders = {
-				RAW = function(message)
-					return message
-				end
-			},
-			handlers = {},
-			callbacks = {},
-			modules = {}
-		}
-	)
-
-	return setmetatable(o, Base)
+local function new()
+	return setmetatable({
+		senders = {
+			RAW = function(message)
+				return message
+			end
+		},
+		handlers = {},
+		callbacks = {},
+		modules = {}
+	}, Base)
 end
 
 return {
