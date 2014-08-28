@@ -264,7 +264,11 @@ local function new(t)
 	local o = table_join(
 		t,
 		{
-			senders = {},
+			senders = {
+				RAW = function(message)
+					return message
+				end
+			},
 			handlers = {},
 			callbacks = {},
 			modules = {}
