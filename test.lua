@@ -39,7 +39,7 @@ irc:set_handler("001", function(self)
 end)
 
 irc:set_callback("PRIVMSG", function(sender, origin, msg, pm)
-
+	print(("<%s> %s"):format(sender[1], msg))
 end)
 
 ---
