@@ -43,8 +43,11 @@ Base.__index = function(self, key)
 		return function(self, ...)
 			return self:send(key, ...)
 		end
-	else
+
+	elseif rawget(self, key) then
 		return rawget(self, key)
+	elseif rawget(Base, key) then
+		return rawget(Base, key)
 	end
 end
 
@@ -104,6 +107,8 @@ local function parse_message(msg)
 end
 
 function Base:process(msg)
+	if not msg then return end
+
 	-- Call RAW callback.
 	if self.callbacks["RAW"] then
 		self.callbacks["RAW"](false, msg)
@@ -185,12 +190,11 @@ end
 function Base:load_module(module_name)
 	local searchdir = self.module_dir or "modules"
 
-	local ok, modf = pcall(dofile, ("%s/%s.lua"):format(searchdir, module_name))
+	local ok, modt = pcall(dofile, ("%s/%s.lua"):format(searchdir, module_name))
 	if not ok then
-		return false, ("load_module: Could not load module \"%s\": %s"):format(module_name, modf)
+		return false, ("load_module: Could not load module \"%s\": %s"):format(module_name, modt)
 	end
 
-	local modt = modf()
 	if not modt or type(modt) ~= "table" then
 		return false, ("load_module: Could not load module \"%s\": %s"):format(module_name, "module does not return a table")
 	end
