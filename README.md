@@ -142,8 +142,10 @@ function privmsg(self, target, message)
 	return ("PRIVMSG %s :%s"):format(target, message)
 end
 
+-- irc:translate() is called by irc:send() to turn the arguments into a raw message.
+-- It can be called like this to chain senders.
 function ctcp(self, target, command, params)
-	return self.senders.PRIVMSG(self, target, ("\001%s %s\001"):format(command, params))
+	return self:translate("PRIVMSG", target, ("\001%s %s\001"):format(command, params))
 end
 ```
 

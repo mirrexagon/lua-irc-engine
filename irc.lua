@@ -45,9 +45,15 @@ end
 
 ---
 
+function Base:translate(command, ...)
+	if self.senders[command] then
+		return self.senders[command](self, ...)
+	end
+end
+
 function Base:send(command, ...)
 	if self.senders[command] then
-		return self:send_raw( self.senders[command](...) )
+		return self:send_raw( self:translate(command, ...) )
 	end
 end
 
