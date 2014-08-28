@@ -42,6 +42,20 @@ irc:set_callback("PRIVMSG", function(sender, origin, msg, pm)
 	print(("<%s> %s"):format(sender[1], msg))
 end)
 
+irc:set_callback("MODE", function(sender, operation, modes, params)
+	print(sender and ("Channel mode by %s"):format(sender[1]) or "User mode")
+
+	for i = 1, #modes do
+		local param
+		if type(params) == "table" then
+			param = params[i]
+		else
+			param = params
+		end
+		print(operation .. modes[i] .. " => " .. param)
+	end
+end)
+
 ---
 
 client:connect(server, 6667)
