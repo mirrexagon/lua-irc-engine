@@ -2,7 +2,7 @@ Lua IRC Engine
 ==============
 A Lua IRC module that tries to be minimal and extensible.
 
-Lua IRC Engine is a basic IRC "translator". It provides basic message parsing and a way to add sending convienience functions and command handlers, but leaves the actual processing of commands to the host. For example, it does not implement CTCP or keep a list of joined channels.
+Lua IRC Engine is a basic IRC "translator". It provides basic message parsing and a way to add sending convienience functions and command handlers, but leaves the actual processing of commands to the host application. For example, it does not implement CTCP or keep a list of joined channels.
 
 It is still a __work-in-progress__ and has not been tested much. Bugs are most likely present.
 
@@ -29,7 +29,7 @@ local irc = IRC.new{
 
 The key-value pairs in the argument will be set in the resulting object.
 
-From now on, this README assumes that `irc` is an IRC object created as above.
+From now on, this README assumes that `irc` is an IRC Engine object created as above.
 
 
 Sending
