@@ -102,10 +102,7 @@ There is a special callback called `RAW` which is called whenever an IRC message
 
 Modules and the standard modules
 ================================
-All functionality in this module is added with modules. It comes with some standard modules to provide most standard IRC functions.
-{TODO: Document these.}
-
----
+Functionality in this module is added with modules. It comes with some standard modules to provide some standard IRC functions.
 
 To load a module, use `irc:load_module(module_name)`.
 
@@ -120,6 +117,99 @@ If a module tries to set a sender or handler that already has been set by anothe
 A module can be unloaded with `irc:unload_module(module_name)`. This will remove every handler and sender that the module added.
 
 By default, the loader will look for the module in a directory called `modules` in the directory the program was run, but you can change this with `irc:set_module_dir(dir)`. For example, `irc:set_module_dir("ircmodules")`.
+
+Standard modules
+----------------
+For more information on senders and handlers, see the section titled "Extending the module" below.
+
+The senders are documented like this:
+```
+<COMMAND> (<arguments to sender>)
+	<Description>
+```
+and the handlers like this:
+```
+<COMMAND> (<arguments passed to callback, if any>)
+	<Description>
+```
+
+Sender tables are derived from the message prefix and are structured like this:
+```
+-- From a user:
+sender = {
+	[1] = "Nick",
+	[2] = "username",
+	[3] = "host.name"
+}
+
+-- or from a server:
+sender = {
+	[1] = "irc.server.domain"
+}
+
+-- or no prefix:
+sender = {}
+```
+
+---
+
+### Base
+#### Senders
+```
+PING (param)
+	Sends a PING with the "param" as the only parameter.
+
+PONG (param)
+	Like PING, but with PONG.
+
+NICK (nick)
+	Sends NICK with "nick" as the only parameter.
+
+USER (username, realname, mode)
+	Sends USER like so: User <username> <mode> :<realname>
+	If "mode" is omitted, 8 is sent as the mode.
+
+QUIT (quit_msg)
+	Sends a QUIT with the specified quit message, or with no message if it is omitted.
+
+```
+
+#### Handlers
+```
+PING (params)
+	Called when a PING is received.
+	Responds with a PONG, and passes the single parameter to the callback.
+
+NICK (sender, new_nick)
+	Called when someone changes their nickname.
+	Passes the sender table and the new nick of that sender to the callback.
+
+QUIT (quit_msg)
+	Called when someone quits.
+	Passes the quit message (if there is one) to the callback.
+```
+`{TODO: Document the rest.}`
+### Channel
+#### Senders
+```
+
+```
+
+#### Handlers
+```
+
+```
+
+### Message
+#### Senders
+```
+
+```
+
+#### Handlers
+```
+
+```
 
 
 Extending the module
