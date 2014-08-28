@@ -1,8 +1,0 @@
-base
-	ping, nick, quit, mode?
-
-chan
-	join, part, 353 (user list), mode
-
-msg
-	privmsg, notice, ctcp

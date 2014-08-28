@@ -134,12 +134,12 @@ Each IRC command can have exactly one sender function (although you can add ones
 
 Sender functions take the IRC object (in this case, in the variable `self`) and whatever arguments they need, and return the raw message to be sent:
 ```lua
-function raw(self, message)
+function raw(self, msg)
 	return message
 end
 
-function privmsg(self, target, message)
-	return ("PRIVMSG %s :%s"):format(target, message)
+function privmsg(self, target, msg)
+	return ("PRIVMSG %s :%s"):format(target, msg)
 end
 
 -- irc:translate() is called by irc:send() to turn the arguments into a raw message.
@@ -244,7 +244,7 @@ function handle_privmsg(self, sender, params)
 	local origin = pm and sender[1] or target -- Where the message came from.
 	-- The origin is generally where bots should send replies.
 
-	return sender[1], origin, msg, pm -- Return parsed information.
+	return sender, origin, msg, pm -- Return parsed information.
 end
 
 -- {TODO: Example of both?}
