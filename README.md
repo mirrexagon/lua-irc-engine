@@ -151,6 +151,7 @@ end
 
 Sender functions can be set with `irc:set_sender(command, func)`:
 ```lua
+-- RAW is actually already defined in an IRC object. This is just for demonstration.
 irc:set_sender("RAW", raw)
 irc:set_sender("PRIVMSG", privmsg)
 irc:set_sender("CTCP", ctcp)
