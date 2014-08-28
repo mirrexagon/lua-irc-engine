@@ -23,8 +23,6 @@ return {
 				return "PART " .. channel
 			end
 		end
-
-		-- TODO: Channel MODE.
     },
 
     handlers = {
@@ -57,15 +55,15 @@ return {
 			local operation = mode_string:sub(1, 1)
 			mode_string = mode_string:sub(2)
 
+			local modes = string_splitchar(mode_string)
+
 			if target:find("[#&]") then
 				-- Channel mode.
-				local modes = string_splitchar(mode_string)
 				local mode_params = {params[3], params[4], params[5]}
-
 				return sender, operation, modes, mode_params
 			else
 				-- User mode.
-				return nil, operation, mode_string, target
+				return nil, operation, modes, target
 			end
 		end
     }
