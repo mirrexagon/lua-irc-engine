@@ -132,6 +132,8 @@ function Base:process(msg)
 	end
 
 	-- Call appropriate handler and possibly callback.
+	-- TODO: Have a function that calls callbacks so things like CTCP can be
+	-- implemented?
 	if self.handlers[command] then
 		if self.callbacks[command] then
 			self.callbacks[command]( self.handlers[command](self, sender, params) )

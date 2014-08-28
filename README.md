@@ -217,7 +217,7 @@ Extending the module
 
 Sender functions
 ----------------
-Each IRC command can have exactly one sender function (although you can add ones that don't correspond to an IRC command, for example `CTCP`). They are stored in `irc.senders`.
+Each IRC command can have exactly one sender function. They are stored in `irc.senders`.
 
 Sender functions take the IRC object (in this case, in the variable `self`) and whatever arguments they need, and return the raw message to be sent:
 ```lua
