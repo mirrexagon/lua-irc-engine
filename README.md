@@ -134,7 +134,7 @@ Each IRC command can have exactly one sender function (although you can add ones
 
 Sender functions take the IRC object (in this case, in the variable `self`) and whatever arguments they need, and return the raw message to be sent:
 ```lua
-function raw(message)
+function raw(self, message)
 	return message
 end
 
