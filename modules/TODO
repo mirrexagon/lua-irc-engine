@@ -1,0 +1,8 @@
+base
+	ping?, quit
+
+chan
+	join, part
+
+msg
+	privmsg, notice
