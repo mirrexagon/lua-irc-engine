@@ -155,6 +155,10 @@ Sender functions can be set with `irc:set_sender(command, func)`:
 irc:set_sender("RAW", raw)
 irc:set_sender("PRIVMSG", privmsg)
 irc:set_sender("CTCP", ctcp)
+
+-- Note: CTCP support is not included in this module.
+-- This is due to the difficulty in handling it with the current
+-- one-callback-per-command system.
 ```
 
 `irc.set_sender` returns `true` on success.
