@@ -16,7 +16,6 @@ return {
 			end
 		end
 
-		-- TODO: 353 (user list).
 		-- TODO: Channel MODE.
     },
 
@@ -30,6 +29,17 @@ return {
 			local channel = params[1]
 			local part_msg = params[2]
 			return sender, channel, part_msg
+		end,
+
+		["353"] = function(self, sender, params)
+			local channel = params[1]
+
+			local list = {}
+			for i = 2, #params do
+				table.insert(list, params[i])
+			end
+
+			return channel, list
 		end
     }
 }
