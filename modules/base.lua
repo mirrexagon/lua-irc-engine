@@ -23,8 +23,6 @@ return {
 				return "QUIT"
 			end
 		end
-
-		-- TODO: MODE: How to split channel and user modes?
     },
 
     handlers = {

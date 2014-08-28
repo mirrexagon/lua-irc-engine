@@ -1,3 +1,11 @@
+local function string_splitchar(str)
+	local t = {}
+	for c in str:gmatch(".") do
+		table.insert(t, c)
+	end
+	return t
+end
+
 return {
     senders = {
 		JOIN = function(self, channel, key)
@@ -40,6 +48,25 @@ return {
 			end
 
 			return channel, list
+		end,
+
+		MODE = function(self, sender, params)
+			local target = params[1]
+			local mode_string = params[2]
+
+			local operation = mode_string:sub(1, 1)
+			mode_string = mode_string:sub(2)
+
+			if target:find("[#&]") then
+				-- Channel mode.
+				local modes = string_splitchar(mode_string)
+				local mode_params = {params[3], params[4], params[5]}
+
+				return sender, operation, modes, mode_params
+			else
+				-- User mode.
+				return nil, operation, mode_string, target
+			end
 		end
     }
 }
