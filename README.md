@@ -85,14 +85,34 @@ When a message that your program might want to process is received, the appropri
 irc:set_callback("PRIVMSG", function(sender, origin, msg, pm)
 	print( ("<%s> %s"):format(sender[1], msg) )
 end)
-
--- Information on the "sender" table can be found in the next section,
--- "Extending the module" under "Handler functions".
 ```
 
 `irc.set_callback` returns `true` on success, or `false` and an error message otherwise.
 
 Callbacks cannot be overwritten. `irc:clear_callback(command)` is used to clear a callback.
+
+---
+
+Nearly all callbacks receive a sender table as their first argument. These should not be confused with sender functions, discussed in the next section, "Extending the module".
+
+Sender tables are derived from the message prefix, and are structured like this:
+
+```lua
+-- From a user:
+sender = {
+	[1] = "Nick",
+	[2] = "username",
+	[3] = "host.name"
+}
+
+-- or from a server:
+sender = {
+	[1] = "irc.server.domain"
+}
+
+-- or no prefix:
+sender = {}
+```
 
 ---
 
@@ -270,24 +290,6 @@ and the handlers like this:
 ```
 <COMMAND> (<arguments passed to callback, if any>)
 	<Description>
-```
-
-Sender tables are derived from the message prefix and are structured like this:
-```lua
--- From a user:
-sender = {
-	[1] = "Nick",
-	[2] = "username",
-	[3] = "host.name"
-}
-
--- or from a server:
-sender = {
-	[1] = "irc.server.domain"
-}
-
--- or no prefix:
-sender = {}
 ```
 
 ---
