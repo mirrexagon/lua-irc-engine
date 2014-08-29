@@ -110,8 +110,8 @@ local function parse_message(msg)
 	return prefix, command, the_rest
 end
 
--- Calls the handler for the command if there is one, then calls the
--- callback if there is one.
+-- Calls the handler for the command if there is one, then calls the callback
+-- if the handler returned anything and there is a callback for this command.
 function Base:handle(command, ...)
 	if self.handlers[command] then
 		local handler_return = {self.handlers[command](self, ...)}
@@ -145,7 +145,6 @@ function Base:process(msg)
 		sender = {""}
 	end
 
-	-- Call appropriate handler and possibly callback.
 	self:handle(command, sender, params)
 end
 
