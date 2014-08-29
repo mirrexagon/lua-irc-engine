@@ -10,12 +10,12 @@ end
 
 return {
     senders = {
-		NOTICE = function(self, target, msg)
-			return ("NOTICE %s :%s"):format(target, msg)
+		NOTICE = function(self, target, message)
+			return ("NOTICE %s :%s"):format(target, message)
 		end,
 
-		PRIVMSG = function(self, target, msg)
-			return ("PRIVMSG %s :%s"):format(target, msg)
+		PRIVMSG = function(self, target, message)
+			return ("PRIVMSG %s :%s"):format(target, message)
 		end,
 
 		CTCP = function(self, target, command, params)
@@ -30,35 +30,35 @@ return {
     handlers = {
 		NOTICE = function(self, sender, params)
 			local target = params[1]
-			local msg = params[2]
+			local message = params[2]
 			local pm = not target:find("[#&]")
 			local origin = pm and sender[1] or target
 
-			if msg:find("\001") == 1 then
-				return self:handle("CTCP", sender, origin, msg, pm)
+			if message:find("\001") == 1 then
+				return self:handle("CTCP", sender, origin, message, pm)
 			else
-				return sender, origin, msg, pm
+				return sender, origin, message, pm
 			end
 		end,
 
 		PRIVMSG = function(self, sender, params)
 			local target = params[1]
-			local msg = params[2]
+			local message = params[2]
 			local pm = not target:find("[#&]")
 			local origin = pm and sender[1] or target
 
-			if msg:find("\001") == 1 then
+			if message:find("\001") == 1 then
 				-- Chain CTCP handler. PRIVMSG callback won't be called
 				-- since the PRIVMSG handler (this function) isn't returning
 				-- anything.
-				self:handle("CTCP", sender, origin, msg, pm)
+				self:handle("CTCP", sender, origin, message, pm)
 			else
-				return sender, origin, msg, pm
+				return sender, origin, message, pm
 			end
 		end,
 
-		CTCP = function(self, sender, origin, msg, pm)
-			local params = string_explode(msg:gsub("\001", ""))
+		CTCP = function(self, sender, origin, message, pm)
+			local params = string_explode(message:gsub("\001", ""))
 
 			local command = params[1]
 			table.remove(params, 1)

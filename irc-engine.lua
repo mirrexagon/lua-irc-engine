@@ -32,7 +32,7 @@ end
 
 function Base:send(command, ...)
 	if self.senders[command] then
-		return self:send_raw( self:translate(command, ...) )
+		return self:send_raw(self:translate(command, ...))
 	end
 end
 
@@ -81,26 +81,26 @@ end
 ---
 
 -- http://calebdelnay.com/blog/2010/11/parsing-the-irc-message-format-as-a-client
-local function parse_message(msg)
+local function parse_message(message)
 	-- Prefix
 	local prefix_end = 0
 	local prefix
-	if msg:find(":") == 1 then
-		prefix_end = msg:find(" ")
-		prefix = msg:sub(2, prefix_end - 1)
+	if message:find(":") == 1 then
+		prefix_end = message:find(" ")
+		prefix = message:sub(2, prefix_end - 1)
 	end
 
 	-- Trailing parameter
 	local trailing
-	local trailing_start = msg:find(" :")
+	local trailing_start = message:find(" :")
 	if trailing_start then
-		trailing = msg:sub(trailing_start + 2)
+		trailing = message:sub(trailing_start + 2)
 	else
-		trailing_start = #msg
+		trailing_start = #message
 	end
 
 	-- Command and parameters
-	local the_rest = string_explode(msg:sub(
+	local the_rest = string_explode(message:sub(
 		prefix_end + 1, trailing_start))
 
 	-- Returning results
@@ -134,17 +134,17 @@ function Base:handle(command, ...)
 	end
 end
 
-function Base:process(msg)
-	if not msg then return end
+function Base:process(message)
+	if not message then return end
 
 	-- Call RAW callback.
 	if self.callbacks["RAW"] then
-		self.callbacks["RAW"](false, msg)
+		self.callbacks["RAW"](false, message)
 	end
 
 	---
 
-	local prefix, command, params = parse_message(msg)
+	local prefix, command, params = parse_message(message)
 
 	local sender
 	if prefix then

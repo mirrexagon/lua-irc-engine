@@ -16,9 +16,9 @@ return {
 			return ("USER %s %s * :%s"):format(username, mode or 8, realname)
 		end,
 
-		QUIT = function(self, quit_msg)
-			if msg then
-				return "QUIT :" .. quit_msg
+		QUIT = function(self, quit_message)
+			if message then
+				return "QUIT :" .. quit_message
 			else
 				return "QUIT"
 			end
@@ -37,8 +37,8 @@ return {
 		end,
 
 		QUIT = function(self, sender, params)
-			local quit_msg = params[1]
-			return sender, quit_msg
+			local quit_message = params[1]
+			return sender, quit_message
 		end
     }
 }

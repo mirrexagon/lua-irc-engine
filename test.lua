@@ -38,8 +38,8 @@ irc:set_handler("001", function(self)
 	self:JOIN("#test")
 end)
 
-irc:set_callback("PRIVMSG", function(sender, origin, msg, pm)
-	print(("<%s> %s"):format(sender[1], msg))
+irc:set_callback("PRIVMSG", function(sender, origin, message, pm)
+	print(("<%s> %s"):format(sender[1], message))
 end)
 
 irc:set_callback("CTCP", function(sender, origin, command, params, pm)
