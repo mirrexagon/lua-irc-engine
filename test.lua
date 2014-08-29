@@ -46,6 +46,10 @@ irc:set_callback("CTCP", function(sender, origin, command, params, pm)
 	print(("CTCP <%s> %s -> %s"):format(sender[1], command, params[1]))
 end)
 
+irc:set_callback("ACTION", function(sender, origin, action, pm)
+	print(("* %s %s"):format(sender[1], action))
+end)
+
 irc:set_callback("MODE", function(sender, operation, modes, params)
 	print(sender and ("Channel mode by %s"):format(sender[1]) or "User mode")
 
