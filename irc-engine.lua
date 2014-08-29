@@ -26,12 +26,6 @@ end
 
 ---
 
-function Base:translate(command, ...)
-	if self.senders[command] then
-		return self.senders[command](self, ...)
-	end
-end
-
 function Base:send(command, ...)
 	if self.senders[command] then
 		return self:send_raw( self:translate(command, ...) )
@@ -53,6 +47,12 @@ Base.__index = function(self, key)
 end
 
 ---
+
+function Base:translate(command, ...)
+	if self.senders[command] then
+		return self.senders[command](self, ...)
+	end
+end
 
 function Base:set_sender(command, func)
 	local old = self.senders[command]
@@ -136,14 +136,20 @@ function Base:process(msg)
 	-- implemented?
 	if self.handlers[command] then
 		if self.callbacks[command] then
-			self.callbacks[command]( self.handlers[command](self, sender, params) )
+			self:callback( self:handle(command, sender, params) )
 		else
-			self.handlers[command](self, sender, params)
+			self:handle(command, sender, params)
 		end
 	end
 end
 
 ---
+
+function Base:handle(command, ...)
+	if self.handlers[command] then
+		return self.handlers[command](self, ...)
+	end
+end
 
 function Base:set_handler(command, func)
 	local old = self.handlers[command]
@@ -166,6 +172,12 @@ function Base:clear_handler(command)
 end
 
 ---
+
+function Base:callback(command, ...)
+	if self.callbacks[command] then
+		return self.callbacks[command](...)
+	end
+end
 
 function Base:set_callback(command, func)
 	local old = self.callbacks[command]
