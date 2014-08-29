@@ -2,7 +2,7 @@ Lua IRC Engine
 ==============
 A Lua IRC module that tries to be minimal and extensible.
 
-Lua IRC Engine is a basic IRC "translator". It provides basic message parsing and a way to add sending convienience functions and command handlers, but leaves the actual processing of commands to the host application. For example, it does not implement CTCP, keep a list of joined channels or even know what its nick is.
+Lua IRC Engine is a basic IRC "translator". It provides basic message parsing and a way to add sending convienience functions and command handlers, but leaves the actual processing of commands to the host application. For example, it does not keep a list of joined channels or even know what its nick is.
 
 Not much of the standard modules have been tested. Bugs are most likely present.
 
@@ -217,7 +217,7 @@ Extending the module
 
 Sender functions
 ----------------
-Each IRC command can have exactly one sender function. They are stored in `irc.senders`.
+Each IRC command can have exactly one sender function (although you can add ones that don't correspond to an IRC command, for example `CTCP`). They are stored in `irc.senders`.
 
 Sender functions take the IRC object (in this case, in the variable `self`) and whatever arguments they need, and return the raw message to be sent:
 ```lua
@@ -242,10 +242,6 @@ Sender functions can be set with `irc:set_sender(command, func)`:
 irc:set_sender("RAW", raw)
 irc:set_sender("PRIVMSG", privmsg)
 irc:set_sender("CTCP", ctcp)
-
--- Note: CTCP support is not included in this module.
--- This is due to the difficulty in handling it with the current
--- one-callback-per-command system.
 ```
 
 `irc.set_sender` returns `true` on success.
@@ -321,7 +317,7 @@ params = {
 }
 ```
 
-The handler can either send a reply, parse the parameters and return information, or both. The IRC object is exposed (again as `self` in these examples) so that the handler can send replies and read things like `irc.version` (eg. in a CTCP handler).
+The handler can either send a reply, parse the parameters and return information, or both. The IRC object is exposed (again as `self` in these examples) so that the handler can send replies, or call other handlers or callbacks.
 ``` lua
 -- The PING handler just sends a reply (namely, a pong).
 function handle_ping(self, sender, params)

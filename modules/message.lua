@@ -6,6 +6,10 @@ return {
 
 		PRIVMSG = function(self, target, msg)
 			return ("PRIVMSG %s :%s"):format(target, msg)
+		end,
+
+		CTCP = function(self, target, command, params)
+			return self:translate("PRIVMSG", target, ("\001%s %s\001"):format(command, params))
 		end
     },
 
@@ -16,7 +20,11 @@ return {
 			local pm = not target:find("[#&]")
 			local origin = pm and sender[1] or target
 
-			return sender, origin, msg, pm
+			if msg:find("\001") == 1 then
+				return self:handle("CTCP", sender, origin, msg, pm)
+			else
+				return sender, origin, msg, pm
+			end
 		end,
 
 		PRIVMSG = function(self, sender, params)
@@ -25,7 +33,13 @@ return {
 			local pm = not target:find("[#&]")
 			local origin = pm and sender[1] or target
 
-			return sender, origin, msg, pm
-		end
+			if msg:find("\001") == 1 then
+				return self:handle("CTCP", sender, origin, msg, pm)
+			else
+				return sender, origin, msg, pm
+			end
+		end,
+
+
     }
 }

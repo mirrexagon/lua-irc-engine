@@ -1,3 +1,7 @@
+-- Localisations --
+local unpack = table.unpack or unpack
+-- ============= --
+
 -- Utility functions --
 local function string_explode(str)
 	local result = {}
@@ -132,13 +136,12 @@ function Base:process(msg)
 	end
 
 	-- Call appropriate handler and possibly callback.
-	-- TODO: Have a function that calls callbacks so things like CTCP can be
-	-- implemented?
+	-- TODO: combine calling handler and associated callback into one function
+	-- so it can be done in a handler.
 	if self.handlers[command] then
-		if self.callbacks[command] then
-			self:callback( self:handle(command, sender, params) )
-		else
-			self:handle(command, sender, params)
+		local handler_return = {self:handle(command, sender, params)}
+		if #handler_return > 0 and self.callbacks[command] then
+			self:callback(command, unpack(handler_return))
 		end
 	end
 end
