@@ -19,6 +19,10 @@ return {
 		end,
 
 		CTCP = function(self, target, command, params)
+			if type(params) == "table" then
+				params = table.concat(params, " ")
+			end
+
 			return self:translate("PRIVMSG", target, ("\001%s %s\001"):format(command, params))
 		end,
 
