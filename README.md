@@ -83,8 +83,11 @@ When a message that your program might want to process is received, the appropri
 
 ```lua
 irc:set_callback("PRIVMSG", function(sender, origin, msg, pm)
-	print( ("<%s> %s"):format(sender, msg) )
+	print( ("<%s> %s"):format(sender[1], msg) )
 end)
+
+-- Information on the "sender" table can be found in the next section,
+-- "Extending the module" under "Handler functions".
 ```
 
 `irc.set_callback` returns `true` on success, or `false` and an error message otherwise.
