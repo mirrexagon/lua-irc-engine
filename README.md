@@ -134,7 +134,7 @@ and the handlers like this:
 ```
 
 Sender tables are derived from the message prefix and are structured like this:
-```
+```lua
 -- From a user:
 sender = {
 	[1] = "Nick",
@@ -148,7 +148,7 @@ sender = {
 }
 
 -- or no prefix:
-sender = {}
+sender = {""}
 ```
 
 ---
