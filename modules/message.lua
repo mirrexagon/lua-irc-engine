@@ -20,6 +20,10 @@ return {
 
 		CTCP = function(self, target, command, params)
 			return self:translate("PRIVMSG", target, ("\001%s %s\001"):format(command, params))
+		end,
+
+		ACTION = function(self, target, action)
+			return self:translate("CTCP", target, "ACTION", action)
 		end
     },
 
@@ -59,7 +63,16 @@ return {
 			local command = params[1]
 			table.remove(params, 1)
 
-			return sender, origin, command, params, pm
+			if command == "ACTION" then
+				local action = table.concat(params, " ")
+				self:handle("ACTION", sender, origin, action, pm)
+			else
+				return sender, origin, command, params, pm
+			end
+		end,
+
+		ACTION = function(self, sender, origin, action, pm)
+			return sender, origin, action, pm
 		end
     }
 }
