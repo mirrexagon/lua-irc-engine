@@ -6,6 +6,14 @@ local function string_splitchar(str)
 	end
 	return t
 end
+
+local function string_explode(str)
+	local result = {}
+	for s in str:gmatch("%S+") do
+		table.insert(result, s)
+	end
+	return result
+end
 -- ================= --
 
 return {
@@ -40,14 +48,15 @@ return {
 		end,
 
 		["353"] = function(self, sender, params)
-			local channel = params[1]
+			local target = params[1]
+			local kind = params[2]
+			local channel = params[3]
+			local list = string_explode(params[4])
 
-			local list = {}
-			for i = 2, #params do
-				table.insert(list, params[i])
-			end
+			-- TODO: Is it worth supporting the RFC1459 specification of not
+			-- having a channel type parameter?
 
-			return channel, list
+			return channel, list, kind
 		end,
 
 		MODE = function(self, sender, params)
