@@ -78,6 +78,10 @@ irc:set_callback("353", function(channel, list, kind)
 	print("----")
 end)
 
+irc:set_callback("366", function(sender, origin, action, pm)
+	print("End of NAMES!")
+end)
+
 ---
 
 client:connect(server, 6667)
