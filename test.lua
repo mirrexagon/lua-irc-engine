@@ -24,7 +24,7 @@ end)
 ---
 
 assert(irc:load_module("base"))
-assert(irc:load_module("msg"))
+assert(irc:load_module("message"))
 assert(irc:load_module("channel"))
 
 irc:set_callback("RAW", function(send, message)
