@@ -40,6 +40,7 @@ end)
 
 irc:set_callback("PRIVMSG", function(sender, origin, message, pm)
 	print(("<%s> %s"):format(sender[1], message))
+	irc:PRIVMSG(origin, message)
 end)
 
 irc:set_callback("CTCP", function(sender, origin, command, params, pm)
