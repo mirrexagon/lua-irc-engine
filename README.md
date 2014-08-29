@@ -305,33 +305,92 @@ PING (params)
 
 NICK (sender, new_nick)
 	Called when someone changes their nickname.
-	Passes the sender table and the new nick of that sender to the callback.
 
 QUIT (quit_msg)
 	Called when someone quits.
-	Passes the quit message (if there is one) to the callback.
 ```
-`TODO: Document the rest.`
+
 ### Channel
 #### Senders
 ```
+JOIN (channel, key)
+	Attempts to join a channel.
+	If "key" is included, it is sent as the channel access key.
 
+PART (channel, part_message)
+	Parts from a channel.
+	If "part_message" is included, it is sent as the part message.
 ```
 
 #### Handlers
 ```
+JOIN (sender, channel)
+	Called when someone joins a channel.
 
+PART (sender, channel, part_message)
+	Called when someone parts from a channel.
+	If a part message was supplied, it is passed to the callback.
+
+353 (channel, list, kind)
+	This is channel user list reply code.
+	The handler returns the channel name, the list of users and the
+		kind of channel (@ (secret), * (private) or = (public/other)).
+
+MODE (sender, operation, modes, target)
+	Handles both channel and user modes.
+	If it is a channel mode message:
+		"sender" is who changed the mode
+		"operation" is + or -
+		"modes" is a list of the modes, up to three
+		"target" is a list of who is receiving the modes, up to three
+	If it is a user mode message:
+		"sender" is nil
+		"operation" is + or -
+		"modes" is a list of the modes, up to three
+		"target" is a who is receiving the modes, probably you
 ```
 
 ### Message
 #### Senders
 ```
+NOTICE (target, message)
+	Sends a NOTICE with "message" as the message
 
+PRIVMSG (target, message)
+	As with NOTICE, but as a PRIVMSG
+
+CTCP (target, command, params)
+	Uses PRIVMSG to send a CTCP command.
+	"params" can be a list of parameters, or a string to be sent in the
+		parameter section of the CTCP command (internally, "params" as a table
+		is turned into a string with table.concat).
+
+ACTION (target, action)
+	Uses CTCP to send an ACTION command.
 ```
 
 #### Handlers
 ```
+NOTICE (sender, origin, message, pm)
+	Called when a NOTICE is received.
+	"origin" is the channel the message was sent to, or the nick of the sender
+		if it's a private message. "pm" will be true if the message came directly
+		from a user (ie. a private message) as opposed to from a channel.
 
+PRIVMSG (sender, origin, message, pm)
+	As with NOTICE, but for PRIVMSG.
+	If a CTCP message is detected, processing is passed on to the
+		CTCP handler, and the PRIVMSG callback isn't called.
+
+CTCP (sender, origin, command, params, pm)
+	Called when a CTCP message is received.
+	"params" is a table of parameters.
+	If the command is ACTION, CTCP passes processing on to the ACTION handler,
+		and the CTCP callback isn't called.
+
+ACTION (sender, origin, action, pm)
+	Called when an ACTION is received (ie. "/me <action>")
+	Callback parameters are similar to PRIVMSG and NOTICE.
 ```
 
 
