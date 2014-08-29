@@ -4,10 +4,6 @@ A Lua IRC module that tries to be minimal and extensible.
 
 Lua IRC Engine is a basic IRC "translator". It provides basic message parsing and a way to add sending convienience functions and command handlers, but leaves the actual processing of commands to the host application. For example, it does not keep a list of joined channels or even know what its nick is.
 
-Not much of the standard modules have been tested. Bugs are most likely present.
-
-The construction `{TODO: [text]}` indicates something I still have to document or figure out how to implement.
-
 See the bottom of this README for license information.
 
 
@@ -188,7 +184,7 @@ QUIT (quit_msg)
 	Called when someone quits.
 	Passes the quit message (if there is one) to the callback.
 ```
-`{TODO: Document the rest.}`
+`TODO: Document the rest.`
 ### Channel
 #### Senders
 ```
@@ -334,8 +330,6 @@ function handle_privmsg(self, sender, params)
 
 	return sender, origin, msg, pm -- Return parsed information.
 end
-
--- {TODO: Example of both?}
 ```
 
 Handler functions can be set and cleared with `irc:set_handler(command, func)` and `irc:clear_handler(command)`, and this works much the same as with senders.
