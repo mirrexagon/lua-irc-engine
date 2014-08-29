@@ -155,7 +155,7 @@ function Base:process(message)
 			sender = {prefix}
 		end
 	else
-		sender = {""}
+		sender = {}
 	end
 
 	self:handle(command, sender, params)

@@ -284,7 +284,7 @@ sender = {
 }
 
 -- or no prefix:
-sender = {""}
+sender = {}
 ```
 
 ---
