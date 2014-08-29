@@ -39,7 +39,7 @@ return {
 			local origin = pm and sender[1] or target
 
 			if message:find("\001") == 1 then
-				return self:handle("CTCP", sender, origin, message, pm)
+				self:handle("CTCP", sender, origin, message, pm)
 			else
 				return sender, origin, message, pm
 			end
@@ -52,9 +52,6 @@ return {
 			local origin = pm and sender[1] or target
 
 			if message:find("\001") == 1 then
-				-- Chain CTCP handler. PRIVMSG callback won't be called
-				-- since the PRIVMSG handler (this function) isn't returning
-				-- anything.
 				self:handle("CTCP", sender, origin, message, pm)
 			else
 				return sender, origin, message, pm
