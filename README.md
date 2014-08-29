@@ -79,7 +79,7 @@ end
 
 ---
 
-When a message that your program might want to process is received and successfully parsed, the appropriate callback is called, if it is set. You can set a callback with `irc:set_callback(command, func)`:
+When a message that your program might want to process is received, the appropriate callback is called, if it is set. You can set a callback with `irc:set_callback(command, func)`:
 
 ```lua
 irc:set_callback("PRIVMSG", function(sender, origin, msg, pm)
@@ -90,6 +90,19 @@ end)
 `irc.set_callback` returns `true` on success, or `false` and an error message otherwise.
 
 Callbacks cannot be overwritten. `irc:clear_callback(command)` is used to clear a callback.
+
+---
+
+Whether a callback is actually called depends on whether a handler exists for the command, and whether it returns anything.
+
+A callback will be called if:
+
+- a handler exists and it returns something, or;
+- if a handler does not exist for the command, in which case the callback gets the sender, the IRC command and the command parameters as arguments.
+
+If a handler exists but doesn't return anything, the callback isn't called.
+
+There is more information about handlers in the next section, "Extending the module".
 
 ---
 
