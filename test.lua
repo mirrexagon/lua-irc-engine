@@ -42,6 +42,10 @@ irc:set_callback("PRIVMSG", function(sender, origin, msg, pm)
 	print(("<%s> %s"):format(sender[1], msg))
 end)
 
+irc:set_callback("CTCP", function(sender, origin, command, params, pm)
+	print(("CTCP <%s> %s -> %s"):format(sender[1], command, params[1]))
+end)
+
 irc:set_callback("MODE", function(sender, operation, modes, params)
 	print(sender and ("Channel mode by %s"):format(sender[1]) or "User mode")
 

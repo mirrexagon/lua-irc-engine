@@ -1,3 +1,13 @@
+-- Utility functions --
+local function string_explode(str)
+	local result = {}
+	for s in str:gmatch("%S+") do
+		table.insert(result, s)
+	end
+	return result
+end
+-- ================= --
+
 return {
     senders = {
 		NOTICE = function(self, target, msg)
@@ -44,7 +54,12 @@ return {
 		end,
 
 		CTCP = function(self, sender, origin, msg, pm)
+			local params = string_explode(msg:gsub("\001", ""))
 
+			local command = params[1]
+			table.remove(params, 1)
+
+			return sender, origin, command, params, pm
 		end
     }
 }
