@@ -111,6 +111,17 @@ local function parse_message(msg)
 	return prefix, command, the_rest
 end
 
+-- Calls the handler for the command if there is one, then calls the
+-- callback if there is one.
+function Base:handle(command, ...)
+	if self.handlers[command] then
+		local handler_return = {self.handlers[command](self, ...)}
+		if #handler_return > 0 and self.callbacks[command] then
+			self.callbacks[command](unpack(handler_return))
+		end
+	end
+end
+
 function Base:process(msg)
 	if not msg then return end
 
@@ -136,23 +147,10 @@ function Base:process(msg)
 	end
 
 	-- Call appropriate handler and possibly callback.
-	-- TODO: combine calling handler and associated callback into one function
-	-- so it can be done in a handler.
-	if self.handlers[command] then
-		local handler_return = {self:handle(command, sender, params)}
-		if #handler_return > 0 and self.callbacks[command] then
-			self:callback(command, unpack(handler_return))
-		end
-	end
+	self:handle(command, sender, params)
 end
 
 ---
-
-function Base:handle(command, ...)
-	if self.handlers[command] then
-		return self.handlers[command](self, ...)
-	end
-end
 
 function Base:set_handler(command, func)
 	local old = self.handlers[command]
@@ -175,12 +173,6 @@ function Base:clear_handler(command)
 end
 
 ---
-
-function Base:callback(command, ...)
-	if self.callbacks[command] then
-		return self.callbacks[command](...)
-	end
-end
 
 function Base:set_callback(command, func)
 	local old = self.callbacks[command]
