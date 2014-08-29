@@ -1,3 +1,4 @@
+-- Utility functions --
 local function string_splitchar(str)
 	local t = {}
 	for c in str:gmatch(".") do
@@ -5,6 +6,7 @@ local function string_splitchar(str)
 	end
 	return t
 end
+-- ================= --
 
 return {
     senders = {
