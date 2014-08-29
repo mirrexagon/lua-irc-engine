@@ -113,11 +113,24 @@ end
 -- Calls the handler for the command if there is one, then calls the callback
 -- if the handler returned anything and there is a callback for this command.
 function Base:handle(command, ...)
+	local handler = self.handlers[command]
+	local callback = self.callbacks[command]
+	local handler_return
+
 	if self.handlers[command] then
-		local handler_return = {self.handlers[command](self, ...)}
-		if #handler_return > 0 and self.callbacks[command] then
-			self.callbacks[command](unpack(handler_return))
-		end
+		handler_return = {handler(self, ...)}
+	end
+
+	if callback then
+		if handler_return and #handler_return > 0 then
+			-- Handler exists and returned something.
+			callback(unpack(handler_return))
+
+		elseif not handler then
+			-- Handler doesn't exist.
+			callback(...)
+
+		end -- Don't call callback if handler exists but didn't return anything.
 	end
 end
 
