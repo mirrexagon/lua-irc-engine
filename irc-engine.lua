@@ -66,7 +66,6 @@ function Base:set_sender(command, func)
 		self.senders[command] = func
 		return true
 	end
-
 end
 
 function Base:clear_sender(command)
@@ -160,7 +159,6 @@ function Base:set_handler(command, func)
 		self.handlers[command] = func
 		return true
 	end
-
 end
 
 function Base:clear_handler(command)
@@ -182,7 +180,6 @@ function Base:set_callback(command, func)
 		self.callbacks[command] = func
 		return true
 	end
-
 end
 
 function Base:clear_callback(command)
