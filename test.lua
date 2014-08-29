@@ -64,6 +64,20 @@ irc:set_callback("MODE", function(sender, operation, modes, params)
 	end
 end)
 
+irc:set_callback("353", function(channel, list, kind)
+	print("----")
+	print(channel)
+	print(kind)
+
+	print("-")
+
+	for _, user in ipairs(list) do
+		print(user)
+	end
+
+	print("----")
+end)
+
 ---
 
 client:connect(server, 6667)
