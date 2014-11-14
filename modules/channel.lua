@@ -70,7 +70,10 @@ return {
 
 			if target:find("[#&]") then
 				-- Channel mode.
-				local mode_params = {params[3], params[4], params[5]}
+				local mode_params
+				for i = 3, #params do
+					mode_params[i-2] = params[i]
+				end
 				return sender, operation, modes, mode_params
 			else
 				-- User mode.
