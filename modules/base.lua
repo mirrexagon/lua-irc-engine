@@ -17,7 +17,7 @@ return {
 		end,
 
 		QUIT = function(self, quit_message)
-			if message then
+			if quit_message then
 				return "QUIT :" .. quit_message
 			else
 				return "QUIT"
