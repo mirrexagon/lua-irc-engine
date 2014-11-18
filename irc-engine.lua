@@ -42,8 +42,7 @@ Base.__index = function(self, key)
 			return self:send(key, ...)
 		end
 	else
-		local base_v = rawget(Base, key)
-		if base_v then return base_v end
+		return rawget(Base, key)
 	end
 end
 
