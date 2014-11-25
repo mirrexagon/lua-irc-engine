@@ -18,16 +18,16 @@ return {
 			return ("PRIVMSG %s :%s"):format(target, message)
 		end,
 
-		CTCP = function(self, target, command, params)
+		_CTCP = function(self, target, command, params, notice)
 			if type(params) == "table" then
 				params = table.concat(params, " ")
 			end
 
-			return self:translate("PRIVMSG", target, ("\001%s %s\001"):format(command, params))
+			return ("\001%s %s\001"):format(command, params)
 		end,
 
 		ACTION = function(self, target, action)
-			return self:translate("CTCP", target, "ACTION", action)
+			return self:translate("PRIVMSG", self:translate("_CTCP", target, "ACTION", action))
 		end
     },
 
@@ -39,7 +39,7 @@ return {
 			local origin = pm and sender[1] or target
 
 			if message:find("\001") == 1 then
-				self:handle("CTCP", sender, origin, message, pm)
+				self:handle("CTCP", sender, origin, message, pm, true)
 			else
 				return sender, origin, message, pm
 			end
@@ -52,13 +52,13 @@ return {
 			local origin = pm and sender[1] or target
 
 			if message:find("\001") == 1 then
-				self:handle("CTCP", sender, origin, message, pm)
+				self:handle("CTCP", sender, origin, message, pm, false)
 			else
 				return sender, origin, message, pm
 			end
 		end,
 
-		CTCP = function(self, sender, origin, message, pm)
+		CTCP = function(self, sender, origin, message, pm, notice)
 			local params = string_explode(message:gsub("\001", ""))
 
 			local command = params[1]
@@ -68,7 +68,7 @@ return {
 				local action = table.concat(params, " ")
 				self:handle("ACTION", sender, origin, action, pm)
 			else
-				return sender, origin, command, params, pm
+				return sender, origin, command, params, pm, notice
 			end
 		end,
 

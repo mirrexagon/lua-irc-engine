@@ -292,6 +292,7 @@ and the handlers like this:
 	<Description>
 ```
 
+Senders prefixed with an underscore do not produce complete messages, and their output is meant to be encapsulated in another command, eg. `_CTCP` returns a message to be sent in a `PRIVMSG` or a `NOTICE`.
 ---
 
 ### Base
