@@ -316,16 +316,16 @@ QUIT (quit_msg)
 
 ```
 
-#### Handlers
+#### Callbacks
 ```
-PING (params)
+PING (sender, params)
 	Called when a PING is received.
-	Responds with a PONG, and passes the single parameter to the callback.
+	Responds with a PONG, and passes the sender and parameter to the callback.
 
 NICK (sender, new_nick)
 	Called when someone changes their nickname.
 
-QUIT (quit_msg)
+QUIT (sender, quit_msg)
 	Called when someone quits.
 ```
 
@@ -341,7 +341,7 @@ PART (channel, part_message)
 	If "part_message" is included, it is sent as the part message.
 ```
 
-#### Handlers
+#### Callbacks
 ```
 JOIN (sender, channel)
 	Called when someone joins a channel.
@@ -378,17 +378,23 @@ NOTICE (target, message)
 PRIVMSG (target, message)
 	As with NOTICE, but as a PRIVMSG
 
+_CTCP (command, params)
+	Used by CTCP and CTCP_REPLY to create a CTCP message.
+
 CTCP (target, command, params)
-	Uses PRIVMSG to send a CTCP command.
+	Sends a CTCP command in a PRIVMSG.
 	"params" can be a list of parameters, or a string to be sent in the
 		parameter section of the CTCP command (internally, "params" as a table
 		is turned into a string with table.concat).
+
+CTCP_REPLY (target, command, params)
+	As above, but sent in a NOTICE.
 
 ACTION (target, action)
 	Uses CTCP to send an ACTION command.
 ```
 
-#### Handlers
+#### Callbacks
 ```
 NOTICE (sender, origin, message, pm)
 	Called when a NOTICE is received.
@@ -402,14 +408,19 @@ PRIVMSG (sender, origin, message, pm)
 		CTCP handler, and the PRIVMSG callback isn't called.
 
 CTCP (sender, origin, command, params, pm)
-	Called when a CTCP message is received.
+	Called when a CTCP message is received in a PRIVMSG.
 	"params" is a table of parameters.
 	If the command is ACTION, CTCP passes processing on to the ACTION handler,
 		and the CTCP callback isn't called.
 
+CTCP_REPLY (sender, origin, command, params, pm)
+	As above, but for CTCPs in a NOTICE.
+
 ACTION (sender, origin, action, pm)
 	Called when an ACTION is received (ie. "/me <action>")
 	Callback parameters are similar to PRIVMSG and NOTICE.
+	Note that there is actually no handler with this name. Regardless, the
+		associated callback is called.
 ```
 
 
