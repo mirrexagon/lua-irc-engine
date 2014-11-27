@@ -17,7 +17,7 @@ end
 -- ================= --
 
 return {
-    senders = {
+	senders = {
 		JOIN = function(self, channel, key)
 			if key then
 				return ("JOIN %s %s"):format(channel, key)
@@ -33,9 +33,9 @@ return {
 				return "PART " .. channel
 			end
 		end
-    },
+	},
 
-    handlers = {
+	handlers = {
 		JOIN = function(self, sender, params)
 			local channel = params[1]
 			return sender, channel
@@ -80,5 +80,5 @@ return {
 				return nil, operation, modes, target
 			end
 		end
-    }
+	}
 }

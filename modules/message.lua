@@ -9,7 +9,7 @@ end
 -- ================= --
 
 return {
-    senders = {
+	senders = {
 		NOTICE = function(self, target, message)
 			return ("NOTICE %s :%s"):format(target, message)
 		end,
@@ -45,9 +45,9 @@ return {
 		ACTION = function(self, target, action)
 			return self:translate("CTCP", target, "ACTION", action)
 		end
-    },
+	},
 
-    handlers = {
+	handlers = {
 		NOTICE = function(self, sender, params)
 			local target = params[1]
 			local message = params[2]
@@ -89,5 +89,5 @@ return {
 				return sender, origin, command, params, pm
 			end
 		end
-    }
+	}
 }

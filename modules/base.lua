@@ -1,12 +1,12 @@
 return {
-    senders = {
+	senders = {
 		PING = function(self, param)
 			return "PING :" .. param
 		end,
 
-        PONG = function(self, param)
-            return "PONG :" .. param
-        end,
+		PONG = function(self, param)
+			return "PONG :" .. param
+		end,
 
 		NICK = function(self, nick)
 			return "NICK :" .. nick
@@ -23,13 +23,13 @@ return {
 				return "QUIT"
 			end
 		end
-    },
+	},
 
-    handlers = {
-        PING = function(self, sender, params)
-            self:send("PONG", params[1])
+	handlers = {
+		PING = function(self, sender, params)
+			self:send("PONG", params[1])
 			return sender, params[1]
-        end,
+		end,
 
 		NICK = function(self, sender, params)
 			local new_nick = params[2]
@@ -40,5 +40,5 @@ return {
 			local quit_message = params[1]
 			return sender, quit_message
 		end
-    }
+	}
 }
