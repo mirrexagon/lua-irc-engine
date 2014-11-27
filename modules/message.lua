@@ -18,16 +18,32 @@ return {
 			return ("PRIVMSG %s :%s"):format(target, message)
 		end,
 
-		_CTCP = function(self, target, command, params, notice)
+		_CTCP = function(self, command, params)
+			if params == nil then
+				return ("\001%s\001"):format(command)
+			end
+
 			if type(params) == "table" then
 				params = table.concat(params, " ")
 			end
-
 			return ("\001%s %s\001"):format(command, params)
 		end,
 
+
+		---
+
+		CTCP = function(self, target, command, params)
+			return self:translate("PRIVMSG", target, self:translate("_CTCP", command, params))
+		end,
+
+		CTCP_REPLY = function(self, target, command, params)
+			return self:translate("NOTICE", target, self:translate("_CTCP", command, params))
+		end,
+
+		---
+
 		ACTION = function(self, target, action)
-			return self:translate("PRIVMSG", self:translate("_CTCP", target, "ACTION", action))
+			return self:translate("CTCP", target, "ACTION", action)
 		end
     },
 
@@ -67,13 +83,11 @@ return {
 			if command == "ACTION" then
 				local action = table.concat(params, " ")
 				self:handle("ACTION", sender, origin, action, pm)
+			elseif notice then
+				self:handle("CTCP_REPLY", sender, origin, command, params, pm)
 			else
-				return sender, origin, command, params, pm, notice
+				return sender, origin, command, params, pm
 			end
-		end,
-
-		ACTION = function(self, sender, origin, action, pm)
-			return sender, origin, action, pm
 		end
     }
 }
