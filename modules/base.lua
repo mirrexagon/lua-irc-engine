@@ -28,7 +28,7 @@ return {
     handlers = {
         PING = function(self, sender, params)
             self:send("PONG", params[1])
-			return params[1]
+			return sender, params[1]
         end,
 
 		NICK = function(self, sender, params)
