@@ -316,7 +316,7 @@ NICK (nick)
 	Sends NICK with "nick" as the only parameter.
 
 USER (username, realname, mode)
-	Sends USER like so: User <username> <mode> :<realname>
+	Sends USER like so: USER <username> <mode> :<realname>
 	If "mode" is omitted, 8 is sent as the mode.
 
 QUIT (quit_msg)
