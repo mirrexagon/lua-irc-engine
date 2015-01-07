@@ -1,4 +1,4 @@
--- Utility functions --
+-- Utility functions
 local function string_splitchar(str)
 	local t = {}
 	for c in str:gmatch(".") do
@@ -14,7 +14,8 @@ local function string_explode(str)
 	end
 	return result
 end
--- ================= --
+
+---
 
 return {
 	senders = {

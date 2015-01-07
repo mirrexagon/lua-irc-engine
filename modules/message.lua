@@ -1,4 +1,4 @@
--- Utility functions --
+-- Utility functions
 local function string_explode(str)
 	local result = {}
 	for s in str:gmatch("%S+") do
@@ -6,7 +6,8 @@ local function string_explode(str)
 	end
 	return result
 end
--- ================= --
+
+---
 
 return {
 	senders = {
