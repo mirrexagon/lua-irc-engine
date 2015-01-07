@@ -20,6 +20,15 @@ local irc = IRC.new()
 
 From now on, this README assumes that `irc` is an IRC Engine object created as above.
 
+---
+
+Note: Much of the functionality of this module (eg. replying to server PINGs, sending PRIVMSGs with irc:send()) is in submodules, none of which are loaded when the object is created. To load the standard modules, use:
+```lua
+irc:load_module("base")
+irc:load_module("message")
+irc:load_module("channel")
+```
+Modules are covered in more detail later in this README.
 
 Sending
 -------
