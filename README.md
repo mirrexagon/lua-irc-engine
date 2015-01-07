@@ -87,7 +87,7 @@ irc:set_callback("PRIVMSG", function(sender, origin, msg, pm)
 end)
 ```
 
-`irc.set_callback` returns `true` on success, or `false` and an error message otherwise.
+`irc.set_callback` returns `true` on success, and raises an error if there is already a callback set for `command`.
 
 Callbacks cannot be overwritten. `irc:clear_callback(command)` is used to clear a callback.
 
@@ -165,9 +165,7 @@ irc:set_sender("PRIVMSG", privmsg)
 irc:set_sender("CTCP", ctcp)
 ```
 
-`irc.set_sender` returns `true` on success.
-
-If you try to set a sender for a command when one is already set, `irc.send_sender` will return false and an error message.
+`irc.set_sender` returns `true` on success. If you try to set a sender for a command when one is already set, `irc.send_sender` will raise an error.
 
 You can remove senders with `irc:clear_sender(command)`.
 

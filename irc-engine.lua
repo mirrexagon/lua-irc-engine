@@ -55,9 +55,8 @@ function Base:translate(command, ...)
 end
 
 function Base:set_sender(command, func)
-	local old = self.senders[command]
-	if old then
-		return false, ("set_sender: There is already a sender set for \"%s\""):format(command)
+	if self.senders[command] then
+		error(("set_sender: There is already a sender set for \"%s\""):format(command))
 	else
 		self.senders[command] = func
 		return true
@@ -65,12 +64,8 @@ function Base:set_sender(command, func)
 end
 
 function Base:clear_sender(command)
-	if not self.senders[command] then
-		return false, ("clear_sender: There is no sender set for \"%s\""):format(command)
-	else
-		self.senders[command] = nil
-		return true
-	end
+	self.senders[command] = nil
+	return true
 end
 
 ---
@@ -160,9 +155,8 @@ end
 ---
 
 function Base:set_handler(command, func)
-	local old = self.handlers[command]
-	if old then
-		return false, ("set_handler: There is already a handler set for \"%s\""):format(command)
+	if self.handlers[command] then
+		error(("set_handler: There is already a handler set for \"%s\""):format(command))
 	else
 		self.handlers[command] = func
 		return true
@@ -170,20 +164,16 @@ function Base:set_handler(command, func)
 end
 
 function Base:clear_handler(command)
-	if not self.handlers[handler] then
-		return false, ("clear_handler: There is no handler set for \"%s\""):format(command)
-	else
-		self.handlers[handler] = nil
-		return true
-	end
+	self.handlers[handler] = nil
+	return true
 end
 
 ---
 
 function Base:set_callback(command, func)
 	local old = self.callbacks[command]
-	if old then
-		return false, ("set_callback: There is already a callback set for \"%s\""):format(command)
+	if self.callbacks[command] then
+		error(("set_callback: There is already a callback set for \"%s\""):format(command))
 	else
 		self.callbacks[command] = func
 		return true
@@ -191,12 +181,8 @@ function Base:set_callback(command, func)
 end
 
 function Base:clear_callback(command)
-	if not self.callbacks[command] then
-		return false, ("clear_callback: There is no callback set for \"%s\""):format(command)
-	else
-		self.callbacks[command] = nil
-		return true
-	end
+	self.callbacks[command] = nil
+	return true
 end
 
 ---
