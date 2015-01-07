@@ -337,46 +337,6 @@ QUIT (sender, quit_msg)
 	Called when someone quits.
 ```
 
-### Channel
-#### Senders
-```
-JOIN (channel, key)
-	Attempts to join a channel.
-	If "key" is included, it is sent as the channel access key.
-
-PART (channel, part_message)
-	Parts from a channel.
-	If "part_message" is included, it is sent as the part message.
-```
-
-#### Callbacks
-```
-JOIN (sender, channel)
-	Called when someone joins a channel.
-
-PART (sender, channel, part_message)
-	Called when someone parts from a channel.
-	If a part message was supplied, it is passed to the callback.
-
-353 (channel, list, kind)
-	This is channel user list reply code.
-	The handler returns the channel name, the list of users and the
-		kind of channel (@ (secret), * (private) or = (public/other)).
-
-MODE (sender, operation, modes, target)
-	Handles both channel and user modes.
-	If it is a channel mode message:
-		"sender" is who changed the mode
-		"operation" is + or -
-		"modes" is a list of the modes, up to three
-		"target" is a list of who is receiving the modes, up to three
-	If it is a user mode message:
-		"sender" is nil
-		"operation" is + or -
-		"modes" is a list of the modes, up to three
-		"target" is a who is receiving the modes, probably you
-```
-
 ### Message
 #### Senders
 ```
@@ -429,6 +389,46 @@ ACTION (sender, origin, action, pm)
 	Callback parameters are similar to PRIVMSG and NOTICE.
 	Note that there is actually no handler with this name. Regardless, the
 		associated callback is called.
+```
+
+### Channel
+#### Senders
+```
+JOIN (channel, key)
+	Attempts to join a channel.
+	If "key" is included, it is sent as the channel access key.
+
+PART (channel, part_message)
+	Parts from a channel.
+	If "part_message" is included, it is sent as the part message.
+```
+
+#### Callbacks
+```
+JOIN (sender, channel)
+	Called when someone joins a channel.
+
+PART (sender, channel, part_message)
+	Called when someone parts from a channel.
+	If a part message was supplied, it is passed to the callback.
+
+353 (channel, list, kind)
+	This is channel user list reply code.
+	The handler returns the channel name, the list of users and the
+		kind of channel (@ (secret), * (private) or = (public/other)).
+
+MODE (sender, operation, modes, target)
+	Handles both channel and user modes.
+	If it is a channel mode message:
+		"sender" is who changed the mode
+		"operation" is + or -
+		"modes" is a list of the modes, up to three
+		"target" is a list of who is receiving the modes, up to three
+	If it is a user mode message:
+		"sender" is nil
+		"operation" is + or -
+		"modes" is a list of the modes, up to three
+		"target" is a who is receiving the modes, probably you
 ```
 
 
