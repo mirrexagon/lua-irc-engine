@@ -251,6 +251,8 @@ function Base:unload_module(module_name)
 	for handler in pairs(self.modules[module_name].handlers) do
 		self:clear_handler(handler)
 	end
+
+	return true
 end
 
 ---
