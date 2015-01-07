@@ -171,7 +171,6 @@ end
 ---
 
 function Base:set_callback(command, func)
-	local old = self.callbacks[command]
 	if self.callbacks[command] then
 		error(("set_callback: There is already a callback set for \"%s\""):format(command))
 	else
