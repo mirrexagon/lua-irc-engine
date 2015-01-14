@@ -216,7 +216,7 @@ command = "372"
 
 -- ======== --
 prefix = "irc.server.domain"
-params = ":This is the MOTD!"
+params = "LegoSpacy :This is the MOTD!"
 -- ======== --
 
 sender = {
