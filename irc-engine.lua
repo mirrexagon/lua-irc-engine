@@ -240,9 +240,11 @@ function Base:load_module(module_name)
 		handlers = {}
 	}
 
+	-- TODO: Make this undo already set functions on error (or else make it check beforehand).
+
 	if modt.senders then
 		for sender, func in pairs(modt.senders) do
-			local ok = self:set_sender(sender, func)
+			local ok = self:set_sender(sender, func) -- TODO: Change for new behaviour (errors)
 			if not ok then
 				return false,("load_module: Could not load module \"%s\": %s"):format(module_name,
 					("module tried to overwrite sender \"%s\""):format(sender))
