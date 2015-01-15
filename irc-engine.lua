@@ -240,29 +240,35 @@ function Base:load_module(module_name)
 		handlers = {}
 	}
 
-	-- TODO: Make this undo already set functions on error (or else make it check beforehand).
-
 	if modt.senders then
-		for sender, func in pairs(modt.senders) do
-			local ok = self:set_sender(sender, func) -- TODO: Change for new behaviour (errors)
-			if not ok then
-				return false,("load_module: Could not load module \"%s\": %s"):format(module_name,
-					("module tried to overwrite sender \"%s\""):format(sender))
-			else
-				module_added.senders[sender] = sender
+		for command, func in pairs(modt.senders) do
+			if self.senders[command] then
+				return false, ("load_module: Could not load module \'%s\': %s"):format(module_name,
+					("sender for \'%s\' already exists"):format(command))
 			end
+		end
+
+		---
+
+		for command, func in pairs(modt.senders) do
+			self:set_sender(command, func)
+			module_added.senders[command] = command
 		end
 	end
 
 	if modt.handlers then
-		for handler, func in pairs(modt.handlers) do
-			local ok = self:set_handler(handler, func)
-			if not ok then
-				return false,("load_module: Could not load module \"%s\": %s"):format(module_name,
-					("module tried to overwrite handler \"%s\""):format(handler))
-			else
-				module_added.handlers[handler] = handler
+		for command, func in pairs(modt.handlers) do
+			if self.handlers[command] then
+				return false, ("load_module: Could not load module \'%s\': %s"):format(module_name,
+					("handler for \'%s\' already exists"):format(command))
 			end
+		end
+
+		---
+
+		for command, func in pairs(modt.handlers) do
+			self:set_handler(command, func)
+			module_added.handlers[command] = command
 		end
 	end
 
