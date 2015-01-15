@@ -193,7 +193,7 @@ function Base:set_handler(command, func)
 end
 
 function Base:clear_handler(command)
-	self.handlers[handler] = nil
+	self.handlers[command] = nil
 	return true
 end
 
