@@ -220,6 +220,7 @@ function Base:set_module_dir(dir)
 	self.module_dir = dir
 end
 
+-- TODO: Rewrite using require, use _PACKAGE so IRCe module directory can be relative to irc-engine.lua
 function Base:load_module(module_name)
 	if self.modules[module_name] then
 		return false, ("load_module: Could not load module \"%s\": %s"):format(module_name, "module already loaded")
