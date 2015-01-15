@@ -278,12 +278,12 @@ function Base:unload_module(module_name)
 		return false, ("unload_module: Could not unload module \"%s\": %s"):format(module_name, "module not loaded")
 	end
 
-	for sender in pairs(self.modules[module_name].senders) do
-		self:clear_sender(sender)
+	for command in pairs(self.modules[module_name].senders) do
+		self:clear_sender(command)
 	end
 
-	for handler in pairs(self.modules[module_name].handlers) do
-		self:clear_handler(handler)
+	for command in pairs(self.modules[module_name].handlers) do
+		self:clear_handler(command)
 	end
 
 	self.modules[module_name] = nil
