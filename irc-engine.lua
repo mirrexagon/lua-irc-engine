@@ -220,8 +220,11 @@ function Base:set_module_dir(dir)
 	self.module_dir = dir
 end
 
--- TODO: Error for "module already loaded"?
 function Base:load_module(module_name)
+	if self.modules[module_name] then
+		return false, ("load_module: Could not load module \"%s\": %s"):format(module_name, "module already loaded")
+	end
+
 	local searchdir = self.module_dir or "modules"
 
 	local ok, modt = pcall(dofile, ("%s/%s.lua"):format(searchdir, module_name))
@@ -288,6 +291,8 @@ function Base:unload_module(module_name)
 	for handler in pairs(self.modules[module_name].handlers) do
 		self:clear_handler(handler)
 	end
+
+	self.modules[module_name] = nil
 
 	return true
 end
