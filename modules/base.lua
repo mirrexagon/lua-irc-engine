@@ -31,7 +31,9 @@ return {
 			return sender, params[1]
 		end,
 
-		-- TODO: PONG?
+		PONG = function(self, sender, params)
+			return sender, params[1]
+		end,
 
 		NICK = function(self, sender, params)
 			local new_nick = params[2]
