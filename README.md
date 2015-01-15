@@ -422,13 +422,13 @@ MODE (sender, operation, modes, target)
 	If it is a channel mode message:
 		"sender" is who changed the mode
 		"operation" is + or -
-		"modes" is a list of the modes, up to three
-		"target" is a list of who is receiving the modes, up to three -- TODO: Can be more than three?
+		"modes" is a list of the modes
+		"target" is a list of who is receiving the modes
 	If it is a user mode message:
 		"sender" is nil
 		"operation" is + or -
-		"modes" is a list of the modes, up to three
-		"target" is a who is receiving the modes, probably you
+		"modes" is a list of the modes
+		"target" is who is receiving the modes, probably you
 ```
 
 
