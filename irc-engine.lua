@@ -274,16 +274,22 @@ function Base:load_module(module_name)
 end
 
 function Base:unload_module(module_name)
-	if not self.modules[module_name] then
+	local modt = self.modules[module_name]
+
+	if not modt then
 		return false, ("unload_module: Could not unload module \"%s\": %s"):format(module_name, "module not loaded")
 	end
 
-	for command in pairs(self.modules[module_name].senders) do
-		self:clear_sender(command)
+	if modt.senders then
+		for command in pairs(self.modules[module_name].senders) do
+			self:clear_sender(command)
+		end
 	end
 
-	for command in pairs(self.modules[module_name].handlers) do
-		self:clear_handler(command)
+	if modt.handlers then
+		for command in pairs(self.modules[module_name].handlers) do
+			self:clear_handler(command)
+		end
 	end
 
 	self.modules[module_name] = nil
