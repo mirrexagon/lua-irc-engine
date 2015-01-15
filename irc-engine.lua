@@ -239,11 +239,6 @@ function Base:load_module(module_name)
 
 	---
 
-	local module_added = {
-		senders = {},
-		handlers = {}
-	}
-
 	if modt.senders then
 		for command, func in pairs(modt.senders) do
 			if self.senders[command] then
@@ -256,7 +251,6 @@ function Base:load_module(module_name)
 
 		for command, func in pairs(modt.senders) do
 			self:set_sender(command, func)
-			module_added.senders[command] = command
 		end
 	end
 
@@ -272,11 +266,10 @@ function Base:load_module(module_name)
 
 		for command, func in pairs(modt.handlers) do
 			self:set_handler(command, func)
-			module_added.handlers[command] = command
 		end
 	end
 
-	self.modules[module_name] = module_added
+	self.modules[module_name] = modt
 	return true
 end
 
