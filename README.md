@@ -130,7 +130,7 @@ Whether a callback is actually called depends on whether a handler exists for th
 A callback will be called if:
 
 - a handler exists and it returns something, or;
-- if a handler does not exist for the command, in which case the callback gets the sender, the IRC command and the command parameters as arguments.
+- if a handler does not exist for the command, in which case the callback gets the sender and the command parameters as arguments.
 
 If a handler exists but doesn't return anything, the callback isn't called.
 
