@@ -21,6 +21,9 @@ local irc = IRC.new()
 From now on, this README assumes that `irc` is an IRC Engine object created as above.
 
 ---
+```
+TODO: This won't work if the modules are put somewhere else, eg. a subdirectory. Module system needs a rewrite, using `require` so modules can be put in a subdirectory without needing to change anything. Lua 5.3 added "./?/init.lua" to package.path, so once that's in more common use, this'll be easier to implement (a workaround is possible and that's probably what I'll do in/for the near future).
+```
 
 Note: Much of the functionality of this module (eg. replying to server PINGs, sending PRIVMSGs with irc:send()) is in submodules, none of which are loaded when the object is created. To load the standard modules, use:
 ```lua
