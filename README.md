@@ -45,9 +45,13 @@ local client = socket.tcp()
 client:connect("irc.server.domain", 6667)
 
 irc:set_send_func(function(message)
-	client:send(message)
+	return client:send(message)
 end)
 ```
+
+On success, this function should return `true` (or any value other than `nil` or `false`); to signal an error, it should return `nil` (or `false`) and an error message (these return values are actually returned untouched to the caller of `send_raw`).
+
+In this example, the LuaSocket TCP socket's `send` function returns the number of bytes it sent on success (which evaluates as `true`), and `nil` and an error message on failure; as such, the `send_func` can just return what it got from this.
 
 `irc.send_raw` will properly terminate the message with `\r\n`, and so it is not necessary to do this in the function you provide.
 
@@ -70,6 +74,21 @@ For consistency, you can use `RAW` to send raw messages using `irc.send`:
 irc:send("RAW", "PRIVMSG #potatoes :I like potatoes.")
 -- is equivalent to
 irc:send_raw("PRIVMSG #potatoes :I like potatoes.")
+```
+
+---
+
+These functions just return what the provided `send_func` returns; so, to catch an error, you can raise an error by wrapping them in `assert`:
+```lua
+assert(irc:PRIVMSG("#potato", "I like potatoes."))
+```
+
+A better way is to check the return values and deal with the error in a way appropriate for your program:
+```lua
+local ok, err = irc:PRIVMSG("#potato", "I like potatoes.")
+if not ok then
+	-- Handle error.
+end
 ```
 
 
