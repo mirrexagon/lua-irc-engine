@@ -112,7 +112,7 @@ that's in more common use, this'll be easier to implement
 the near future).
 ```
 
-Note: Much of the functionality of this module (eg. replying to server PINGs, sending PRIVMSGs with irc:send()) is in submodules, none of which are loaded when the object is created. To load the standard modules, use:
+Note: Much of the functionality of this module (eg. replying to server PINGs, sending PRIVMSGs with `irc.send`) is in submodules, none of which are loaded when the object is created. To load the standard modules, use:
 ```lua
 irc:load_module("base")
 irc:load_module("message")
