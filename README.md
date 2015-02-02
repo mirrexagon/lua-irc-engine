@@ -9,7 +9,7 @@ See irc-engine.lua for license information.
 
 Example
 =======
-This is a simple example using LuaSocket.
+This is a quick example using LuaSocket.
 
 ```lua
 local IRC = require("irc-engine")
