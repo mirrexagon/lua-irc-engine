@@ -25,7 +25,7 @@ local IRCe = {
 	]]
 }
 
--- Functions --
+---- Utility functions ----
 local unpack = table.unpack or unpack
 
 local function string_explode(str)
@@ -35,14 +35,14 @@ local function string_explode(str)
 	end
 	return result
 end
--- == --
+---- ==== ----
 
 
--- Constants --
+---- Constants ----
 local _PACKAGE = (...):gsub("%.init$", "") -- Remove trailing ".init" if present.
 
 local DEFAULT_IRCMODULE_DIR = "modules"
--- == --
+---- ==== ----
 
 
 ------ ======= ------
@@ -51,6 +51,7 @@ local DEFAULT_IRCMODULE_DIR = "modules"
 local Base = {}
 
 ---- Sending ----
+-- Low-level --
 function Base:set_send_func(func)
 	self.send_func = func
 	return true
@@ -64,8 +65,14 @@ function Base:send_raw(str)
 
 	return self.send_func(str .. "\r\n")
 end
+-- ==== --
 
----
+-- High-level --
+function Base:translate(command, ...)
+	if self.senders[command] then
+		return self.senders[command](self, ...)
+	end
+end
 
 function Base:send(command, ...)
 	if self.senders[command] then
@@ -82,15 +89,9 @@ Base.__index = function(self, key)
 		return rawget(Base, key)
 	end
 end
+-- ==== --
 
----
-
-function Base:translate(command, ...)
-	if self.senders[command] then
-		return self.senders[command](self, ...)
-	end
-end
-
+-- Setting and clearing senders --
 function Base:set_sender(command, func)
 	if self.senders[command] then
 		error(("set_sender: There is already a sender set for \"%s\""):format(command), 2)
@@ -104,10 +105,12 @@ function Base:clear_sender(command)
 	self.senders[command] = nil
 	return true
 end
+-- ==== --
 ---- ==== ----
 
 
 ---- Receiving ----
+-- Main --
 -- http://calebdelnay.com/blog/2010/11/parsing-the-irc-message-format-as-a-client
 local function parse_message(message)
 	-- Prefix
@@ -188,9 +191,9 @@ function Base:process(message)
 
 	self:handle(command, sender, params)
 end
+-- ==== --
 
----
-
+-- Setting and clearing handlers --
 function Base:set_handler(command, func)
 	if self.handlers[command] then
 		error(("set_handler: There is already a handler set for \"%s\""):format(command), 2)
@@ -204,9 +207,9 @@ function Base:clear_handler(command)
 	self.handlers[command] = nil
 	return true
 end
+-- ==== --
 
----
-
+-- Setting and clearing callbacks --
 function Base:set_callback(command, func)
 	if self.callbacks[command] then
 		error(("set_callback: There is already a callback set for \"%s\""):format(command), 2)
@@ -220,6 +223,7 @@ function Base:clear_callback(command)
 	self.callbacks[command] = nil
 	return true
 end
+-- ==== --
 ---- ==== ----
 
 
