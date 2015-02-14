@@ -25,12 +25,9 @@ local IRCe = {
 	]]
 }
 
----
-
--- Localisations
+-- Functions --
 local unpack = table.unpack or unpack
 
--- Utility functions
 local function string_explode(str)
 	local result = {}
 	for s in str:gmatch("%S+") do
@@ -38,16 +35,22 @@ local function string_explode(str)
 	end
 	return result
 end
+-- == --
 
--- Package name
+
+-- Constants --
 local _PACKAGE = (...):gsub("%.init$", "") -- Remove trailing ".init" if present.
 
 local DEFAULT_IRCMODULE_DIR = "modules"
+-- == --
 
----
+
+------ ======= ------
+
 
 local Base = {}
 
+---- Sending ----
 function Base:set_send_func(func)
 	self.send_func = func
 	return true
@@ -101,10 +104,10 @@ function Base:clear_sender(command)
 	self.senders[command] = nil
 	return true
 end
+---- ==== ----
 
----
----
 
+---- Receiving ----
 -- http://calebdelnay.com/blog/2010/11/parsing-the-irc-message-format-as-a-client
 local function parse_message(message)
 	-- Prefix
@@ -217,10 +220,10 @@ function Base:clear_callback(command)
 	self.callbacks[command] = nil
 	return true
 end
+---- ==== ----
 
----
----
 
+---- Modules ---
 function Base:load_module(module_name)
 	local module_dir = DEFAULT_IRCMODULE_DIR
 	local module_reqname = ("%s.%s.%s"):format(_PACKAGE, module_dir, module_name)
@@ -300,11 +303,11 @@ function Base:unload_module(module_name)
 
 	return true
 end
+---- ==== ----
 
----
----
 
-local function new()
+---- Object creation ----
+function IRCe.new()
 	return setmetatable({
 		senders = {
 			RAW = function(message)
@@ -315,7 +318,7 @@ local function new()
 		callbacks = {}
 	}, Base)
 end
+---- ==== ----
 
-IRCe.new = new
 
 return IRCe
