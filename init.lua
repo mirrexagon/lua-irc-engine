@@ -39,6 +39,11 @@ local function string_explode(str)
 	return result
 end
 
+-- Package name
+local _PACKAGE = (...):gsub("%.init$", "") -- Remove trailing ".init" if present.
+
+local DEFAULT_IRCMODULE_DIR = "modules"
+
 ---
 
 local Base = {}
@@ -216,83 +221,82 @@ end
 ---
 ---
 
-function Base:set_module_dir(dir)
-	self.module_dir = dir
-end
-
--- TODO: Rewrite using require, use _PACKAGE so IRCe module directory can be relative to irc-engine.lua
 function Base:load_module(module_name)
-	if self.modules[module_name] then
-		return false, ("load_module: Could not load module \"%s\": %s"):format(module_name, "module already loaded")
+	local module_dir = DEFAULT_IRCMODULE_DIR
+	local module_reqname = ("%s.%s.%s"):format(_PACKAGE, module_dir, module_name)
+
+	if package.loaded[module_reqname] then
+		return false, ("load_module: Could not load module \'%s\': %s")
+			:format(module_name, "module already loaded")
 	end
 
-	local searchdir = self.module_dir or "modules"
-
-	local ok, modt = pcall(dofile, ("%s/%s.lua"):format(searchdir, module_name))
+	local ok, module_table = pcall(require, module_reqname)
 	if not ok then
-		return false, ("load_module: Could not load module \"%s\": %s"):format(module_name, modt)
+		return false, ("load_module: Could not load module \'%s\': %s")
+			:format(module_name, module_table)
 	end
 
-	if not modt or type(modt) ~= "table" then
-		return false, ("load_module: Could not load module \"%s\": %s"):format(module_name, "module does not return a table")
+	if not module_table or type(module_table) ~= "table" then
+		return false, ("load_module: Could not load module \'%s\': %s")
+			:format(module_name, "module does not return a table")
 	end
 
 	---
 
-	if modt.senders then
-		for command, func in pairs(modt.senders) do
+	if module_table.senders then
+		for command, func in pairs(module_table.senders) do
 			if self.senders[command] then
-				return false, ("load_module: Could not load module \'%s\': %s"):format(module_name,
-					("sender for \'%s\' already exists"):format(command))
+				return false, ("load_module: Could not load module \'%s\': %s")
+					:format(module_name,
+						("sender for \'%s\' already exists"):format(command))
 			end
 		end
 
-		---
-
-		for command, func in pairs(modt.senders) do
+		for command, func in pairs(module_table.senders) do
 			self:set_sender(command, func)
 		end
 	end
 
-	if modt.handlers then
-		for command, func in pairs(modt.handlers) do
+	if module_table.handlers then
+		for command, func in pairs(module_table.handlers) do
 			if self.handlers[command] then
-				return false, ("load_module: Could not load module \'%s\': %s"):format(module_name,
-					("handler for \'%s\' already exists"):format(command))
+				return false, ("load_module: Could not load module \'%s\': %s")
+					:format(module_name,
+						("handler for \'%s\' already exists"):format(command))
 			end
 		end
 
-		---
-
-		for command, func in pairs(modt.handlers) do
+		for command, func in pairs(module_table.handlers) do
 			self:set_handler(command, func)
 		end
 	end
-
-	self.modules[module_name] = modt
 	return true
 end
 
 function Base:unload_module(module_name)
-	local modt = self.modules[module_name]
+	local module_dir = DEFAULT_IRCMODULE_DIR
+	local module_reqname = ("%s.%s.%s"):format(_PACKAGE, module_dir, module_name)
 
-	if not modt then
-		return false, ("unload_module: Could not unload module \"%s\": %s"):format(module_name, "module not loaded")
+	local module_table = package.loaded[module_reqname]
+
+	if not module_table then
+		return false, ("unload_module: Could not unload module \'%s\': %s")
+			:format(module_name, "module not loaded")
 	end
 
-	if modt.senders then
-		for command in pairs(self.modules[module_name].senders) do
+	if module_table.senders then
+		for command in pairs(module_table.senders) do
 			self:clear_sender(command)
 		end
 	end
 
-	if modt.handlers then
-		for command in pairs(self.modules[module_name].handlers) do
+	if module_table.handlers then
+		for command in pairs(module_table.handlers) do
 			self:clear_handler(command)
 		end
 	end
 
-	self.modules[module_name] = nil
+	package.loaded[module_reqname] = nil
 
 	return true
 end
@@ -308,8 +312,7 @@ local function new()
 			end
 		},
 		handlers = {},
-		callbacks = {},
-		modules = {}
+		callbacks = {}
 	}, Base)
 end
 
