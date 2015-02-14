@@ -102,15 +102,6 @@ local irc = IRC.new()
 From now on, this README assumes that `irc` is an IRC Engine object created as above.
 
 ---
-```
-TODO: This won't work if the modules are put somewhere else, eg. a
-subdirectory. Module system needs a rewrite, using `require` so
-modules can be put in a subdirectory without needing to change
-anything. Lua 5.3 added "./?/init.lua" to package.path, so once
-that's in more common use, this'll be easier to implement
-(a workaround is possible and that's probably what I'll do in/for
-the near future).
-```
 
 Note: Much of the functionality of this module (eg. replying to server PINGs, sending PRIVMSGs with `irc.send`) is in submodules, none of which are loaded when the object is created. To load the standard modules, use:
 ```lua
@@ -118,7 +109,7 @@ irc:load_module("base")
 irc:load_module("message")
 irc:load_module("channel")
 ```
-Modules are covered in more detail later in this README.
+These modules are covered in more detail later in this README.
 
 Sending
 -------
@@ -378,21 +369,20 @@ Handler functions can be set and cleared with `irc:set_handler(command, func)` a
 
 Modules and the standard modules
 ================================
-Senders and handlers can be added with modules. This module comes with some standard modules to provide some standard IRC functions.
+Senders and handlers can be added with modules. This module comes with some standard modules to provide some basic functionality.
 
-To load a module, use `irc:load_module(module_name)`.
+To load a module, use `irc:load_module(module_name)`:
+```lua
+irc:load_module("message")
+```
 
-For example, when running `irc:load_module("msg")`:
+When called, `irc.load_module` runs the equivalent of `require(_PACKAGE .. ".modules." .. module_name)`, where `_PACKAGE` is the directory containing IRC Engine's `init.lua`.
 
-- `irc.load_module` will look in a directory (by default, `modules`) for `msg.lua`.
-- If it finds `msg.lua`, it loads it. If the file doesn't return a table, `irc.load_module` returns false and an error message.
-- If `msg.lua` returns a table, `irc.load_module` goes through it and adds senders and handlers defined in the appropriate subtables.
+- If the module doesn't return a table, `irc.load_module` returns false and an error message, else;
+- If the module returns a table, `irc.load_module` goes through it and adds senders and handlers defined in the appropriate subtables.
+- If a module tries to set a sender or handler that already has been set by another module, the new module will not be loaded, and `irc.load_module` returns false and an appropriate error message.
 
-If a module tries to set a sender or handler that already has been set by another module, the new module will not be loaded and `irc.load_module` will return false and an appropriate error message.
-
-A module can be unloaded with `irc:unload_module(module_name)`. This will remove every handler and sender that the module added.
-
-By default, the loader will look for the module in a directory called `modules` in the directory the program was run, but you can change this with `irc:set_module_dir(dir)`. For example, `irc:set_module_dir("ircmodules")`.
+Modules can be unloaded with `irc:unload_module(module_name)`. This will remove every handler and sender that the module added.
 
 
 Standard modules
