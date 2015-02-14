@@ -12,7 +12,7 @@ Example
 This is a quick example using LuaSocket.
 
 ```lua
-local IRC = require("irc-engine")
+local IRCe = require("irc-engine")
 local socket = require("socket.core")
 
 ---
@@ -27,7 +27,7 @@ local channel = "#example"
 
 ---
 
-local irc = IRC.new()
+local irc = IRCe.new()
 
 assert(irc:load_module("base"))
 assert(irc:load_module("message"))
