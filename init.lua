@@ -59,9 +59,7 @@ end
 
 function Base:send_raw(str)
 	-- Call RAW callback.
-	if self.callbacks["RAW"] then
-		self.callbacks["RAW"](true, str)
-	end
+	self:handle("RAW", false, message)
 
 	return self.send_func(str .. "\r\n")
 end
@@ -169,9 +167,7 @@ function Base:process(message)
 	if not message then return end
 
 	-- Call RAW callback.
-	if self.callbacks["RAW"] then
-		self.callbacks["RAW"](false, message)
-	end
+	self:handle("RAW", false, message)
 
 	---
 
