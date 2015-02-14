@@ -92,7 +92,7 @@ end
 -- Setting and clearing senders --
 function Base:set_sender(command, func)
 	if self.senders[command] then
-		error(("set_sender: There is already a sender set for \"%s\""):format(command), 2)
+		return nil, ("set_sender: There is already a sender set for \"%s\""):format(command)
 	else
 		self.senders[command] = func
 		return true
@@ -192,7 +192,7 @@ end
 -- Setting and clearing handlers --
 function Base:set_handler(command, func)
 	if self.handlers[command] then
-		error(("set_handler: There is already a handler set for \"%s\""):format(command), 2)
+		return nil, ("set_handler: There is already a handler set for \"%s\""):format(command)
 	else
 		self.handlers[command] = func
 		return true
@@ -208,7 +208,7 @@ end
 -- Setting and clearing callbacks --
 function Base:set_callback(command, func)
 	if self.callbacks[command] then
-		error(("set_callback: There is already a callback set for \"%s\""):format(command), 2)
+		return nil, ("set_callback: There is already a callback set for \"%s\""):format(command)
 	else
 		self.callbacks[command] = func
 		return true
