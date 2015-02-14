@@ -371,6 +371,44 @@ Modules and the standard modules
 ================================
 Senders and handlers can be added with modules. This module comes with some standard modules to provide some basic functionality.
 
+---
+
+A module is a file that returns a table, structured like so:
+```lua
+return {
+	senders = {
+		<command> = <func>,
+		<command> = <func>,
+		...
+	},
+	handlers = {
+		<command> = <func>,
+		<command> = <func>,
+		...
+	}
+}
+```
+
+For example:
+```lua
+return {
+	senders = {
+		PONG = function(self, param)
+			return "PONG :" .. param
+		end
+	},
+	handlers = {
+		PING = function(self, sender, params)
+			self:send("PONG", params[1])
+		end
+	}
+}
+```
+
+A module does not need to include both senders and handlers, and so either the `senders` or the `handlers` table can be omitted.
+
+---
+
 To load a module, use `irc:load_module(module_name)`:
 ```lua
 irc:load_module("message")
@@ -529,40 +567,3 @@ MODE (sender, operation, modes, target)
 		"modes" is a list of the modes
 		"target" is who is receiving the modes, probably you
 ```
-
-
-More on modules
-===============
-A module is a file that returns a table, structured like so:
-```lua
-return {
-	senders = {
-		<command> = <func>,
-		<command> = <func>,
-		...
-	},
-	handlers = {
-		<command> = <func>,
-		<command> = <func>,
-		...
-	}
-}
-```
-
-For example:
-```lua
-return {
-	senders = {
-		PONG = function(self, param)
-			return "PONG :" .. param
-		end
-	},
-	handlers = {
-		PING = function(self, sender, params)
-			self:send("PONG", params[1])
-		end
-	}
-}
-```
-
-A module does not need to include both senders and handlers, and so either the `senders` or the `handlers` table can be omitted.
