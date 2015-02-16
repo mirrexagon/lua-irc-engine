@@ -353,7 +353,7 @@ The senders are documented like this:
 <COMMAND> (<arguments to sender>)
 	<Description>
 ```
-and the handlers like this:
+and the callbacks like this:
 ```
 <COMMAND> (<arguments passed to callback, if any>)
 	<Description>
