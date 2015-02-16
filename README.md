@@ -24,11 +24,16 @@ From now on, this README assumes that `irc` is an IRC Engine object created as a
 
 Note: Much of the functionality of this module (eg. replying to server PINGs, sending PRIVMSGs with `irc.send`) is in submodules, none of which are loaded when the object is created. To load the standard modules, use:
 ```lua
-irc:load_module("base")
-irc:load_module("message")
-irc:load_module("channel")
+-- This assumes you are running from the directory with the "modules" directory.
+local mod_base = require("modules.base")
+local mod_message = require("modules.message")
+local mod_channel = require("modules.channel")
+
+irc:load_module(mod_base)
+irc:load_module(mod_message)
+irc:load_module(mod_channel)
 ```
-These modules are covered in more detail later in this README.
+Modules are covered in more detail later in this README.
 
 Sending
 -------
@@ -292,9 +297,9 @@ Senders and handlers can be added with modules. This module comes with some stan
 
 ---
 
-A module is a file that returns a table, structured like so:
+A module is a table, structured like so:
 ```lua
-return {
+local module = {
 	senders = {
 		<command> = <func>,
 		<command> = <func>,
@@ -310,7 +315,7 @@ return {
 
 For example:
 ```lua
-return {
+local module = {
 	senders = {
 		PONG = function(self, param)
 			return "PONG :" .. param
@@ -328,16 +333,15 @@ A module does not need to include both senders and handlers, and so either the `
 
 ---
 
-To load a module, use `irc:load_module(module_name)`:
+To load a module, use `irc:load_module(module_table)`, for example:
 ```lua
-irc:load_module("message")
+local mod_base = require("modules.base")
+irc:load_module(mod_base)
 ```
 
-When called, `irc.load_module` runs the equivalent of `require(_PACKAGE .. ".modules." .. module_name)`, where `_PACKAGE` is the directory containing IRC Engine's `init.lua`.
+If a module tries to set a sender or handler that already has been set by another module, the new module will not be loaded, and `irc.load_module` returns false and an appropriate error message.
 
-- If the module doesn't return a table, `irc.load_module` returns false and an error message, else;
-- If the module returns a table, `irc.load_module` goes through it and adds senders and handlers defined in the appropriate subtables.
-- If a module tries to set a sender or handler that already has been set by another module, the new module will not be loaded, and `irc.load_module` returns false and an appropriate error message.
+---
 
 Modules can be unloaded with `irc:unload_module(module_name)`. This will remove every handler and sender that the module added.
 

@@ -38,13 +38,6 @@ end
 ---- ==== ----
 
 
----- Constants ----
-local _PACKAGE = (...):gsub("%.init$", "") -- Remove trailing ".init" if present.
-
-local DEFAULT_IRCMODULE_DIR = "modules"
----- ==== ----
-
-
 ------ ======= ------
 
 
@@ -224,24 +217,11 @@ end
 
 
 ---- Modules ---
-function Base:load_module(module_name)
-	local module_dir = DEFAULT_IRCMODULE_DIR
-	local module_reqname = ("%s.%s.%s"):format(_PACKAGE, module_dir, module_name)
-
-	if package.loaded[module_reqname] then
-		return false, ("load_module: Could not load module \'%s\': %s")
-			:format(module_name, "module already loaded")
-	end
-
-	local ok, module_table = pcall(require, module_reqname)
-	if not ok then
-		return false, ("load_module: Could not load module \'%s\': %s")
-			:format(module_name, module_table)
-	end
+function Base:load_module(module_table)
+	local ERR_PREFIX = "load_module: Could not load module: "
 
 	if not module_table or type(module_table) ~= "table" then
-		return false, ("load_module: Could not load module \'%s\': %s")
-			:format(module_name, "module does not return a table")
+		return false, ERR_PREFIX .. "module should be a table"
 	end
 
 	---
@@ -249,9 +229,7 @@ function Base:load_module(module_name)
 	if module_table.senders then
 		for command, func in pairs(module_table.senders) do
 			if self.senders[command] then
-				return false, ("load_module: Could not load module \'%s\': %s")
-					:format(module_name,
-						("sender for \'%s\' already exists"):format(command))
+				return false, ERR_PREFIX .. ("sender for \'%s\' already exists"):format(command)
 			end
 		end
 
@@ -263,9 +241,7 @@ function Base:load_module(module_name)
 	if module_table.handlers then
 		for command, func in pairs(module_table.handlers) do
 			if self.handlers[command] then
-				return false, ("load_module: Could not load module \'%s\': %s")
-					:format(module_name,
-						("handler for \'%s\' already exists"):format(command))
+				return false, ERR_PREFIX .. ("handler for \'%s\' already exists"):format(command)
 			end
 		end
 
@@ -273,19 +249,20 @@ function Base:load_module(module_name)
 			self:set_handler(command, func)
 		end
 	end
+
+	self.modules[module_table] = true
+
 	return true
 end
 
-function Base:unload_module(module_name)
-	local module_dir = DEFAULT_IRCMODULE_DIR
-	local module_reqname = ("%s.%s.%s"):format(_PACKAGE, module_dir, module_name)
+function Base:unload_module(module_table)
+	local ERR_PREFIX = "unload_module: Could not unload module: "
 
-	local module_table = package.loaded[module_reqname]
-
-	if not module_table then
-		return false, ("unload_module: Could not unload module \'%s\': %s")
-			:format(module_name, "module not loaded")
+	if not self.modules[module_table] then
+		return false, ERR_PREFIX .. "module not loaded"
 	end
+
+	---
 
 	if module_table.senders then
 		for command in pairs(module_table.senders) do
@@ -299,7 +276,7 @@ function Base:unload_module(module_name)
 		end
 	end
 
-	package.loaded[module_reqname] = nil
+	self.modules[module_table] = nil
 
 	return true
 end
@@ -315,7 +292,8 @@ function IRCe.new()
 			end
 		},
 		handlers = {},
-		callbacks = {}
+		callbacks = {},
+		modules = {}
 	}, Base)
 end
 ---- ==== ----
