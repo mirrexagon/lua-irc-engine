@@ -343,7 +343,7 @@ If a module tries to set a sender or handler that already has been set by anothe
 
 ---
 
-Modules can be unloaded with `irc:unload_module(module_name)`. This will remove every handler and sender that the module added.
+Modules can be unloaded with `irc:unload_module(module_table)`, where `module_table` is the same table you passed to `irc.load_module`. This will remove every handler and sender that the module added.
 
 
 Standard modules
