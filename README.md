@@ -4,7 +4,7 @@ A Lua IRC module that tries to be minimal and extensible.
 
 Lua IRC Engine is a basic IRC "translator". It provides basic message parsing and a way to add simple sending convenience functions and command interpreters/handlers, but leaves most of the actual processing of command content to the host application. For example, it does not keep a list of joined channels or even know what its nick is.
 
-See `irc-engine.lua` for license information.
+See `irce.lua` for license information.
 
 An example demonstrating basic use of the module can be found in `example.lua`.
 
@@ -15,7 +15,7 @@ Creating an object
 ------------------
 To create an IRC object, use `IRCe.new()`:
 ```lua
-local IRCe = require("irc-engine")
+local IRCe = require("irce")
 
 local irc = IRC.new()
 ```
@@ -26,10 +26,11 @@ From now on, this README assumes that `irc` is an IRC Engine object created as a
 
 Note: Much of the functionality of this module (eg. replying to server PINGs, sending PRIVMSGs with `irc.send`) is in submodules, none of which are loaded when the object is created. To load the standard modules, use:
 ```lua
--- This assumes you are running from the directory with the "modules" directory.
-local mod_base = require("modules.base")
-local mod_message = require("modules.message")
-local mod_channel = require("modules.channel")
+-- This assumes you are running a LuaRocks-installed version.
+-- If you've installed this locally, the path to the modules will probably be different.
+local mod_base = require("irce.modules.base")
+local mod_message = require("irce.modules.message")
+local mod_channel = require("irce.modules.channel")
 
 irc:load_module(mod_base)
 irc:load_module(mod_message)

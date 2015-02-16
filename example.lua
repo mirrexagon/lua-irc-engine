@@ -3,7 +3,7 @@
 	Uses LuaSocket for network communication.
 ]]
 
-local IRCe = require("irc-engine")
+local IRCe = require("irce")
 local socket = require("socket.core")
 
 ---
