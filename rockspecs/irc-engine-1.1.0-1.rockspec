@@ -2,8 +2,8 @@ package = "irc-engine"
 version = "1.1.0-1"
 
 source = {
-	url = "git://github.com/legospacy/lua-irc-engine",
-	tag = "v1.1.0",
+	url = "https://github.com/legospacy/lua-irc-engine/archive/v1.1.0.tar.gz",
+	dir = "lua-irc-engine-1.1.0"
 }
 
 description = {
@@ -25,7 +25,7 @@ dependencies = {
 build = {
 	type = "builtin",
 	modules = {
-		["irc-engine"] = "irc-engine.lua",
+		["irce"] = "irc-engine.lua",
 
 		-- Standard modules.
 		["irce.modules.base"] = "modules/base.lua",
