@@ -85,7 +85,7 @@ end
 -- Setting and clearing senders --
 function Base:set_sender(command, func)
 	if self.senders[command] then
-		return nil, ("set_sender: There is already a sender set for \"%s\""):format(command)
+		return nil, ("There is already a sender set for \"%s\""):format(command)
 	else
 		self.senders[command] = func
 		return true
@@ -185,7 +185,7 @@ end
 -- Setting and clearing handlers --
 function Base:set_handler(command, func)
 	if self.handlers[command] then
-		return nil, ("set_handler: There is already a handler set for \"%s\""):format(command)
+		return nil, ("There is already a handler set for \"%s\""):format(command)
 	else
 		self.handlers[command] = func
 		return true
@@ -201,7 +201,7 @@ end
 -- Setting and clearing callbacks --
 function Base:set_callback(command, func)
 	if self.callbacks[command] then
-		return nil, ("set_callback: There is already a callback set for \"%s\""):format(command)
+		return nil, ("There is already a callback set for \"%s\""):format(command)
 	else
 		self.callbacks[command] = func
 		return true
@@ -218,7 +218,7 @@ end
 
 ---- Modules ---
 function Base:load_module(module_table)
-	local ERR_PREFIX = "load_module: Could not load module: "
+	local ERR_PREFIX = "Could not load module: "
 
 	if not module_table or type(module_table) ~= "table" then
 		return false, ERR_PREFIX .. "module should be a table"
@@ -260,7 +260,7 @@ function Base:load_module(module_table)
 end
 
 function Base:unload_module(module_table)
-	local ERR_PREFIX = "unload_module: Could not unload module: "
+	local ERR_PREFIX = "Could not unload module: "
 
 	if not self.modules[module_table] then
 		return false, ERR_PREFIX .. "module not loaded"
