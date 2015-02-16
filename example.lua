@@ -20,9 +20,9 @@ local channel = "#example"
 
 local irc = IRCe.new()
 
-assert(irc:load_module("base"))
-assert(irc:load_module("message"))
-assert(irc:load_module("channel"))
+assert(irc:load_module(require("modules.base")))
+assert(irc:load_module(require("modules.message")))
+assert(irc:load_module(require("modules.channel")))
 
 ---
 
