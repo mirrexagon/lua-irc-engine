@@ -224,6 +224,10 @@ function Base:load_module(module_table)
 		return false, ERR_PREFIX .. "module should be a table"
 	end
 
+	if self.modules[module_table] then
+		return false, ERR_PREFIX .. "module already loaded"
+	end
+
 	---
 
 	if module_table.senders then
