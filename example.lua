@@ -20,9 +20,15 @@ local channel = "#example"
 
 local irc = IRCe.new()
 
-assert(irc:load_module(require("irce.modules.base")))
-assert(irc:load_module(require("irce.modules.message")))
-assert(irc:load_module(require("irce.modules.channel")))
+-- If installed via LuaRocks:
+--assert(irc:load_module(require("irce.modules.base")))
+--assert(irc:load_module(require("irce.modules.message")))
+--assert(irc:load_module(require("irce.modules.channel")))
+
+-- If installed locally:
+assert(irc:load_module(require("modules.base")))
+assert(irc:load_module(require("modules.message")))
+assert(irc:load_module(require("modules.channel")))
 
 ---
 
