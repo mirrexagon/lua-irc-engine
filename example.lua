@@ -10,7 +10,7 @@ local socket = require("socket.core")
 
 local server = "irc.example.com"
 
-local nick = "IRC_Engine"
+local nick = "IRCe"
 local username = "ircengine"
 local realname = "IRC Engine"
 
@@ -37,18 +37,12 @@ local running = true
 ---
 
 local client = socket.tcp()
-assert(client:connect(server, 6667))
 
 irc:set_send_func(function(message)
     return client:send(message)
 end)
 
 client:settimeout(1)
-
----
-
-assert(irc:NICK(nick))
-assert(irc:USER(username, realname))
 
 ---
 
@@ -74,6 +68,12 @@ irc:set_callback("PRIVMSG", function(sender, origin, message, pm)
 end)
 
 ---
+
+assert(client:connect(server, 6667))
+
+assert(irc:NICK(nick))
+assert(irc:USER(username, realname))
+
 
 while running do
     irc:process(client:receive())
