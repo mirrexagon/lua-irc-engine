@@ -15,7 +15,28 @@ local function string_explode(str)
 	return result
 end
 
+local function table_join(...)
+	local result = {}
+	for _, tab in ipairs({...}) do
+		---
+		-- Deal with number keys first so we can get them in order.
+		for i, v in ipairs(tab) do
+			table.insert(result, v)
+		end
+
+		for k, v in pairs(tab) do
+			if not tonumber(k) then
+				result[k] = v
+			end
+		end
+		---
+	end
+	return result
+end
+
 ---
+
+local namelists = setmetatable({}, {__mode = "k"})
 
 return {
 	senders = {
@@ -48,18 +69,6 @@ return {
 			return sender, channel, part_message
 		end,
 
-		["353"] = function(self, sender, params)
-			local target = params[1]
-			local kind = params[2]
-			local channel = params[3]
-			local list = string_explode(params[4])
-
-			-- TODO: Is it worth supporting the RFC1459 specification of not
-			-- having a channel type parameter?
-
-			return channel, list, kind
-		end,
-
 		MODE = function(self, sender, params)
 			local target = params[1]
 			local mode_string = params[2]
@@ -80,6 +89,55 @@ return {
 				-- User mode.
 				return nil, operation, modes, target
 			end
+		end,
+
+
+		-- Channel names list.
+		-- RPL_NAMREPLY
+		["353"] = function(self, sender, params)
+			local target = params[1]
+			local kind = params[2]
+			local channel = params[3]
+			local list = string_explode(params[4])
+
+			-- TODO: Is it worth supporting the RFC1459 specification of not
+			-- having a channel type parameter?
+
+			local prefix = sender[1]
+
+			-- Get or create the persistent list.
+			namelists[self] = nameslists[self] or {}
+			namelists[self][prefix] = nameslists[self][prefix] or {}
+			local state_list = namelists[self][prefix][channel] or {}
+
+			if not state_list.kind then state_list.kind = kind end
+
+			namelists[self][prefix][channel] = table_join(state_list, list)
+
+			---
+
+			return sender, channel, list, kind
+		end,
+
+		-- RPL_ENDOFNAMES
+		["366"] = function(self, sender, params)
+			local target = params[1]
+			local channel = params[2]
+			local message = params[3]
+
+			local prefix = sender[1]
+
+			local state_list
+			if namelists[self] and namelists[self][prefix] then
+				state_list = namelists[self][prefix][channel]
+				namelists[self][prefix][channel] = nil
+			end
+
+			self:handle("NAMES", sender, channel, state_list, state_list and state_list.kind, message)
+
+			---
+
+			return sender, channel, message
 		end
 	}
 }
