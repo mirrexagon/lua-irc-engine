@@ -67,6 +67,21 @@ irc:set_callback("PRIVMSG", function(sender, origin, message, pm)
 	end
 end)
 
+
+irc:set_callback("NAMES", function(sender, channel, list, kind, message)
+	print("---")
+	if not list then
+		print("No channel called " .. channel)
+	else
+		print(("Channel %s (%s):"):format(channel, kind))
+		print("-")
+		for _, nick in ipairs(list) do
+			print(nick)
+		end
+	end
+	print("---")
+end)
+
 ---
 
 assert(client:connect(server, 6667))
