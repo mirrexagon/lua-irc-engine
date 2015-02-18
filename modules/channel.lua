@@ -103,16 +103,14 @@ return {
 			-- TODO: Is it worth supporting the RFC1459 specification of not
 			-- having a channel type parameter?
 
-			local prefix = sender[1]
-
 			-- Get or create the persistent list.
-			namelists[self] = nameslists[self] or {}
-			namelists[self][prefix] = nameslists[self][prefix] or {}
-			local state_list = namelists[self][prefix][channel] or {}
+			-- TODO: Should any of these tables be weak?
+			namelists[self] = namelists[self] or {}
+			local state_list = namelists[self][channel] or {}
 
 			if not state_list.kind then state_list.kind = kind end
 
-			namelists[self][prefix][channel] = table_join(state_list, list)
+			namelists[self][channel] = table_join(state_list, list)
 
 			---
 
@@ -125,12 +123,10 @@ return {
 			local channel = params[2]
 			local message = params[3]
 
-			local prefix = sender[1]
-
 			local state_list
-			if namelists[self] and namelists[self][prefix] then
-				state_list = namelists[self][prefix][channel]
-				namelists[self][prefix][channel] = nil
+			if namelists[self] then
+				state_list = namelists[self][channel]
+				namelists[self][channel] = nil
 			end
 
 			self:handle("NAMES", sender, channel, state_list, state_list and state_list.kind, message)
