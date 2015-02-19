@@ -54,6 +54,15 @@ return {
 			else
 				return "PART " .. channel
 			end
+		end,
+
+
+		TOPIC = function(self, channel, topic)
+			if topic then
+				return ("TOPIC %s :%s"):format(channel, topic)
+			else
+				return "TOPIC " .. channel
+			end
 		end
 	},
 
@@ -89,6 +98,17 @@ return {
 				-- User mode.
 				return nil, operation, modes, target
 			end
+		end,
+
+
+		-- RPL_NOTOPIC
+		["331"] = function(self, sender, params)
+			return sender, params[2], params[3]
+		end,
+
+		-- RPL_TOPIC
+		["332"] = function(self, sender, params)
+			return sender, params[2], params[3]
 		end,
 
 
