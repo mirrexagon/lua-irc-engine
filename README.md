@@ -364,6 +364,8 @@ and the callbacks like this:
 
 Senders prefixed with an underscore do not produce complete messages, and their output is meant to be encapsulated in another command, eg. `_CTCP` returns a message to be sent in a `PRIVMSG` or a `NOTICE`.
 
+Unless otherwise stated, `sender` arguments to callbacks are sender tables.
+
 ---
 
 ### Base
@@ -464,6 +466,17 @@ JOIN (channel, key)
 PART (channel, part_message)
 	Parts from a channel.
 	If "part_message" is included, it is sent as the part message.
+
+TOPIC (channel, topic)
+	If "topic" is supplied, attempts to change the topic of "channel"
+		to "topic".
+	If "topic" is not supplied, queries the server for the topic of "channel".
+
+-- WARNING: May change.
+MODE (target, operation, modes, mode_params)
+	Sends a MODE message like so:
+		MODE <target> <operation><modes> <mode_params>
+	Currently all arguments are strings, this may change.
 ```
 
 #### Callbacks
@@ -475,20 +488,33 @@ PART (sender, channel, part_message)
 	Called when someone parts from a channel.
 	If a part message was supplied, it is passed to the callback.
 
-353 (channel, list, kind)
-	This is channel user list reply code.
-	The handler returns the channel name, the list of users and the
-		kind of channel (@ (secret), * (private) or = (public/other)).
+TOPIC (channel, topic, message)
+	Called when receiving a channel's topic.
+	"topic" is `nil` when no topic is set, and "message" is the message
+		that came with the RPL_NOTOPIC.
+	Otherwise, "topic" is the topic and message is `nil`.
 
-MODE (sender, operation, modes, target)
-	Handles both channel and user modes.
-	If it is a channel mode message:
+NAMES (sender, channel, list, kind, message)
+	Called when a complete channel user list is received.
+	(Specifically, called upon receiving a RPL_ENDOFNAMES.)
+		"sender" is the server that sent the RPL_ENDOFNAMES
+		"channel" is the channel that the list is referring to
+		"list" is the actual list
+			Is `nil` when the channel specified in a prior NAMES message
+				sent by the client doesn't exist.
+		"kind" is the kind of channel (@ (secret), * (private) or = (public/other)).
+			Is `nil` in the same condition as "list"
+		"message" is the message that came with the RPL_ENDOFNAMES
+
+CHANNELMODE (sender, operation, modes, target)
+	Called when receiving channel modes.
 		"sender" is who changed the mode
 		"operation" is + or -
 		"modes" is a list of the modes
 		"target" is a list of who is receiving the modes
-	If it is a user mode message:
-		"sender" is nil
+
+USERMODE (sender, operation, modes, target)
+	Called when receiving user modes.
 		"operation" is + or -
 		"modes" is a list of the modes
 		"target" is who is receiving the modes, probably you
