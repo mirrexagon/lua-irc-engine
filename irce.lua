@@ -291,7 +291,7 @@ end
 function IRCe.new()
 	return setmetatable({
 		senders = {
-			RAW = function(message)
+			RAW = function(self, message)
 				return message
 			end
 		},
