@@ -172,7 +172,8 @@ return {
 
 			---
 
-			return sender, channel, list, kind
+			return channel, list, kind -- COMPAT
+			--return sender, channel, list, kind
 		end,
 
 		-- RPL_ENDOFNAMES
