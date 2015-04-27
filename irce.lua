@@ -25,6 +25,7 @@ local IRCe = {
 	]]
 }
 
+
 ---- Utility functions ----
 local unpack = table.unpack or unpack
 
@@ -35,6 +36,12 @@ local function string_explode(str)
 	end
 	return result
 end
+---- ==== ----
+
+---- Constants ----
+-- Unique values for callbacks.
+IRCe.RAW = {}
+IRCe.DISCONNECT = {}
 ---- ==== ----
 
 
@@ -52,7 +59,8 @@ end
 
 function Base:send_raw(str)
 	-- Call RAW callback.
-	self:handle("RAW", false, str)
+	self:handle(IRCe.RAW, false, str)
+	self:handle("RAW", false, str) -- COMPAT - For backwards compatibility.
 
 	return self.send_func(str .. "\r\n")
 end
@@ -143,16 +151,18 @@ function Base:handle(command, ...)
 		handler_return = {handler(self, ...)}
 	end
 
+	local args = (handler_return and #handler_return > 0)
+		and handler_return or {...}
+
 	if callback then
-		if handler_return and #handler_return > 0 then
-			-- Handler exists and returned something.
-			callback(unpack(handler_return))
+		callback(unpack(args))
+	end
 
-		elseif not handler then
-			-- Handler doesn't exist.
-			callback(...)
-
-		end -- Don't call callback if handler exists but didn't return anything.
+	-- Call module hooks.
+	for mod in pairs(self.modules) do
+		if mod.hooks and mod.hooks[command] then
+			mod.hooks[command](self, unpack(args))
+		end
 	end
 end
 
@@ -160,7 +170,8 @@ function Base:process(message)
 	if not message then return end
 
 	-- Call RAW callback.
-	self:handle("RAW", true, message)
+	self:handle(IRCe.RAW, true, message)
+	self:handle("RAW", true, message) -- COMPAT - For backwards compatibility.
 
 	---
 

@@ -1,3 +1,7 @@
+local IRCe = require("irce")
+
+---
+
 -- Utility functions
 local function string_splitchar(str)
 	local t = {}
@@ -36,7 +40,11 @@ end
 
 ---
 
-local namelists = setmetatable({}, {__mode = "k"})
+local namelists
+local function clear_namelists()
+	namelists = setmetatable({}, {__mode = "k"})
+end
+clear_namelists()
 
 return {
 	senders = {
@@ -183,6 +191,12 @@ return {
 			---
 
 			return sender, channel, message
+		end
+	},
+
+	hooks = {
+		[IRCe.DISCONNECT] = function(self)
+			clear_namelists()
 		end
 	}
 }

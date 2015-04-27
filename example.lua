@@ -46,7 +46,7 @@ client:settimeout(1)
 
 ---
 
-irc:set_callback("RAW", function(send, message)
+irc:set_callback(IRCe.RAW, function(send, message)
 	print(("%s %s"):format(send and ">>>" or "<<<", message))
 end)
 

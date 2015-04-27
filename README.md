@@ -152,21 +152,21 @@ sender = {}
 
 ---
 
-Whether a callback is actually called depends on whether a handler exists for the command, and whether it returns anything.
-
-A callback will be called if:
-
-- a handler exists and it returns something, or;
-- if a handler does not exist for the command, in which case the callback gets the sender and the command parameters as arguments.
-
-If a handler exists but doesn't return anything, the callback isn't called.
+Note that if there is no handler for a command or if the handler doesn't return anything, the callback is called anyway with what the handler got/would get (`irc, sender, params`).
 
 There is more information about handlers in the next section, "Extending the module".
 
 ---
 
-There is a special callback called `RAW` which is called whenever an IRC message is sent or received. This is useful for printing raw messages to a console or logging them. Its first argument is `true` when the message is being sent or `false` when the message is being received, and the second argument is the message.
+There is a special callback with the special value `irce.RAW` which is called whenever an IRC message is sent or received. This is useful for printing raw messages to a console or logging them. Its first argument is `true` when the message is being sent or `false` when the message is being received, and the second argument is the message.
+It is used like so:
+```lua
+irc:set_callback(IRCe.RAW, function(send, message)
+	print(("%s %s"):format(send and ">>>" or "<<<", message))
+end)
+```
 
+Another special callback is `DISCONNECT` which is not called by this module, but should be called by the host application (using `irc:handle(IRCe.DISCONNECT)`) when the socket is closed or the server disconnects. This allows modules and the host application to do cleanup.
 
 Extending the module
 ====================
@@ -312,12 +312,19 @@ local module = {
 		<command> = <func>,
 		<command> = <func>,
 		...
+	},
+	hooks = {
+		<command> = <func>,
+		<command> = <func>,
+		...
 	}
 }
 ```
 
 For example:
 ```lua
+local IRCe = require("irce")
+
 local module = {
 	senders = {
 		PONG = function(self, param)
@@ -328,11 +335,20 @@ local module = {
 		PING = function(self, sender, params)
 			self:send("PONG", params[1])
 		end
+	},
+	hooks = {
+		[IRCe.DISCONNECT] = function(self)
+			-- Do cleanup stuff here.
+		end
 	}
 }
 ```
 
 A module does not need to include both senders and handlers, and so either the `senders` or the `handlers` table can be omitted.
+
+---
+
+If a module needs to do something when certain commands are received but , (eg. cleanup when the IRC object disconnects from the server), this should be put in the appropriate *hook*. See the `hooks` part of the above example.
 
 ---
 
