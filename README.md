@@ -348,7 +348,7 @@ A module does not need to include both senders and handlers, and so either the `
 
 ---
 
-If a module needs to do something when certain commands are received but , (eg. cleanup when the IRC object disconnects from the server), this should be put in the appropriate *hook*. See the `hooks` part of the above example.
+If a module needs to do something when certain commands are received (eg. cleanup when the IRC object disconnects from the server), this should be put in the appropriate *hook*. See the `hooks` part of the above example.
 
 Loading or unloading modules in a hook will mess up the loop that calls the hooks and so is a bad idea.
 
