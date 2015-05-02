@@ -159,6 +159,7 @@ function Base:handle(command, ...)
 	end
 
 	-- Call module hooks.
+	-- NOTE: Loading or unloading modules in a hook is a bad idea.
 	for mod in pairs(self.modules) do
 		if mod.hooks and mod.hooks[command] then
 			mod.hooks[command](self, unpack(args))
