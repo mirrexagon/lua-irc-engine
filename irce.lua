@@ -40,7 +40,7 @@ end
 
 ---- Constants ----
 -- Unique values for callbacks.
-IRCe.RAW = {}
+IRCe.RAW = "RAW" -- --COMPAT: For backwards compatability, will be changed later.
 IRCe.DISCONNECT = {}
 ---- ==== ----
 
@@ -60,7 +60,6 @@ end
 function Base:send_raw(str)
 	-- Call RAW callback.
 	self:handle(IRCe.RAW, false, str)
-	self:handle("RAW", false, str) -- COMPAT - For backwards compatibility.
 
 	return self.send_func(str .. "\r\n")
 end
@@ -172,7 +171,6 @@ function Base:process(message)
 
 	-- Call RAW callback.
 	self:handle(IRCe.RAW, true, message)
-	self:handle("RAW", true, message) -- COMPAT - For backwards compatibility.
 
 	---
 
