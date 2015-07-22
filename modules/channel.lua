@@ -64,15 +64,6 @@ return {
 			end
 		end,
 
-
-		MODE = function(self, target, operation, modes, mode_params)
-			if mode_params then
-				return ("MODE %s %s %s"):format(target, operation .. modes, mode_params)
-			else
-				return ("MODE %s %s"):format(target, operation .. modes)
-			end
-		end,
-
 		TOPIC = function(self, channel, topic)
 			if topic then
 				return ("TOPIC %s :%s"):format(channel, topic)
@@ -92,41 +83,6 @@ return {
 			local channel = params[1]
 			local part_message = params[2]
 			return sender, channel, part_message
-		end,
-
-		MODE = function(self, sender, params)
-			local target = params[1]
-			local mode_string = params[2]
-
-			local operation = mode_string:sub(1, 1)
-			mode_string = mode_string:sub(2)
-
-			local modes = string_splitchar(mode_string)
-
-			if target:find("[#&]") then
-				-- Channel mode.
-				local mode_params = {}
-				for i = 3, #params do
-					mode_params[i-2] = params[i]
-				end
-
-				-- Do the callback for each separate mode.
-				for i = 1, #modes do
-					self:handle("CHANNELMODE", sender, operation, modes[i], mode_params[i])
-				end
-
-				-- Legacy interface, may be removed.
-				return sender, operation, modes, mode_params
-			else
-				-- User mode.
-				-- Do the callback for each separate mode.
-				for i = 1, #modes do
-					self:handle("USERMODE", sender, operation, modes[i], target)
-				end
-
-				-- Legacy interface, may be removed.
-				return nil, operation, modes, target
-			end
 		end,
 
 
