@@ -75,18 +75,12 @@ return {
 				for i = 1, #modes do
 					self:handle("CHANNELMODE", sender, operation, modes[i], mode_params[i])
 				end
-
-				-- Legacy interface, may be removed.
-				return sender, operation, modes, mode_params
 			else
 				-- User mode.
 				-- Do the callback for each separate mode.
 				for i = 1, #modes do
 					self:handle("USERMODE", sender, operation, modes[i], target)
 				end
-
-				-- Legacy interface, may be removed.
-				return nil, operation, modes, target
 			end
 		end,
 	}

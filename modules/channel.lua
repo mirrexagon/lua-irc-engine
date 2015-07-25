@@ -92,8 +92,6 @@ return {
 			local message = params[3]
 
 			self:handle("TOPIC", channel, nil, message)
-
-			return sender, params
 		end,
 
 		-- RPL_TOPIC
@@ -102,8 +100,6 @@ return {
 			local topic = params[3]
 
 			self:handle("TOPIC", channel, topic)
-
-			return sender, params
 		end,
 
 
@@ -125,11 +121,6 @@ return {
 			if not state_list.kind then state_list.kind = kind end
 
 			namelists[self][channel] = table_join(state_list, list)
-
-			---
-
-			return channel, list, kind -- COMPAT
-			--return sender, channel, list, kind
 		end,
 
 		-- RPL_ENDOFNAMES
@@ -144,10 +135,6 @@ return {
 			end
 
 			self:handle("NAMES", sender, channel, state_list, state_list and state_list.kind, message)
-
-			---
-
-			return sender, channel, message
 		end
 	},
 

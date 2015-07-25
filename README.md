@@ -405,6 +405,11 @@ USER (username, realname, mode)
 QUIT (quit_msg)
 	Sends a QUIT with the specified quit message, or with no message if it is omitted.
 
+-- WARNING: May change.
+MODE (target, operation, modes, mode_params)
+	Sends a MODE message like so:
+		MODE <target> <operation><modes> <mode_params>
+	Currently all arguments are strings, this may change.
 ```
 
 #### Callbacks
@@ -418,6 +423,19 @@ NICK (sender, new_nick)
 
 QUIT (sender, quit_msg)
 	Called when someone quits.
+
+CHANNELMODE (sender, operation, modes, target)
+	Called when receiving channel modes.
+		"sender" is who changed the mode
+		"operation" is + or -
+		"modes" is a list of the modes
+		"target" is a list of who is receiving the modes
+
+USERMODE (sender, operation, modes, target)
+	Called when receiving user modes.
+		"operation" is + or -
+		"modes" is a list of the modes
+		"target" is who is receiving the modes, probably you
 ```
 
 ### Message
@@ -489,12 +507,6 @@ TOPIC (channel, topic)
 	If "topic" is supplied, attempts to change the topic of "channel"
 		to "topic".
 	If "topic" is not supplied, queries the server for the topic of "channel".
-
--- WARNING: May change.
-MODE (target, operation, modes, mode_params)
-	Sends a MODE message like so:
-		MODE <target> <operation><modes> <mode_params>
-	Currently all arguments are strings, this may change.
 ```
 
 #### Callbacks
@@ -523,17 +535,4 @@ NAMES (sender, channel, list, kind, message)
 		"kind" is the kind of channel (@ (secret), * (private) or = (public/other)).
 			Is `nil` in the same condition as "list"
 		"message" is the message that came with the RPL_ENDOFNAMES
-
-CHANNELMODE (sender, operation, modes, target)
-	Called when receiving channel modes.
-		"sender" is who changed the mode
-		"operation" is + or -
-		"modes" is a list of the modes
-		"target" is a list of who is receiving the modes
-
-USERMODE (sender, operation, modes, target)
-	Called when receiving user modes.
-		"operation" is + or -
-		"modes" is a list of the modes
-		"target" is who is receiving the modes, probably you
 ```
