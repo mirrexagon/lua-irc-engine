@@ -25,11 +25,11 @@ return {
 		end,
 
 
-		MODE = function(self, target, operation, modes, mode_params)
+		MODE = function(self, target, modes, mode_params)
 			if mode_params then
-				return ("MODE %s %s %s"):format(target, operation .. modes, mode_params)
+				return ("MODE %s %s %s"):format(target, modes, mode_params)
 			else
-				return ("MODE %s %s"):format(target, operation .. modes)
+				return ("MODE %s %s"):format(target, modes)
 			end
 		end,
 	},

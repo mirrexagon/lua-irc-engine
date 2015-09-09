@@ -406,9 +406,9 @@ QUIT (quit_msg)
 	Sends a QUIT with the specified quit message, or with no message if it is omitted.
 
 -- WARNING: May change.
-MODE (target, operation, modes, mode_params)
+MODE (target, modes, mode_params)
 	Sends a MODE message like so:
-		MODE <target> <operation><modes> <mode_params>
+		MODE <target> <modes> <mode_params>
 	Currently all arguments are strings, this may change.
 ```
 
