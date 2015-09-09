@@ -16,7 +16,7 @@ Items with a question mark (?) on the end are ideas, and are not guaranteed to e
 
 
 ### General
-+ [x] Move MODE sender and handler to `base` module.
++ [x] `v2.1.0` Move MODE sender and handler to `base` module.
 
 + [ ] Use `init.lua` package scheme?
 + [ ] Put utility functions in separate file?
