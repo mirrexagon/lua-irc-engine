@@ -3,14 +3,6 @@ local IRCe = require("irce")
 ---
 
 -- Utility functions
-local function string_splitchar(str)
-	local t = {}
-	for c in str:gmatch(".") do
-		table.insert(t, c)
-	end
-	return t
-end
-
 local function string_explode(str)
 	local result = {}
 	for s in str:gmatch("%S+") do
