@@ -82,6 +82,15 @@ irc:set_callback("NAMES", function(sender, channel, list, kind, message)
 	print("---")
 end)
 
+
+irc:set_callback("USERMODE", function(sender, operation, mode)
+	print(("User mode: %s%s"):format(operation, mode))
+end)
+
+irc:set_callback("CHANNELMODE", function(sender, operation, mode, param)
+	print(("Channel mode: %s%s %s"):format(operation, mode, param))
+end)
+
 ---
 
 assert(client:connect(server, 6667))
