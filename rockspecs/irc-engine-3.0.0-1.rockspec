@@ -25,11 +25,15 @@ dependencies = {
 build = {
 	type = "builtin",
 	modules = {
+		-- Main module file.
 		["irce"] = "init.lua",
 
 		-- Standard modules.
 		["irce.modules.base"] = "modules/base.lua",
 		["irce.modules.message"] = "modules/message.lua",
-		["irce.modules.channel"] = "modules/channel.lua"
+		["irce.modules.channel"] = "modules/channel.lua",
+
+		-- Utility file.
+		["irce.util"] = "util.lua"
 	}
 }

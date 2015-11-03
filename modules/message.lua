@@ -1,11 +1,4 @@
--- Utility functions
-local function string_explode(str)
-	local result = {}
-	for s in str:gmatch("%S+") do
-		table.insert(result, s)
-	end
-	return result
-end
+local util = require("irce.util")
 
 ---
 
@@ -76,7 +69,7 @@ return {
 		end,
 
 		CTCP = function(self, sender, origin, message, pm, notice)
-			local params = string_explode(message:gsub("\001", ""))
+			local params = util.string.explode(message:gsub("\001", ""))
 
 			local command = params[1]
 			table.remove(params, 1)

@@ -1,34 +1,5 @@
 local IRCe = require("irce")
-
----
-
--- Utility functions
-local function string_explode(str)
-	local result = {}
-	for s in str:gmatch("%S+") do
-		table.insert(result, s)
-	end
-	return result
-end
-
-local function table_join(...)
-	local result = {}
-	for _, tab in ipairs({...}) do
-		---
-		-- Deal with number keys first so we can get them in order.
-		for i, v in ipairs(tab) do
-			table.insert(result, v)
-		end
-
-		for k, v in pairs(tab) do
-			if not tonumber(k) then
-				result[k] = v
-			end
-		end
-		---
-	end
-	return result
-end
+local util = require("irce.util")
 
 ---
 
@@ -100,7 +71,7 @@ return {
 		["353"] = function(self, sender, params)
 			local kind = params[2]
 			local channel = params[3]
-			local list = string_explode(params[4])
+			local list = util.string.explode(params[4])
 
 			-- TODO: Is it worth supporting the RFC1459 specification of not
 			-- having a channel type parameter?
@@ -112,7 +83,7 @@ return {
 
 			if not state_list.kind then state_list.kind = kind end
 
-			namelists[self][channel] = table_join(state_list, list)
+			namelists[self][channel] = util.table.join(state_list, list)
 		end,
 
 		-- RPL_ENDOFNAMES

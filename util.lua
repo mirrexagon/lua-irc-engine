@@ -22,4 +22,27 @@ end
 
 ---
 
+util.table = {}
+
+function util.table.join(...)
+	local result = {}
+	for _, tab in ipairs({...}) do
+		---
+		-- Deal with number keys first so we can get them in order.
+		for i, v in ipairs(tab) do
+			table.insert(result, v)
+		end
+
+		for k, v in pairs(tab) do
+			if not tonumber(k) then
+				result[k] = v
+			end
+		end
+		---
+	end
+	return result
+end
+
+---
+
 return util
