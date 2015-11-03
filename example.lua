@@ -4,6 +4,8 @@
 ]]
 
 local IRCe = require("irce")
+print(IRCe._VERSION .. " running on " .. _VERSION)
+
 local socket = require("socket.core")
 
 ---
