@@ -19,7 +19,7 @@ Items with a question mark (?) on the end are ideas, and are not guaranteed to e
 + [x] `v2.1.0` Move MODE sender and handler to `base` module.
 
 + [x] `v3.0.0` Use `init.lua` package scheme?
-+ [ ] Put utility functions in separate file?
++ [x] `v3.0.0` Put utility functions in separate file?
 
 #### Senders and handlers
 + [ ] WHO
