@@ -1,5 +1,5 @@
 local IRCe = {
-	_VERSION = "Lua IRC Engine v2.1.1",
+	_VERSION = "Lua IRC Engine v3.0.0",
 	_DESCRIPTION = "A Lua IRC module that tries to be minimal and extensible.",
 	_URL = "https://github.com/legospacy/lua-irc-engine",
 	_LICENSE = [[
@@ -26,16 +26,13 @@ local IRCe = {
 }
 
 
+---- Require ----
+local util = require("irce.util")
+---- ==== ----
+
+
 ---- Utility functions ----
 local unpack = table.unpack or unpack
-
-local function string_explode(str)
-	local result = {}
-	for s in str:gmatch("%S+") do
-		table.insert(result, s)
-	end
-	return result
-end
 ---- ==== ----
 
 ---- Constants ----
@@ -129,7 +126,7 @@ local function parse_message(message)
 	end
 
 	-- Command and parameters
-	local the_rest = string_explode(message:sub(
+	local the_rest = util.string.explode(message:sub(
 		prefix_end + 1, trailing_start))
 
 	-- Returning results
