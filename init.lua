@@ -36,7 +36,7 @@ local unpack = table.unpack or unpack
 
 --- Constants ---
 -- Unique values for callbacks.
-IRCe.RAW = "RAW" -- --COMPAT: For backwards compatability, will be changed later.
+IRCe.RAW = {}
 IRCe.DISCONNECT = {}
 --- ==== ---
 
