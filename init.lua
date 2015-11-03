@@ -26,28 +26,25 @@ local IRCe = {
 }
 
 
----- Require ----
+--- Require ---
 local util = require("irce.util")
----- ==== ----
+--- ==== ---
 
-
----- Utility functions ----
+--- Utility functions ---
 local unpack = table.unpack or unpack
----- ==== ----
+--- ==== ---
 
----- Constants ----
+--- Constants ---
 -- Unique values for callbacks.
 IRCe.RAW = "RAW" -- --COMPAT: For backwards compatability, will be changed later.
 IRCe.DISCONNECT = {}
----- ==== ----
+--- ==== ---
 
-
------- ======= ------
-
+--- === === ---
 
 local Base = {}
 
----- Sending ----
+--- Sending ---
 -- Low-level --
 function Base:set_send_func(func)
 	self.send_func = func
@@ -101,10 +98,10 @@ function Base:clear_sender(command)
 	return true
 end
 -- ==== --
----- ==== ----
+--- ==== ---
 
 
----- Receiving ----
+--- Receiving ---
 -- Main --
 -- http://calebdelnay.com/blog/2010/11/parsing-the-irc-message-format-as-a-client
 local function parse_message(message)
@@ -220,10 +217,10 @@ function Base:clear_callback(command)
 	return true
 end
 -- ==== --
----- ==== ----
+--- ==== ---
 
 
----- Modules ---
+--- Modules ---
 function Base:load_module(module_table)
 	local ERR_PREFIX = "Could not load module: "
 
@@ -291,10 +288,10 @@ function Base:unload_module(module_table)
 
 	return true
 end
----- ==== ----
+--- ==== ---
 
 
----- Object creation ----
+--- Object creation ---
 function IRCe.new()
 	return setmetatable({
 		senders = {
@@ -307,7 +304,7 @@ function IRCe.new()
 		modules = {}
 	}, Base)
 end
----- ==== ----
+--- ==== ---
 
 
 return IRCe
