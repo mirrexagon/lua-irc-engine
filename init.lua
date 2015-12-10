@@ -152,8 +152,12 @@ function Base:handle(command, ...)
 	end
 
 	-- Call module hooks.
-	-- NOTE: Loading or unloading modules in a hook is a bad idea.
-	for mod in pairs(self.modules) do
+	-- Clone so unloading modules doesn't mess up iteration.
+	-- It'll be garbage collected eventually, letting the actual unloaded
+	-- modules be collected too.
+	local modules = util.table.clone(self.modules)
+
+	for mod in pairs(modules) do
 		if mod.hooks and mod.hooks[command] then
 			mod.hooks[command](self, unpack(args))
 		end
