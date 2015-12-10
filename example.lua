@@ -36,7 +36,7 @@ local running = true
 
 local client = socket.tcp()
 
-irc:set_send_func(function(message)
+irc:set_send_func(function(self, message)
     return client:send(message)
 end)
 
@@ -44,29 +44,29 @@ client:settimeout(1)
 
 ---
 
-irc:set_callback(IRCe.RAW, function(send, message)
+irc:set_callback(IRCe.RAW, function(self, send, message)
 	print(("%s %s"):format(send and ">>>" or "<<<", message))
 end)
 
-irc:set_callback("CTCP", function(sender, origin, command, params, pm)
+irc:set_callback("CTCP", function(self, sender, origin, command, params, pm)
 	if command == "VERSION" then
-		assert(irc:CTCP_REPLY(origin, "VERSION", "Lua IRC Engine - Test"))
+		assert(self:CTCP_REPLY(origin, "VERSION", "Lua IRC Engine - Test"))
 	end
 end)
 
-irc:set_callback("001", function(...)
+irc:set_callback("001", function(self, ...)
 	assert(irc:JOIN(channel))
 end)
 
-irc:set_callback("PRIVMSG", function(sender, origin, message, pm)
+irc:set_callback("PRIVMSG", function(self, sender, origin, message, pm)
 	if message == "?quit" then
-		assert(irc:QUIT("And away we go!"))
+		assert(self:QUIT("And away we go!"))
 		running = false
 	end
 end)
 
 
-irc:set_callback("NAMES", function(sender, channel, list, kind, message)
+irc:set_callback("NAMES", function(self, sender, channel, list, kind, message)
 	print("---")
 	if not list then
 		print("No channel called " .. channel)
@@ -81,11 +81,11 @@ irc:set_callback("NAMES", function(sender, channel, list, kind, message)
 end)
 
 
-irc:set_callback("USERMODE", function(sender, operation, mode)
+irc:set_callback("USERMODE", function(self, sender, operation, mode)
 	print(("User mode: %s%s"):format(operation, mode))
 end)
 
-irc:set_callback("CHANNELMODE", function(sender, operation, mode, param)
+irc:set_callback("CHANNELMODE", function(self, sender, operation, mode, param)
 	print(("Channel mode: %s%s %s"):format(operation, mode, param))
 end)
 

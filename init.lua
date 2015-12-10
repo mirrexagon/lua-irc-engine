@@ -55,7 +55,7 @@ function Base:send_raw(str)
 	-- Call RAW callback.
 	self:handle(IRCe.RAW, false, str)
 
-	return self.send_func(str .. "\r\n")
+	return self.send_func(self, str .. "\r\n")
 end
 -- ==== --
 
@@ -148,7 +148,7 @@ function Base:handle(command, ...)
 		and handler_return or {...}
 
 	if callback then
-		callback(unpack(args))
+		callback(self, unpack(args))
 	end
 
 	-- Call module hooks.

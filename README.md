@@ -52,7 +52,7 @@ local socket = require("socket.core")
 local client = socket.tcp()
 client:connect("irc.server.domain", 6667)
 
-irc:set_send_func(function(message)
+irc:set_send_func(function(self, message)
 	return client:send(message)
 end)
 ```
@@ -118,7 +118,7 @@ end
 When a message that your program might want to process is received, the appropriate callback is called, if it is set. You can set a callback with `irc:set_callback(command, func)`:
 
 ```lua
-irc:set_callback("PRIVMSG", function(sender, origin, msg, pm)
+irc:set_callback("PRIVMSG", function(self, sender, origin, msg, pm)
 	print( ("<%s> %s"):format(sender[1], msg) )
 end)
 ```
@@ -129,7 +129,7 @@ Callbacks cannot be overwritten. `irc:clear_callback(command)` is used to clear 
 
 ---
 
-Nearly all callbacks receive a sender table as their first argument. These should not be confused with sender functions, discussed in the next section, "Extending the module".
+Nearly all callbacks receive a sender table as their first argument after the IRC object. These should not be confused with sender functions, discussed in the next section, "Extending the module".
 
 Sender tables are derived from the message prefix, and are structured like this:
 
@@ -161,7 +161,7 @@ There is more information about handlers in the next section, "Extending the mod
 There is a special callback with the special value `irce.RAW` which is called whenever an IRC message is sent or received. This is useful for printing raw messages to a console or logging them. Its first argument is `true` when the message is being sent or `false` when the message is being received, and the second argument is the message.
 It is used like so:
 ```lua
-irc:set_callback(IRCe.RAW, function(send, message)
+irc:set_callback(IRCe.RAW, function(self, send, message)
 	print(("%s %s"):format(send and ">>>" or "<<<", message))
 end)
 ```
