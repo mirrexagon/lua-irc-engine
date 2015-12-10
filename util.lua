@@ -43,6 +43,18 @@ function util.table.join(...)
 	return result
 end
 
+function util.table.clone(t)
+	local c = setmetatable({}, getmetatable(t))
+	for k, v in pairs(t) do
+		if type(v) == "table" then
+			c[k] = util.table.clone(v)
+		else
+			c[k] = v
+		end
+	end
+	return c
+end
+
 ---
 
 return util
