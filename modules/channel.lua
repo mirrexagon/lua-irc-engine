@@ -1,13 +1,17 @@
+--- Include ---
 local IRCe = require("irce")
 local util = require("irce.util")
+--- ==== ---
 
----
 
+--- State ---
 local namelists
 local function clear_namelists()
 	namelists = setmetatable({}, {__mode = "k"})
 end
 clear_namelists()
+--- ==== ---
+
 
 return {
 	senders = {

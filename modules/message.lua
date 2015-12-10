@@ -1,6 +1,7 @@
+--- Require ---
 local util = require("irce.util")
+--- ==== ---
 
----
 
 return {
 	senders = {

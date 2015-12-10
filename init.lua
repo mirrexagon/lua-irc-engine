@@ -30,9 +30,11 @@ local IRCe = {
 local util = require("irce.util")
 --- ==== ---
 
+
 --- Utility functions ---
 local unpack = table.unpack or unpack
 --- ==== ---
+
 
 --- Constants ---
 -- Unique values for callbacks.
@@ -40,9 +42,14 @@ IRCe.RAW = {}
 IRCe.DISCONNECT = {}
 --- ==== ---
 
---- === === ---
 
+--- === <> === ---
+
+
+--- Base object definition ---
 local Base = {}
+--- ==== ---
+
 
 --- Sending ---
 -- Low-level --
@@ -58,6 +65,7 @@ function Base:send_raw(str)
 	return self.send_func(self, str .. "\r\n")
 end
 -- ==== --
+
 
 -- High-level --
 function Base:translate(command, ...)
@@ -82,6 +90,7 @@ Base.__index = function(self, key)
 	end
 end
 -- ==== --
+
 
 -- Setting and clearing senders --
 function Base:set_sender(command, func)
@@ -190,6 +199,7 @@ function Base:process(message)
 end
 -- ==== --
 
+
 -- Setting and clearing handlers --
 function Base:set_handler(command, func)
 	if self.handlers[command] then
@@ -205,6 +215,7 @@ function Base:clear_handler(command)
 	return true
 end
 -- ==== --
+
 
 -- Setting and clearing callbacks --
 function Base:set_callback(command, func)
@@ -305,6 +316,7 @@ function IRCe.new()
 		},
 		handlers = {},
 		callbacks = {},
+
 		modules = {}
 	}, Base)
 end
