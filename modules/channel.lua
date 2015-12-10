@@ -71,7 +71,7 @@ return {
 		["353"] = function(self, sender, params)
 			local kind = params[2]
 			local channel = params[3]
-			local list = util.string.explode(params[4])
+			local list = util.string.words(params[4])
 
 			-- TODO: Is it worth supporting the RFC1459 specification of not
 			-- having a channel type parameter?

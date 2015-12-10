@@ -123,7 +123,7 @@ local function parse_message(message)
 	end
 
 	-- Command and parameters
-	local the_rest = util.string.explode(message:sub(
+	local the_rest = util.string.words(message:sub(
 		prefix_end + 1, trailing_start))
 
 	-- Returning results

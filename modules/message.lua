@@ -69,7 +69,7 @@ return {
 		end,
 
 		CTCP = function(self, sender, origin, message, pm, notice)
-			local params = util.string.explode(message:gsub("\001", ""))
+			local params = util.string.words(message:gsub("\001", ""))
 
 			local command = params[1]
 			table.remove(params, 1)

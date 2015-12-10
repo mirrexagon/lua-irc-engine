@@ -66,7 +66,7 @@ return {
 			local operation = mode_string:sub(1, 1)
 			mode_string = mode_string:sub(2)
 
-			local modes = util.string.splitchar(mode_string)
+			local modes = util.string.chars(mode_string)
 
 			if target:find("[#&]") then
 				-- Channel mode.
