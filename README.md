@@ -1,5 +1,4 @@
-Lua IRC Engine
-==============
+# Lua IRC Engine
 A Lua IRC module that tries to be minimal and extensible.
 
 Lua IRC Engine is a basic IRC "translator". It provides basic message parsing and a way to add simple sending convenience functions and command interpreters/handlers, but leaves most of the actual processing of command content to the host application. For example, it does not keep a list of joined channels or even know what its nick is.
@@ -9,10 +8,8 @@ See `init.lua` for license information.
 An example demonstrating basic use of the module can be found in `example.lua`.
 
 
-Usage
-=====
-Creating an object
-------------------
+# Usage
+## Creating an object
 To create an IRC object, use `IRCe.new()`:
 ```lua
 local IRCe = require("irce")
@@ -38,8 +35,7 @@ irc:load_module(mod_channel)
 ```
 Modules are covered in more detail later in this README.
 
-Sending
--------
+## Sending
 At the most basic level, sending raw messages is done by `irc:send_raw(message)`:
 ```lua
 irc:send_raw("PRIVMSG #potato :I like potatoes.")
@@ -100,8 +96,7 @@ end
 ```
 
 
-Receiving
----------
+## Receiving
 To process a message received from a server, use `irc:process(msg)`. `msg` is a raw IRC message received from the server, although if you pass `nil` or `false`, `irc.process` will just silently ignore it and do nothing. It is usually called in a main loop, like this:
 ```lua
 -- Using LuaSocket:
@@ -123,13 +118,15 @@ irc:set_callback("PRIVMSG", function(self, sender, origin, msg, pm)
 end)
 ```
 
+A callback receives either the IRC object or a _user object_, explained at the end of this section. -- TODO: put link here
+
 `irc.set_callback` returns `true` on success, and nil and an error message if there is already a callback set for `command`.
 
 Callbacks cannot be overwritten. `irc:clear_callback(command)` is used to clear a callback.
 
 ---
 
-Nearly all callbacks receive a sender table as their first argument after the IRC object. These should not be confused with sender functions, discussed in the next section, "Extending the module".
+Nearly all callbacks receive a sender table as their first argument after the IRC object. These should not be confused with sender functions, discussed in the next section, "Extending the module". -- TODO: put link here
 
 Sender tables are derived from the message prefix, and are structured like this:
 
@@ -169,8 +166,7 @@ end)
 Another special callback is `DISCONNECT` which is not called by this module, but should be called by the host application (using `irc:handle(IRCe.DISCONNECT)`) when the socket is closed or the server disconnects. This allows modules and the host application to do cleanup.
 
 
-User objects
-------------
+## User objects
 `IRCe.new()` can take an optional argument, a _user object_, which is a Lua value/object that is passed to every callback. For example:
 ```lua
 local t = {}
@@ -183,10 +179,8 @@ end)
 It defaults to the IRC object itself.
 
 
-Extending the module
-====================
-Sender functions
-----------------
+# Extending the module
+## Sender functions
 Each IRC command can have exactly one sender function (although you can add ones that don't correspond to an IRC command, for example `CTCP`). They are stored in `irc.senders`.
 
 `irc.send` calls these to construct a message.
@@ -221,8 +215,7 @@ irc:set_sender("CTCP", ctcp)
 You can remove senders with `irc:clear_sender(command)`.
 
 
-Handler functions
------------------
+## Handler functions
 As with sender functions, each IRC command can have exactly one handler function.
 
 When a message is received, it is first processed by a handler function. This function can either respond to the message, it can parse the message and return information, or both. They are stored in `irc.handlers`.
@@ -309,8 +302,7 @@ end
 Handler functions can be set and cleared with `irc:set_handler(command, func)` and `irc:clear_handler(command)`, and this works much the same as with senders.
 
 
-Modules and the standard modules
-================================
+# Modules and the standard modules
 Senders and handlers can be added with modules. This module comes with some standard modules to provide some basic functionality.
 
 ---
@@ -380,8 +372,7 @@ If a module tries to set a sender or handler that already has been set by anothe
 Modules can be unloaded with `irc:unload_module(module_table)`, where `module_table` is the same table you passed to `irc.load_module`. This will remove every handler and sender that the module added.
 
 
-Standard modules
-----------------
+## Standard modules
 The senders are documented like this:
 ```
 <COMMAND> (<arguments to sender>)
