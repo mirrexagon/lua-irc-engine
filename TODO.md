@@ -16,6 +16,8 @@ Items with a question mark (?) on the end are ideas, and are not guaranteed to e
 + [ ] Improve `MODE` sender.
 + [ ] Add a registry in the IRC object for module state.
 
++ [ ] Write some tests!
+
 #### Senders and handlers
 List is from [RFC2812](http://tools.ietf.org/html/rfc2812)
 
