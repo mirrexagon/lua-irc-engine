@@ -168,6 +168,21 @@ end)
 
 Another special callback is `DISCONNECT` which is not called by this module, but should be called by the host application (using `irc:handle(IRCe.DISCONNECT)`) when the socket is closed or the server disconnects. This allows modules and the host application to do cleanup.
 
+
+User objects
+------------
+`IRCe.new()` can take an optional argument, a _user object_, which is a Lua value/object that is passed to every callback. For example:
+```lua
+local t = {}
+local irc = IRCe.new(t)
+
+irc:set_callback("PRIVMSG", function(self, sender, origin, msg, pm)
+	assert(self == t) -- This assertion is true.
+end)
+```
+It defaults to the IRC object itself.
+
+
 Extending the module
 ====================
 Sender functions

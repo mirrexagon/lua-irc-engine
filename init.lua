@@ -156,7 +156,7 @@ function Base:handle(command, ...)
 		and handler_return or {...}
 
 	if callback then
-		callback(self, unpack(args))
+		callback(self.userobj, unpack(args))
 	end
 
 	-- Call module hooks.
@@ -306,8 +306,8 @@ end
 
 
 --- Object creation ---
-function IRCe.new()
-	return setmetatable({
+function IRCe.new(userobj)
+	local o = setmetatable({
 		senders = {
 			RAW = function(self, message)
 				return message
@@ -318,6 +318,10 @@ function IRCe.new()
 
 		modules = {}
 	}, Base)
+
+	o.userobj = userobj or o
+
+	return o
 end
 --- ==== ---
 
