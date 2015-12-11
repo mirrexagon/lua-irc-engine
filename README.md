@@ -118,7 +118,7 @@ irc:set_callback("PRIVMSG", function(self, sender, origin, msg, pm)
 end)
 ```
 
-A callback receives either the IRC object or a _user object_, explained at the end of this section. -- TODO: put link here
+A callback receives either the IRC object or a _user object_ (see [here](#user-objects)).
 
 `irc.set_callback` returns `true` on success, and nil and an error message if there is already a callback set for `command`.
 
@@ -126,7 +126,7 @@ Callbacks cannot be overwritten. `irc:clear_callback(command)` is used to clear 
 
 ---
 
-Nearly all callbacks receive a sender table as their first argument after the IRC object. These should not be confused with sender functions, discussed in the next section, "Extending the module". -- TODO: put link here
+Nearly all callbacks receive a sender table as their first argument after the IRC object. These should not be confused with sender functions, discussed in the next section, ["Extending the module"](#extending-the-module).
 
 Sender tables are derived from the message prefix, and are structured like this:
 
