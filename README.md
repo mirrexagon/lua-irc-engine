@@ -484,7 +484,7 @@ CTCP (sender, origin, command, params, pm)
 	Called when a CTCP message is received in a PRIVMSG.
 	"params" is a table of parameters.
 	If the command is ACTION, CTCP passes processing on to the ACTION handler,
-		and the CTCP callback isn't called.
+		and the CTCP callback isn't called. -- TODO: This is now a lie with how callbacks are always called. The handler needs a fix.
 
 CTCP_REPLY (sender, origin, command, params, pm)
 	As above, but for CTCPs in a NOTICE.
