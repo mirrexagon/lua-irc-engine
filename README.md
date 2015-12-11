@@ -73,9 +73,9 @@ The IRC object's metatable is set up so that you can use this syntax:
 irc:PRIVMSG("#potato", "I like potatoes.")
 ```
 
-For consistency, you can use `RAW` to send raw messages using `irc.send`:
+For consistency, you can use the special message type `IRCe.RAW` to send raw messages using `irc.send`:
 ```lua
-irc:send("RAW", "PRIVMSG #potatoes :I like potatoes.")
+irc:send(IRCe.RAW, "PRIVMSG #potatoes :I like potatoes.")
 -- is equivalent to
 irc:send_raw("PRIVMSG #potatoes :I like potatoes.")
 ```
@@ -204,8 +204,8 @@ end
 
 Sender functions can be set with `irc:set_sender(command, func)`:
 ```lua
--- RAW is actually already defined in an IRC object. This is just for demonstration.
-irc:set_sender("RAW", raw)
+-- The raw sender is actually already defined in an IRC object. This is just for demonstration.
+irc:set_sender(IRCe.RAW, raw)
 irc:set_sender("PRIVMSG", privmsg)
 irc:set_sender("CTCP", ctcp)
 ```
@@ -284,7 +284,7 @@ The handler can either send a reply, parse the parameters and return information
 ``` lua
 -- The PING handler just sends a reply (namely, a pong).
 function handle_ping(self, sender, params)
-	self:send("RAW", "PONG :" .. params[1])
+	self:send(IRCe.RAW, "PONG :" .. params[1])
 end
 
 -- The PRIVMSG handler just returns parsed information.

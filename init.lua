@@ -309,7 +309,7 @@ end
 function IRCe.new(userobj)
 	local o = setmetatable({
 		senders = {
-			RAW = function(self, message)
+			[IRCe.RAW] = function(self, message)
 				return message
 			end
 		},
@@ -320,6 +320,8 @@ function IRCe.new(userobj)
 	}, Base)
 
 	o.userobj = userobj or o
+
+	o.senders.RAW = o.senders[IRCe.RAW]-- COMPAT
 
 	return o
 end
