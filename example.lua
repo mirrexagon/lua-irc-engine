@@ -13,7 +13,7 @@ local socket = require("socket.core")
 
 
 --- Constants ---
-local SERVER = "irc.example.com"
+local SERVER = arg[1] or "irc.example.com"
 
 local NICK = "IRCe"
 local USERNAME = "ircengine"
