@@ -24,7 +24,7 @@ end
 -- Returns a table in which each element is a single character of str
 -- such that `table.concat(util.string.chars(str)) == str`.
 function util.string.chars(str)
-	local charpattern = utf8.charpattern or "."
+	local charpattern = "."
 	local t = {}
 
 	for c in str:gmatch(charpattern) do
