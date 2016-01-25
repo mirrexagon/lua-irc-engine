@@ -168,6 +168,7 @@ local function parse_message(message_tagged)
 		message = message_tagged:sub(tag_space + 1)
 	else
 		message = message_tagged
+	end
 
 	-- Prefix
 	local prefix_end = 0
