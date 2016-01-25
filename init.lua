@@ -111,9 +111,67 @@ end
 
 
 --- Receiving ---
+-- IRCv3.2 tags
+local function parse_tags(tag_message)
+	local tags = {}
+	local is_on_name = true
+	local cur_name = ""
+	local escaping = false
+	local escapers = {
+		["s"] = " ",
+		["r"] = "\r",
+		["n"] = "\n",
+		[";"] = ";"
+	}
+	local charbuf = ""
+	for pos = 1, #tag_message do
+		local char = tag_message:sub(pos, pos)
+		if char == "\\" then
+			if escaping then
+				charbuf = charbuf .. "\\"
+			end
+			escaping = not escaping
+		elseif escaping then
+			charbuf = charbuf .. (escapers[char] or "")
+			escaping = false
+		elseif char == "=" and is_on_name then
+			is_on_name = false
+			cur_name = charbuf
+			charbuf = ""
+		elseif char == ";" then
+			if not is_on_name then
+				is_on_name = true
+				tags[cur_name] = charbuf
+				cur_name = ""
+				charbuf = ""
+			else
+				tags[charbuf] = true
+				charbuf = ""
+			end
+		else
+			charbuf = charbuf .. char
+		end
+	end
+	if cur_name ~= "" then
+		tags[cur_name] = charbuf
+	else
+		tags[charbuf] = true
+	end
+	return tags
+end
+
 -- Main --
 -- http://calebdelnay.com/blog/2010/11/parsing-the-irc-message-format-as-a-client
-local function parse_message(message)
+local function parse_message(message_tagged)
+	-- Tags
+	local tagged, tags, message
+	if message:sub(1, 1) == "@" then
+		local tag_space = message_tagged:find(" ")
+		tags = parse_tags(message_tagged:sub(2, tag_space - 1))
+		message = message_tagged:sub(tag_space + 1)
+	else
+		message = message_tagged
+
 	-- Prefix
 	local prefix_end = 0
 	local prefix
@@ -132,8 +190,8 @@ local function parse_message(message)
 	end
 
 	-- Command and parameters
-	local the_rest = util.string.words(message:sub(
-		prefix_end + 1, trailing_start))
+	local the_rest = util.string.words(message:sub(prefix_end + 1,
+		trailing_start))
 
 	-- Returning results
 	local command = the_rest[1]
@@ -141,7 +199,6 @@ local function parse_message(message)
 	table.insert(the_rest, trailing)
 	return prefix, command, the_rest
 end
-
 -- Calls the handler for the command if there is one, then calls the callback.
 function Base:handle(command, ...)
 	local handler = self.handlers[command]
