@@ -124,35 +124,38 @@ local function parse_tags(tag_message)
 	local cur_name
 	local charbuf = {}
 	local pos = 1
-	while pos <= #tag_message do
+	message_len = #tag_message
+	while pos <= message_len do
 		if tag_message:match("^\\", pos) then
 			local lookahead = tag_message:sub(pos+1, pos+1)
-			charbuf[#charbuf+1] = escapers[lookahead] -- might be nil
+			charbuf[#charbuf+1] = escapers[lookahead] or lookahead
 			pos = pos + 2
 		elseif cur_name then
 			if tag_message:match("^;", pos) then
 				tags[cur_name] = table.concat(charbuf)
 				cur_name = nil
 				charbuf = {}
+				pos = pos + 1
 			else
-				charbuf[#charbuf+1], pos = tag_message:match("[^\\;]+()", pos)
+				charbuf[#charbuf+1], pos = tag_message:match("([^\\;]+)()", pos)
 			end
 		else
 			if tag_message:match("^=", pos) then
-				cur_name = table.concat(charbuf)
-				charbuf = {}
+				if #charbuf > 0 then
+					cur_name = table.concat(charbuf)
+					charbuf = {}
+				end
+				pos = pos + 1
 			elseif tag_message:match("^;", pos) then
-				tags[table.concat(charbuf)] = true
-				charbuf = {}
+				if #charbuf > 0 then
+					tags[table.concat(charbuf)] = true
+					charbuf = {}
+				end
+				pos = pos + 1
 			else
-				charbuf[#charbuf+1], pos = tag_message:match("[^\\=;]+()", pos)
+				charbuf[#charbuf+1], pos = tag_message:match("([^\\=;]+)()", pos)
 			end
 		end
-	end
-	if cur_name then
-		tags[cur_name] = table.concat(charbuf)
-	else
-		tags[table.concat(charbuf)] = true
 	end
 	return tags
 end
@@ -197,6 +200,7 @@ local function parse_message(message_tagged)
 	table.insert(the_rest, trailing)
 	return prefix, command, the_rest
 end
+
 -- Calls the handler for the command if there is one, then calls the callback.
 function Base:handle(command, ...)
 	local handler = self.handlers[command]
