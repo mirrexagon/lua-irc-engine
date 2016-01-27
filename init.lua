@@ -157,6 +157,11 @@ local function parse_tags(tag_message)
 			end
 		end
 	end
+	if cur_name then
+		tags[cur_name] = table.concat(charbuf)
+	else
+		tags[table.concat(charbuf)] = true
+	end
 	return tags
 end
 
