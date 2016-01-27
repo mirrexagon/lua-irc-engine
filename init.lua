@@ -111,9 +111,73 @@ end
 
 
 --- Receiving ---
+-- IRCv3.2 tags
+local escapers = {
+	["s"] = " ";
+	["r"] = "\r";
+	["n"] = "\n";
+	[";"] = ";";
+	["\\"] = "\\";
+}
+local function parse_tags(tag_message)
+	local tags = {}
+	local cur_name
+	local charbuf = {}
+	local pos = 1
+	message_len = #tag_message
+	while pos <= message_len do
+		if tag_message:match("^\\", pos) then
+			local lookahead = tag_message:sub(pos+1, pos+1)
+			charbuf[#charbuf+1] = escapers[lookahead] or lookahead
+			pos = pos + 2
+		elseif cur_name then
+			if tag_message:match("^;", pos) then
+				tags[cur_name] = table.concat(charbuf)
+				cur_name = nil
+				charbuf = {}
+				pos = pos + 1
+			else
+				charbuf[#charbuf+1], pos = tag_message:match("([^\\;]+)()", pos)
+			end
+		else
+			if tag_message:match("^=", pos) then
+				if #charbuf > 0 then
+					cur_name = table.concat(charbuf)
+					charbuf = {}
+				end
+				pos = pos + 1
+			elseif tag_message:match("^;", pos) then
+				if #charbuf > 0 then
+					tags[table.concat(charbuf)] = true
+					charbuf = {}
+				end
+				pos = pos + 1
+			else
+				charbuf[#charbuf+1], pos = tag_message:match("([^\\=;]+)()", pos)
+			end
+		end
+	end
+	if cur_name then
+		tags[cur_name] = table.concat(charbuf)
+	else
+		tags[table.concat(charbuf)] = true
+	end
+	return tags
+end
+
 -- Main --
 -- http://calebdelnay.com/blog/2010/11/parsing-the-irc-message-format-as-a-client
-local function parse_message(message)
+local function parse_message(message_tagged)
+	-- Tags
+	local tags, message
+	if message_tagged:sub(1, 1) == "@" then
+		local tag_space = message_tagged:find(" ")
+		tags = parse_tags(message_tagged:sub(2, tag_space - 1))
+		message = message_tagged:sub(tag_space + 1)
+	else
+		message = message_tagged
+	end
+
 	-- Prefix
 	local prefix_end = 0
 	local prefix
@@ -132,14 +196,14 @@ local function parse_message(message)
 	end
 
 	-- Command and parameters
-	local the_rest = util.string.words(message:sub(
-		prefix_end + 1, trailing_start))
+	local the_rest = util.string.words(message:sub(prefix_end + 1,
+		trailing_start))
 
 	-- Returning results
 	local command = the_rest[1]
 	table.remove(the_rest, 1)
 	table.insert(the_rest, trailing)
-	return prefix, command, the_rest
+	return prefix, command, the_rest, tags
 end
 
 -- Calls the handler for the command if there is one, then calls the callback.
