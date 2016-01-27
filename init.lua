@@ -164,8 +164,8 @@ end
 -- http://calebdelnay.com/blog/2010/11/parsing-the-irc-message-format-as-a-client
 local function parse_message(message_tagged)
 	-- Tags
-	local tagged, tags, message
-	if message:sub(1, 1) == "@" then
+	local tags, message
+	if message_tagged:sub(1, 1) == "@" then
 		local tag_space = message_tagged:find(" ")
 		tags = parse_tags(message_tagged:sub(2, tag_space - 1))
 		message = message_tagged:sub(tag_space + 1)
@@ -198,7 +198,7 @@ local function parse_message(message_tagged)
 	local command = the_rest[1]
 	table.remove(the_rest, 1)
 	table.insert(the_rest, trailing)
-	return prefix, command, the_rest
+	return prefix, command, the_rest, tags
 end
 
 -- Calls the handler for the command if there is one, then calls the callback.
