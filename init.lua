@@ -116,7 +116,7 @@ local escapers = {
 	["s"] = " ";
 	["r"] = "\r";
 	["n"] = "\n";
-	[";"] = ";";
+	[":"] = ";";
 	["\\"] = "\\";
 }
 local function parse_tags(tag_message)
