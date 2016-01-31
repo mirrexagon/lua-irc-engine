@@ -119,12 +119,14 @@ local escapers = {
 	[":"] = ";";
 	["\\"] = "\\";
 }
+
 local function parse_tags(tag_message)
 	local tags = {}
 	local cur_name
 	local charbuf = {}
 	local pos = 1
 	message_len = #tag_message
+
 	while pos <= message_len do
 		if tag_message:match("^\\", pos) then
 			local lookahead = tag_message:sub(pos+1, pos+1)
@@ -157,11 +159,14 @@ local function parse_tags(tag_message)
 			end
 		end
 	end
+
+	-- Handle no trailing semicolon.
 	if cur_name then
 		tags[cur_name] = table.concat(charbuf)
 	else
 		tags[table.concat(charbuf)] = true
 	end
+
 	return tags
 end
 
@@ -196,8 +201,8 @@ local function parse_message(message_tagged)
 	end
 
 	-- Command and parameters
-	local the_rest = util.string.words(message:sub(prefix_end + 1,
-		trailing_start))
+	local the_rest = util.string.words(message:sub(
+		prefix_end + 1, trailing_start))
 
 	-- Returning results
 	local command = the_rest[1]
