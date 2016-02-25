@@ -73,12 +73,11 @@ function Base:translate(command, ...)
 		local state = self.modules.state[command] -- or nil
 		return self.senders[command](self, state, ...)
 	end
+	-- TODO: Return an error message if the sender doesn't exist?
 end
 
 function Base:send(command, ...)
-	if self.senders[command] then
-		return self:send_raw(self:translate(command, ...))
-	end
+	return self:send_raw(self:translate(command, ...))
 end
 
 Base.__index = function(self, key)
