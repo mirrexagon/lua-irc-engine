@@ -4,16 +4,11 @@ local util = require("irce.util")
 --- ==== ---
 
 
---- State ---
-local namelists
-local function clear_namelists()
-	namelists = setmetatable({}, {__mode = "k"})
-end
-clear_namelists()
---- ==== ---
-
-
 return {
+	init = function(self, state)
+		state.namelists = {}
+	end,
+
 	senders = {
 		JOIN = function(self, state, channel, key)
 			if key then
@@ -77,17 +72,11 @@ return {
 			local channel = params[3]
 			local list = util.string.words(params[4])
 
-			-- TODO: Is it worth supporting the RFC1459 specification of not
-			-- having a channel type parameter?
+			local namelist = state.namelists[channel] or {}
 
-			-- Get or create the persistent list.
-			-- TODO: Should any of these tables be weak?
-			namelists[self] = namelists[self] or {}
-			local state_list = namelists[self][channel] or {}
+			if not namelist.kind then namelist.kind = kind end
 
-			if not state_list.kind then state_list.kind = kind end
-
-			namelists[self][channel] = util.table.join(state_list, list)
+			 state.namelists[channel] = util.table.join(namelist, list)
 		end,
 
 		-- RPL_ENDOFNAMES
@@ -95,19 +84,19 @@ return {
 			local channel = params[2]
 			local message = params[3]
 
-			local state_list
-			if namelists[self] then
-				state_list = namelists[self][channel]
-				namelists[self][channel] = nil
-			end
+			local namelist = state.namelists[channel]
 
-			self:handle("NAMES", sender, channel, state_list, state_list and state_list.kind, message)
+			-- Clear this namelist, we're done with it.
+			state.namelists[channel] = nil
+
+			-- Run NAMES callback.
+			self:handle("NAMES", sender, channel, namelist, namelist and namelist.kind, message)
 		end
 	},
 
 	hooks = {
 		[IRCe.DISCONNECT] = function(self, state)
-			clear_namelists()
+			state.namelists = {}
 		end
 	}
 }
