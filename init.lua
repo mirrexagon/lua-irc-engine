@@ -70,7 +70,8 @@ end
 -- High-level --
 function Base:translate(command, ...)
 	if self.senders[command] then
-		return self.senders[command](self, ...)
+		local state = self.modules.state[command] -- or nil
+		return self.senders[command](self, state, ...)
 	end
 end
 
@@ -223,7 +224,8 @@ function Base:handle(command, ...)
 
 	-- Call the handler if it exists.
 	if handler then
-		handler_return = {handler(self, ...)}
+		local state = self.modules.state[command] -- or nil
+		handler_return = {handler(self, state, ...)}
 	end
 
 	if callback then
