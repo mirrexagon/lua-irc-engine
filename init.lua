@@ -246,8 +246,10 @@ function Base:handle(command, ...)
 	local modules = util.table.clone(self.modules.modules)
 
 	for mod in pairs(modules) do
+		local state = self.modules.state[mod] -- or nil
+
 		if mod.hooks and mod.hooks[command] then
-			mod.hooks[command](self, unpack(args))
+			mod.hooks[command](self, state, unpack(args))
 		end
 	end
 end
