@@ -51,6 +51,25 @@ local Base = {}
 --- ==== ---
 
 
+--- Module state ---
+function Base:get_state_for(kind, command)
+	local mod = self.modules[kind][command]
+
+	if mod then
+		return self.modules.state[mod]
+	end
+end
+
+function Base:get_sender_state(command)
+	return self:get_state_for("senders", command)
+end
+
+function Base:get_handler_state(command)
+	return self:get_state_for("handlers", command)
+end
+--- ==== ---
+
+
 --- Sending ---
 -- Low-level --
 function Base:set_send_func(func)
@@ -70,7 +89,7 @@ end
 -- High-level --
 function Base:translate(command, ...)
 	if self.senders[command] then
-		local state = self.modules.state[command] -- or nil
+		local state = self:get_sender_state(command)
 		return self.senders[command](self, state, ...)
 	end
 	-- TODO: Return an error message if the sender doesn't exist?
@@ -223,7 +242,7 @@ function Base:handle(command, ...)
 
 	-- Call the handler if it exists.
 	if handler then
-		local state = self.modules.state[command] -- or nil
+		local state = self:get_handler_state(command)
 		handler_return = {handler(self, state, ...)}
 	end
 
