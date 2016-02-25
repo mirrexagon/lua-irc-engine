@@ -327,6 +327,14 @@ Senders and handlers can be added with modules. This module comes with some stan
 A module is a table, structured like so:
 ```lua
 local module = {
+	init = function(self, state)
+
+	end,
+
+	deinit = function(self, state)
+
+	end,
+
 	senders = {
 		<command> = <func>,
 		<command> = <func>,
@@ -368,7 +376,9 @@ local module = {
 }
 ```
 
-A module does not need to include both senders and handlers, and so either the `senders` or the `handlers` table can be omitted.
+The `init` function is called when the module is loaded, and `deinit` is called when it is unloaded. Either or both can be omitted.
+
+A module does not need to include both senders and handlers, and so either the `senders` or the `handlers` table can be omitted (or both, if you really want to).
 
 ---
 

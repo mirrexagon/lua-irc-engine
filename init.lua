@@ -382,11 +382,21 @@ function Base:load_module(module_table)
 		end
 	end
 
+	---
+
 	-- Keep a reference to the module.
 	self.modules.modules[module_table] = module_table
 
 	-- Create a state table for this module.
-	self.modules.state[module_table] = {}
+	local state = {}
+
+	-- Run the module's init function.
+	if module_table.init then
+		module_table.init(self, state)
+	end
+
+	-- Save state.
+	self.modules.state[module_table] = state
 
 	return true
 end
@@ -396,6 +406,13 @@ function Base:unload_module(module_table)
 
 	if not self.modules[module_table] then
 		return false, ERR_PREFIX .. "module not loaded"
+	end
+
+	---
+
+	-- Run the module's deinit function.
+	if module_table.deinit then
+		module_table.deinit(self, state)
 	end
 
 	---
