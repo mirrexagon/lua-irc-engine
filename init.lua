@@ -1,9 +1,9 @@
 local IRCe = {
-	_VERSION = "Lua IRC Engine v4.2.0",
+	_VERSION = "Lua IRC Engine v5.0.0-pre1",
 	_DESCRIPTION = "A Lua IRC module that tries to be minimal and extensible.",
 	_URL = "https://github.com/legospacy/lua-irc-engine",
 	_LICENSE = [[
-		Copyright (c) 2014-2015 Andrew Abbott
+		Copyright (c) 2014-2016 Andrew Abbott
 
 		Permission is hereby granted, free of charge, to any person obtaining a copy
 		of this software and associated documentation files (the "Software"), to deal
