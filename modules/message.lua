@@ -5,15 +5,15 @@ local util = require("irce.util")
 
 return {
 	senders = {
-		NOTICE = function(self, target, message)
+		NOTICE = function(self, state, target, message)
 			return ("NOTICE %s :%s"):format(target, message)
 		end,
 
-		PRIVMSG = function(self, target, message)
+		PRIVMSG = function(self, state, target, message)
 			return ("PRIVMSG %s :%s"):format(target, message)
 		end,
 
-		_CTCP = function(self, command, params)
+		_CTCP = function(self, state, command, params)
 			if params == nil then
 				return ("\001%s\001"):format(command)
 			end
@@ -27,23 +27,23 @@ return {
 
 		---
 
-		CTCP = function(self, target, command, params)
+		CTCP = function(self, state, target, command, params)
 			return self:translate("PRIVMSG", target, self:translate("_CTCP", command, params))
 		end,
 
-		CTCP_REPLY = function(self, target, command, params)
+		CTCP_REPLY = function(self, state, target, command, params)
 			return self:translate("NOTICE", target, self:translate("_CTCP", command, params))
 		end,
 
 		---
 
-		ACTION = function(self, target, action)
+		ACTION = function(self, state, target, action)
 			return self:translate("CTCP", target, "ACTION", action)
 		end
 	},
 
 	handlers = {
-		NOTICE = function(self, sender, params)
+		NOTICE = function(self, state, sender, params)
 			local target = params[1]
 			local message = params[2]
 			local pm = not target:find("[#&]")
@@ -56,7 +56,7 @@ return {
 			end
 		end,
 
-		PRIVMSG = function(self, sender, params)
+		PRIVMSG = function(self, state, sender, params)
 			local target = params[1]
 			local message = params[2]
 			local pm = not target:find("[#&]")
@@ -69,7 +69,7 @@ return {
 			end
 		end,
 
-		CTCP = function(self, sender, origin, message, pm, notice)
+		CTCP = function(self, state, sender, origin, message, pm, notice)
 			local params = util.string.words(message:gsub("\001", ""))
 
 			local command = params[1]

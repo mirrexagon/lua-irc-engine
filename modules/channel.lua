@@ -15,7 +15,7 @@ clear_namelists()
 
 return {
 	senders = {
-		JOIN = function(self, channel, key)
+		JOIN = function(self, state, channel, key)
 			if key then
 				return ("JOIN %s %s"):format(channel, key)
 			else
@@ -23,7 +23,7 @@ return {
 			end
 		end,
 
-		PART = function(self, channel, part_message)
+		PART = function(self, state, channel, part_message)
 			if part_message then
 				return ("PART %s :%s"):format(channel, part_message)
 			else
@@ -31,7 +31,7 @@ return {
 			end
 		end,
 
-		TOPIC = function(self, channel, topic)
+		TOPIC = function(self, state, channel, topic)
 			if topic then
 				return ("TOPIC %s :%s"):format(channel, topic)
 			else
@@ -41,12 +41,12 @@ return {
 	},
 
 	handlers = {
-		JOIN = function(self, sender, params)
+		JOIN = function(self, state, sender, params)
 			local channel = params[1]
 			return sender, channel
 		end,
 
-		PART = function(self, sender, params)
+		PART = function(self, state, sender, params)
 			local channel = params[1]
 			local part_message = params[2]
 			return sender, channel, part_message
@@ -54,7 +54,7 @@ return {
 
 
 		-- RPL_NOTOPIC
-		["331"] = function(self, sender, params)
+		["331"] = function(self, state, sender, params)
 			local channel = params[2]
 			local message = params[3]
 
@@ -62,7 +62,7 @@ return {
 		end,
 
 		-- RPL_TOPIC
-		["332"] = function(self, sender, params)
+		["332"] = function(self, state, sender, params)
 			local channel = params[2]
 			local topic = params[3]
 
@@ -72,7 +72,7 @@ return {
 
 		-- Channel names list.
 		-- RPL_NAMREPLY
-		["353"] = function(self, sender, params)
+		["353"] = function(self, state, sender, params)
 			local kind = params[2]
 			local channel = params[3]
 			local list = util.string.words(params[4])
@@ -91,7 +91,7 @@ return {
 		end,
 
 		-- RPL_ENDOFNAMES
-		["366"] = function(self, sender, params)
+		["366"] = function(self, state, sender, params)
 			local channel = params[2]
 			local message = params[3]
 
@@ -106,7 +106,7 @@ return {
 	},
 
 	hooks = {
-		[IRCe.DISCONNECT] = function(self)
+		[IRCe.DISCONNECT] = function(self, state)
 			clear_namelists()
 		end
 	}

@@ -5,23 +5,23 @@ local util = require("irce.util")
 
 return {
 	senders = {
-		PING = function(self, param)
+		PING = function(self, state, param)
 			return "PING :" .. param
 		end,
 
-		PONG = function(self, param)
+		PONG = function(self, state, param)
 			return "PONG :" .. param
 		end,
 
-		NICK = function(self, nick)
+		NICK = function(self, state, nick)
 			return "NICK :" .. nick
 		end,
 
-		USER = function(self, username, realname, mode)
+		USER = function(self, state, username, realname, mode)
 			return ("USER %s %s * :%s"):format(username, mode or 8, realname)
 		end,
 
-		QUIT = function(self, quit_message)
+		QUIT = function(self, state, quit_message)
 			if quit_message then
 				return "QUIT :" .. quit_message
 			else
@@ -30,7 +30,7 @@ return {
 		end,
 
 
-		MODE = function(self, target, modes, mode_params)
+		MODE = function(self, state, target, modes, mode_params)
 			if mode_params then
 				return ("MODE %s %s %s"):format(target, modes, mode_params)
 			else
@@ -40,27 +40,27 @@ return {
 	},
 
 	handlers = {
-		PING = function(self, sender, params)
+		PING = function(self, state, sender, params)
 			self:send("PONG", params[1])
 			return sender, params[1]
 		end,
 
-		PONG = function(self, sender, params)
+		PONG = function(self, state, sender, params)
 			return sender, params[1]
 		end,
 
-		NICK = function(self, sender, params)
+		NICK = function(self, state, sender, params)
 			local new_nick = params[2]
 			return sender, new_nick
 		end,
 
-		QUIT = function(self, sender, params)
+		QUIT = function(self, state, sender, params)
 			local quit_message = params[1]
 			return sender, quit_message
 		end,
 
 
-		MODE = function(self, sender, params)
+		MODE = function(self, state, sender, params)
 			local target = params[1]
 			local mode_string = params[2]
 
