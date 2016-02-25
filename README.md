@@ -149,7 +149,16 @@ sender = {}
 
 ---
 
-Note that if there is no handler for a command or if the handler doesn't return anything, the callback is called anyway with what the handler got/would get (`irc, sender, params`).
+Whether a callback is actually called depends on whether a handler exists for the command, and whether it returns anything.
+
+A callback will be called if:
+
+- a handler exists and it returns something, or;
+- if a handler does not exist for the command, in which case the callback gets the sender and the command parameters as arguments.
+
+If a handler exists but doesn't return anything, the callback isn't called.
+
+This behaviour allows for handlers which sometimes pass processing on to another handler; eg. when a CTCP ACTION is received, the CTCP handler passes processing over to ACTION. This way, the ACTION callback is called instead of the CTCP callback. If the callback were always called (as they were in versions 2.1.0 to 5.0.0), the CTCP handler would be called regardless. NOTICE and PRIVMSG also work this way, passing over to CTCP when they detect a CTCP message.
 
 There is more information about handlers in the next section, "Extending the module".
 
@@ -474,17 +483,17 @@ NOTICE (sender, origin, message, pm)
 	"origin" is the channel the message was sent to, or the nick of the sender
 		if it's a private message. "pm" will be true if the message came directly
 		from a user (ie. a private message) as opposed to from a channel.
-
-PRIVMSG (sender, origin, message, pm)
-	As with NOTICE, but for PRIVMSG.
 	If a CTCP message is detected, processing is passed on to the
 		CTCP handler, and the PRIVMSG callback isn't called.
+
+PRIVMSG (sender, origin, message, pm)
+	Functionally identical to NOTICE, but for PRIVMSG.
 
 CTCP (sender, origin, command, params, pm)
 	Called when a CTCP message is received in a PRIVMSG.
 	"params" is a table of parameters.
 	If the command is ACTION, CTCP passes processing on to the ACTION handler,
-		and the CTCP callback isn't called. -- TODO: This is now a lie with how callbacks are always called. The handler needs a fix.
+		and the CTCP callback isn't called.
 
 CTCP_REPLY (sender, origin, command, params, pm)
 	As above, but for CTCPs in a NOTICE.

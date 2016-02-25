@@ -217,15 +217,25 @@ function Base:handle(command, ...)
 	local callback = self.callbacks[command]
 	local handler_return
 
-	if self.handlers[command] then
+	-- TODO: nils in the handler return (eg. `return nil, data, data2`)
+	-- will make `#handler_return` undefined. Could be solved using table.pack,
+	-- but it doesn't exist in Lua 5.1.
+
+	-- Call the handler if it exists.
+	if handler then
 		handler_return = {handler(self, ...)}
 	end
 
-	local args = (handler_return and #handler_return > 0)
-		and handler_return or {...}
-
 	if callback then
-		callback(self.userobj, unpack(args))
+		if handler and #handler_return > 0 then
+			-- Handler exists and returned something, call callback with that.
+			callback(self.userobj, unpack(handler_return))
+
+		elseif not handler then
+			-- Handler doesn't exist, call callback with handler args.
+			callback(self.userobj, ...)
+
+		end -- Handler exists but didn't return anything, don't call callback.
 	end
 
 	-- Call module hooks.
