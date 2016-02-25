@@ -321,7 +321,7 @@ function Base:load_module(module_table)
 		return false, ERR_PREFIX .. "module should be a table"
 	end
 
-	if self.modules[module_table] then
+	if self.modules.modules[module_table] then
 		return false, ERR_PREFIX .. "module already loaded"
 	end
 
@@ -336,6 +336,8 @@ function Base:load_module(module_table)
 
 		for command, func in pairs(module_table.senders) do
 			self:set_sender(command, func)
+
+			self.modules.senders[command] = module_table
 		end
 	end
 
@@ -348,6 +350,8 @@ function Base:load_module(module_table)
 
 		for command, func in pairs(module_table.handlers) do
 			self:set_handler(command, func)
+
+			self.modules.handlers[command] = module_table
 		end
 	end
 
@@ -368,12 +372,16 @@ function Base:unload_module(module_table)
 	if module_table.senders then
 		for command in pairs(module_table.senders) do
 			self:clear_sender(command)
+
+			self.modules.senders[command] = nil
 		end
 	end
 
 	if module_table.handlers then
 		for command in pairs(module_table.handlers) do
 			self:clear_handler(command)
+
+			self.modules.handlers[command] = nil
 		end
 	end
 
@@ -395,12 +403,17 @@ function IRCe.new(userobj)
 		handlers = {},
 		callbacks = {},
 
-		modules = {}
+		modules = {
+			modules = {}, -- Keeps module tables.
+
+			senders = {}, -- Keeps track of which module added which
+			handlers = {} -- sender or handler.
+		}
 	}, Base)
 
 	o.userobj = userobj or o
 
-	o.senders.RAW = o.senders[IRCe.RAW]-- COMPAT
+	o.senders.RAW = o.senders[IRCe.RAW] -- COMPAT
 
 	return o
 end
