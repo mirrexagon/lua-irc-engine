@@ -14,7 +14,7 @@ Items with a question mark (?) on the end are ideas, and are not guaranteed to e
 
 + [x] `v4.0.0` Fix unloading modules in hooks breaking iteration. _Hopefully fixed._
 + [ ] Improve `MODE` sender.
-+ [ ] Add a registry in the IRC object for module state.
++ [x] `v5.0.0` Add a registry in the IRC object for module state.
 
 + [ ] Write some tests!
 
