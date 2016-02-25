@@ -242,7 +242,7 @@ function Base:handle(command, ...)
 	-- Clone so unloading modules doesn't mess up iteration.
 	-- It'll be garbage collected eventually, letting the actual unloaded
 	-- modules be collected too.
-	local modules = util.table.clone(self.modules)
+	local modules = util.table.clone(self.modules.modules)
 
 	for mod in pairs(modules) do
 		if mod.hooks and mod.hooks[command] then
@@ -317,10 +317,12 @@ end
 function Base:load_module(module_table)
 	local ERR_PREFIX = "Could not load module: "
 
+	-- Make sure module is a table.
 	if not module_table or type(module_table) ~= "table" then
 		return false, ERR_PREFIX .. "module should be a table"
 	end
 
+	-- Make sure module isn't already loaded.
 	if self.modules.modules[module_table] then
 		return false, ERR_PREFIX .. "module already loaded"
 	end
@@ -328,15 +330,18 @@ function Base:load_module(module_table)
 	---
 
 	if module_table.senders then
+		-- First, make sure the module doesn't add any already-present senders.
 		for command, func in pairs(module_table.senders) do
 			if self.senders[command] then
 				return false, ERR_PREFIX .. ("sender for \'%s\' already exists"):format(command)
 			end
 		end
 
+		-- If it doesn't, go ahead and add the module's senders.
 		for command, func in pairs(module_table.senders) do
 			self:set_sender(command, func)
 
+			-- Register that this module added this particular sender.
 			self.modules.senders[command] = module_table
 		end
 	end
@@ -355,7 +360,11 @@ function Base:load_module(module_table)
 		end
 	end
 
-	self.modules[module_table] = true
+	-- Keep a reference to the module.
+	self.modules.modules[module_table] = module_table
+
+	-- Create a state table for this module.
+	self.modules.state[module_table] = {}
 
 	return true
 end
@@ -385,7 +394,11 @@ function Base:unload_module(module_table)
 		end
 	end
 
-	self.modules[module_table] = nil
+	-- Erase the main reference to the module.
+	self.modules.modules[module_table] = nil
+
+	-- Erase the module's state.
+	self.modules.state[module_table] = nil
 
 	return true
 end
@@ -405,6 +418,7 @@ function IRCe.new(userobj)
 
 		modules = {
 			modules = {}, -- Keeps module tables.
+			state = {}, -- Keeps a state table for each module.
 
 			senders = {}, -- Keeps track of which module added which
 			handlers = {} -- sender or handler.
