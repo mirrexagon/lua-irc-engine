@@ -194,19 +194,19 @@ Each IRC command can have exactly one sender function (although you can add ones
 
 `irc.send` calls these to construct a message.
 
-Sender functions take the IRC object (in this case, in the variable `self`) and whatever arguments they need, and return the raw message to be sent:
+Sender functions receive the IRC object (here as `self`), a _state_ variable (more on this later), and whatever arguments they need, and return the raw message to be sent:
 ```lua
-function raw(self, msg)
+function raw(self, state, msg)
 	return msg
 end
 
-function privmsg(self, target, msg)
+function privmsg(self, state, target, msg)
 	return ("PRIVMSG %s :%s"):format(target, msg)
 end
 
 -- irc:translate() is called by irc:send() to turn the arguments into a raw message.
 -- It can be called like this to chain senders.
-function ctcp(self, target, command, params)
+function ctcp(self, state, target, command, params)
 	return self:translate("PRIVMSG", target, ("\001%s %s\001"):format(command, params))
 end
 ```
@@ -229,7 +229,7 @@ As with sender functions, each IRC command can have exactly one handler function
 
 When a message is received, it is first processed by a handler function. This function can either respond to the message, it can parse the message and return information, or both. They are stored in `irc.handlers`.
 
-They take the IRC object, the sender of the message and the command parameters as a table.
+They take the IRC object, a state variable, the sender of the message and the command parameters as a table.
 
 Here are some examples of how the message is broken up:
 ```lua
@@ -292,12 +292,12 @@ params = {
 The handler can either send a reply, parse the parameters and return information, or both. The IRC object is exposed (again as `self` in these examples) so that the handler can send replies, or call other handlers or callbacks.
 ``` lua
 -- The PING handler just sends a reply (namely, a pong).
-function handle_ping(self, sender, params)
+function handle_ping(self, state, sender, params)
 	self:send(IRCe.RAW, "PONG :" .. params[1])
 end
 
 -- The PRIVMSG handler just returns parsed information.
-function handle_privmsg(self, sender, params)
+function handle_privmsg(self, state, sender, params)
 	local target = params[1] -- Nick or channel message was directed to.
 	local msg = params[2] -- The message.
 	local pm = not target:find("[#&]") -- Whether it was directly to a user or not.
@@ -309,6 +309,14 @@ end
 ```
 
 Handler functions can be set and cleared with `irc:set_handler(command, func)` and `irc:clear_handler(command)`, and this works much the same as with senders.
+
+
+## State
+The state variable passed to a sender or handler is used to store module state. Each module gets its own state table, which is passed to every sender and handler it added when they are called. When a module is loaded, its state table is initialised to an empty table.
+
+This state table is useful for sets of handlers that need to, for example, receive data over multiple IRC messages, such as NAMES and MOTD.
+
+**Important:** If you add a sender or handler via `irc:set_sender()` or `irc:set_handler()` directly and not via a module, it won't have any state associated with it, and so the state variable passed to it will be `nil`.
 
 
 # Modules and the standard modules
