@@ -351,17 +351,17 @@ local IRCe = require("irce")
 
 local module = {
 	senders = {
-		PONG = function(self, param)
+		PONG = function(self, state, param)
 			return "PONG :" .. param
 		end
 	},
 	handlers = {
-		PING = function(self, sender, params)
+		PING = function(self, state, sender, params)
 			self:send("PONG", params[1])
 		end
 	},
 	hooks = {
-		[IRCe.DISCONNECT] = function(self)
+		[IRCe.DISCONNECT] = function(self, state)
 			-- Do cleanup stuff here.
 		end
 	}
