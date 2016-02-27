@@ -74,3 +74,5 @@ List is from [RFC2812](http://tools.ietf.org/html/rfc2812)
 + [ ] OPERWALL
 + [ ] USERHOST
 + [ ] ISON
+
++ [ ] CAP (IRCv3)
