@@ -229,7 +229,7 @@ As with sender functions, each IRC command can have exactly one handler function
 
 When a message is received, it is first processed by a handler function. This function can either respond to the message, it can parse the message and return information, or both. They are stored in `irc.handlers`.
 
-They take the IRC object, a state variable, the sender of the message and the command parameters as a table.
+They take the IRC object, a state variable, the sender of the message, the command parameters as a table, and a table of IRCv3 tags, if the message had them.
 
 Here are some examples of how the message is broken up:
 ```lua
@@ -292,12 +292,12 @@ params = {
 The handler can either send a reply, parse the parameters and return information, or both. The IRC object is exposed (again as `self` in these examples) so that the handler can send replies, or call other handlers or callbacks.
 ``` lua
 -- The PING handler just sends a reply (namely, a pong).
-function handle_ping(self, state, sender, params)
+function handle_ping(self, state, sender, params, tags)
 	self:send(IRCe.RAW, "PONG :" .. params[1])
 end
 
 -- The PRIVMSG handler just returns parsed information.
-function handle_privmsg(self, state, sender, params)
+function handle_privmsg(self, state, sender, params, tags)
 	local target = params[1] -- Nick or channel message was directed to.
 	local msg = params[2] -- The message.
 	local pm = not target:find("[#&]") -- Whether it was directly to a user or not.

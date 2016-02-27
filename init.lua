@@ -281,7 +281,7 @@ function Base:process(message)
 
 	---
 
-	local prefix, command, params = parse_message(message)
+	local prefix, command, params, tags = parse_message(message)
 
 	local sender
 	if prefix then
@@ -295,7 +295,7 @@ function Base:process(message)
 		sender = {}
 	end
 
-	self:handle(command, sender, params)
+	self:handle(command, sender, params, tags)
 end
 -- ==== --
 
