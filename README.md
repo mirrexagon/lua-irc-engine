@@ -455,18 +455,19 @@ NICK (sender, new_nick)
 QUIT (sender, quit_msg)
 	Called when someone quits.
 
-CHANNELMODE (sender, operation, modes, target)
-	Called when receiving channel modes.
+CHANNELMODE (sender, operation, mode, target)
+	Called when receiving channel modes. This callback is called *once* for
+	each mode.
 		"sender" is who changed the mode
 		"operation" is + or -
-		"modes" is a list of the modes
-		"target" is a list of who is receiving the modes
+		"modes" is the mode
+		"target" is the target of the mode
 
-USERMODE (sender, operation, modes, target)
-	Called when receiving user modes.
+USERMODE (sender, operation, mode, target)
+	Called when receiving user modes. Called once for each mode.
 		"operation" is + or -
-		"modes" is a list of the modes
-		"target" is who is receiving the modes, probably you
+		"mode" is the mode
+		"target" is the target of the mode, probably you
 ```
 
 ### Message
