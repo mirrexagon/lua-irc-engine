@@ -16,6 +16,8 @@ Items with a question mark (?) on the end are ideas, and are not guaranteed to e
 + [ ] Improve `MODE` sender.
 + [x] `v5.0.0` Add a registry in the IRC object for module state.
 
++ [ ] Figure out how and to where IRCv3 tags are going to be passed.
+
 + [ ] Write some tests!
 
 #### Senders and handlers
