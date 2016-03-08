@@ -268,7 +268,7 @@ function Base:handle(command, ...)
 		local state = self.modules.state[mod] -- or nil
 
 		if mod.hooks and mod.hooks[command] then
-			mod.hooks[command](self, state, unpack(args))
+			mod.hooks[command](self, state, ...)
 		end
 	end
 end
