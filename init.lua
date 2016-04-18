@@ -144,7 +144,7 @@ local function parse_tags(tag_message)
 	local cur_name
 	local charbuf = {}
 	local pos = 1
-	message_len = #tag_message
+	local message_len = #tag_message
 
 	while pos <= message_len do
 		if tag_message:match("^\\", pos) then
@@ -353,7 +353,7 @@ function Base:load_module(module_table)
 
 	if module_table.senders then
 		-- First, make sure the module doesn't add any already-present senders.
-		for command, func in pairs(module_table.senders) do
+		for command, _ in pairs(module_table.senders) do
 			if self.senders[command] then
 				return false, ERR_PREFIX .. ("sender for \'%s\' already exists"):format(command)
 			end
@@ -369,7 +369,7 @@ function Base:load_module(module_table)
 	end
 
 	if module_table.handlers then
-		for command, func in pairs(module_table.handlers) do
+		for command, _ in pairs(module_table.handlers) do
 			if self.handlers[command] then
 				return false, ERR_PREFIX .. ("handler for \'%s\' already exists"):format(command)
 			end

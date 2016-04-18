@@ -76,7 +76,7 @@ function util.table.join(...)
 
 	for _, tab in ipairs({...}) do
 		-- Deal with number keys first so we can get them in order.
-		for i, v in ipairs(tab) do
+		for _, v in ipairs(tab) do
 			table.insert(result, v)
 		end
 
@@ -142,7 +142,7 @@ end
 function util.table.maxn(t)
 	local max = -math.huge
 
-	for k, v in pairs(t) do
+	for k, _ in pairs(t) do
 		if type(k) == "number" then
 			max = math.max(k, max)
 		end
@@ -155,7 +155,7 @@ end
 function util.table.nelem(t)
 	local count = 0
 
-	for k,v in pairs(t) do
+	for _ in pairs(t) do
 		count = count + 1
 	end
 
