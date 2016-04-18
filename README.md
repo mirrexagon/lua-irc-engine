@@ -23,8 +23,6 @@ From now on, this README assumes that `irc` is an IRC Engine object created as a
 
 Note: Much of the functionality of this module (eg. replying to server PINGs, sending PRIVMSGs with `irc.send`) is in submodules, none of which are loaded when the object is created. To load the standard modules, use:
 ```lua
--- This assumes you are running a LuaRocks-installed version.
--- If you've installed this locally, the path to the modules will probably be different.
 local mod_base = require("irce.modules.base")
 local mod_message = require("irce.modules.message")
 local mod_channel = require("irce.modules.channel")
