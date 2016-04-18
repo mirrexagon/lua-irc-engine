@@ -412,6 +412,7 @@ function Base:unload_module(module_table)
 
 	-- Run the module's deinit function.
 	if module_table.deinit then
+		local state = self.modules.state[module_table]
 		module_table.deinit(self, state)
 	end
 
