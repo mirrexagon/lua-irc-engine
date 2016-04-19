@@ -1,12 +1,8 @@
-local _version = "4.1.2"
-local _release = "1"
-
 package = "irc-engine"
-version = _version .. "-" .. _release
+version = "scm-2"
 
 source = {
-	url = "https://github.com/legospacy/lua-irc-engine/archive/v" .. _version .. ".tar.gz",
-	dir = "lua-irc-engine-" .. _version
+	url = "git://github.com/legospacy/lua-irc-engine.git"
 }
 
 description = {
@@ -29,14 +25,14 @@ build = {
 	type = "builtin",
 	modules = {
 		-- Main module file.
-		["irce"] = "init.lua",
+		["irce"] = "src/init.lua",
 
 		-- Standard modules.
-		["irce.modules.base"] = "modules/base.lua",
-		["irce.modules.message"] = "modules/message.lua",
-		["irce.modules.channel"] = "modules/channel.lua",
+		["irce.modules.base"] = "src/modules/base.lua",
+		["irce.modules.message"] = "src/modules/message.lua",
+		["irce.modules.channel"] = "src/modules/channel.lua",
 
-		-- Utility file.
-		["irce.util"] = "util.lua"
+		-- Utilities.
+		["irce.util"] = "src/util.lua"
 	}
 }
