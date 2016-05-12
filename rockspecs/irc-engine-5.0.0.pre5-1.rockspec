@@ -1,4 +1,4 @@
-local _version = "5.0.0.pre4"
+local _version = "5.0.0.pre5"
 local _release = "1"
 
 package = "irc-engine"
