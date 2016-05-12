@@ -1,8 +1,9 @@
-local _version = "5.0.0.pre5"
+local _version = "5.0.0-pre5"
+local _rock_version = "5.0.0.pre5"
 local _release = "1"
 
 package = "irc-engine"
-version = _version .. "-" .. _release
+version = _rock_version .. "-" .. _release
 
 source = {
 	url = "https://github.com/mirrexagon/lua-irc-engine/archive/v" .. _version .. ".tar.gz",
