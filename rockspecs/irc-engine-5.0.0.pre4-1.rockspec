@@ -1,11 +1,11 @@
-local _version = "5.0.0-pre4"
+local _version = "5.0.0.pre4"
 local _release = "1"
 
 package = "irc-engine"
 version = _version .. "-" .. _release
 
 source = {
-	url = "https://github.com/legospacy/lua-irc-engine/archive/v" .. _version .. ".tar.gz",
+	url = "https://github.com/mirrexagon/lua-irc-engine/archive/v" .. _version .. ".tar.gz",
 	dir = "lua-irc-engine-" .. _version
 }
 
@@ -17,7 +17,7 @@ description = {
 		sending and handling functions, but leaves most of the actual processing
 		of command content to the host application.
 	]],
-	homepage = "http://github.com/legospacy/lua-irc-engine",
+	homepage = "http://github.com/mirrexagon/lua-irc-engine",
 	license = "MIT/X11"
 }
 
