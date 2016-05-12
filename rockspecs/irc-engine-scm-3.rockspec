@@ -1,8 +1,8 @@
 package = "irc-engine"
-version = "scm-2"
+version = "scm-3"
 
 source = {
-	url = "git://github.com/legospacy/lua-irc-engine.git"
+	url = "git://github.com/mirrexagon/lua-irc-engine.git"
 }
 
 description = {
@@ -13,7 +13,7 @@ description = {
 		sending and handling functions, but leaves most of the actual processing
 		of command content to the host application.
 	]],
-	homepage = "http://github.com/legospacy/lua-irc-engine",
+	homepage = "http://github.com/mirrexagon/lua-irc-engine",
 	license = "MIT/X11"
 }
 
