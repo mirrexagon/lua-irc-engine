@@ -1,5 +1,5 @@
 local IRCe = {
-	_VERSION = "Lua IRC Engine v5.0.0-pre5",
+	_VERSION = "Lua IRC Engine v5.0.0",
 	_DESCRIPTION = "A Lua IRC module that tries to be minimal and extensible.",
 	_URL = "https://github.com/legospacy/lua-irc-engine",
 	_LICENSE = [[
