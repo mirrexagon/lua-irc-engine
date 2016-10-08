@@ -1,5 +1,5 @@
-local _version = "5.0.0-pre5"
-local _rock_version = "5.0.0.pre5"
+local _version = "5.0.0"
+local _rock_version = "5.0.0"
 local _release = "1"
 
 package = "irc-engine"
@@ -19,7 +19,7 @@ description = {
 		of command content to the host application.
 	]],
 	homepage = "http://github.com/mirrexagon/lua-irc-engine",
-	license = "MIT/X11"
+	license = "CC0"
 }
 
 dependencies = {
