@@ -1,5 +1,5 @@
 package = "irc-engine"
-version = "scm-3"
+version = "scm-1"
 
 source = {
 	url = "git://github.com/mirrexagon/lua-irc-engine.git"
@@ -25,14 +25,14 @@ build = {
 	type = "builtin",
 	modules = {
 		-- Main module file.
-		["irce"] = "src/init.lua",
+		["irce"] = "init.lua",
 
 		-- Standard modules.
-		["irce.modules.base"] = "src/modules/base.lua",
-		["irce.modules.message"] = "src/modules/message.lua",
-		["irce.modules.channel"] = "src/modules/channel.lua",
+		["irce.modules.base"] = "modules/base.lua",
+		["irce.modules.message"] = "modules/message.lua",
+		["irce.modules.channel"] = "modules/channel.lua",
 
 		-- Utilities.
-		["irce.util"] = "src/util.lua"
+		["irce.util"] = "util.lua"
 	}
 }
