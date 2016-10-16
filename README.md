@@ -3,7 +3,7 @@ A Lua IRC module that tries to be minimal and extensible.
 
 ---
 
-**NOTE:** I don't actively work on this anymore. I've released the module into the public domain via CC0. If anyone wants to take it and work on/maintain it, feel free. Just email me and I can relinquish the `irc-engine` name on LuaRocks.
+**NOTE:** I don't actively work on this at the moment. I might come back to it someday. If you want to take this and work on it and re-release it, feel free! 
 
 ---
 
