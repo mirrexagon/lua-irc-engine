@@ -1,5 +1,7 @@
 --- Require ---
-local util = require("irce.util")
+local _NAME = (...):match("^(.+)%.") -- Get parent module.
+
+local util = require(_NAME .. ".util")
 --- ==== ---
 
 

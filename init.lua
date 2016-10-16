@@ -11,7 +11,7 @@ local IRCe = {
 --- Require ---
 local _NAME = ...
 
-local util = require("irce.util")
+local util = require(_NAME .. ".util")
 --- ==== ---
 
 
