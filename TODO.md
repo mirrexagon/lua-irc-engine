@@ -11,6 +11,7 @@
 
 + [ ] Write some tests!
 
++ [ ] Document `ALL` callback.
 + [ ] Split documentation out from README - use ldoc?
 
 #### Senders and handlers
