@@ -451,8 +451,6 @@ function IRCe.new(userobj)
 
 	o.userobj = userobj or o
 
-	o.senders.RAW = o.senders[IRCe.RAW] -- COMPAT
-
 	return o
 end
 --- ==== ---
