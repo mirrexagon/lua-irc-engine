@@ -3,10 +3,6 @@ A Lua IRC module that tries to be minimal and extensible.
 
 ---
 
-**NOTE:** I don't actively work on this at the moment. I might come back to it someday. If you want to take this and work on it and re-release it, feel free! 
-
----
-
 Lua IRC Engine is a basic IRC "translator". It provides basic message parsing and a way to add simple sending convenience functions and command interpreters/handlers, but leaves most of the actual processing of command content to the host application. For example, it does not keep a list of joined channels or even know what its nick is.
 
 Lua IRC Engine is released into the public domain via CC0 (https://creativecommons.org/publicdomain/zero/1.0).
