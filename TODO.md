@@ -11,8 +11,12 @@
 
 + [ ] Write some tests!
 
-+ [ ] Document `ALL` callback.
 + [ ] Split documentation out from README - use ldoc?
+
+#### Documentation
++ [ ] Document `ALL` callback.
++ [ ] Document sender table `type` field.
++ [ ] Maybe change all uses of `IRCe` to `irce`?
 
 #### Senders and handlers
 List is from [RFC2812](http://tools.ietf.org/html/rfc2812)
