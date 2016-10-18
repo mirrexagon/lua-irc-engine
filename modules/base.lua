@@ -52,7 +52,7 @@ return {
 		end,
 
 		NICK = function(self, state, sender, params)
-			local new_nick = params[2]
+			local new_nick = params[1]
 			return sender, new_nick
 		end,
 
