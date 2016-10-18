@@ -21,10 +21,16 @@ local unpack = table.unpack or unpack
 
 
 --- Constants ---
--- Unique values for special callbacks.
-IRCe.RAW = {} -- Raw IRC messages in both directions.
-IRCe.DISCONNECT = {} -- Host program should call this when a disconnect occurs.
-IRCe.ALL = {} -- Called for every callback, with the command name as the first argument after `self`.
+--- Unique values for special callbacks.
+
+-- Raw IRC messages in both directions.
+IRCe.RAW = setmetatable({}, {__tostring = function() return "IRCe RAW" end})
+
+-- Host program should call this when a disconnect occurs.
+IRCe.DISCONNECT = setmetatable({}, {__tostring = function() return "IRCe DISCONNECT" end})
+
+-- Called for every callback, with the command name as the first argument after `self`.
+IRCe.ALL = setmetatable({}, {__tostring = function() return "IRCe ALL" end})
 --- ==== ---
 
 
@@ -242,7 +248,7 @@ function Base:handle(command, ...)
 		if callback then callback(self.userobj, ...) end
 		if all_callback then all_callback(self.userobj, command, ...) end
 
-	end 
+	end
 		-- Handler exists but didn't return anything, don't call callback.
 
 	-- Call module hooks.
