@@ -134,7 +134,7 @@ Sender tables are derived from the message prefix, and are structured like this:
 -- From a user:
 sender = {
 	type = "user",
-	
+
 	[1] = "Nick",
 	[2] = "username",
 	[3] = "host.name",
@@ -143,7 +143,7 @@ sender = {
 -- or from a server:
 sender = {
 	type = "server",
-	
+
 	[1] = "irc.server.domain",
 }
 
@@ -178,7 +178,7 @@ end)
 
 Another special callback is `DISCONNECT` which is not called by this module, but should be called by the host application (using `irc:handle(IRCe.DISCONNECT)`) when the socket is closed or the server disconnects. This allows modules and the host application to do cleanup.
 
-The callback `IRCe.ALL` is called for ALL callbacks in addition as the specific callback. It follows the same calling rules as normal callbacks (not called when handler doesn't return anything). The first argument (after the user object, see below) is the key for the callback that is being called. 
+The callback `IRCe.ALL` is called for **all** callbacks **after** the specific callback. It follows the same calling rules as normal callbacks (not called when handler doesn't return anything). The first argument (after the user object, see below) is the key for the callback that is being called.
 
 `ALL` is useful for when you want to relay lots of different kinds IRC events without having to make a callback for every single one.
 
