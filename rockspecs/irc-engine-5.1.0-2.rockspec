@@ -1,6 +1,6 @@
 local _version = "5.1.0"
 local _rock_version = "5.1.0"
-local _release = "1"
+local _release = "2"
 
 package = "irc-engine"
 version = _rock_version .. "-" .. _release
@@ -30,14 +30,14 @@ build = {
 	type = "builtin",
 	modules = {
 		-- Main module file.
-		["irce"] = "src/init.lua",
+		["irce"] = "init.lua",
 
 		-- Standard modules.
-		["irce.modules.base"] = "src/modules/base.lua",
-		["irce.modules.message"] = "src/modules/message.lua",
-		["irce.modules.channel"] = "src/modules/channel.lua",
+		["irce.modules.base"] = "modules/base.lua",
+		["irce.modules.message"] = "modules/message.lua",
+		["irce.modules.channel"] = "modules/channel.lua",
 
 		-- Utilities.
-		["irce.util"] = "src/util.lua"
+		["irce.util"] = "util.lua"
 	}
 }
