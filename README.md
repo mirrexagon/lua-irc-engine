@@ -164,7 +164,7 @@ There is more information about handlers in the next section, "Extending the mod
 
 ---
 
-There is a special callback with the special value `irce.RAW` which is called whenever an IRC message is sent or received. This is useful for printing raw messages to a console or logging them. Its first argument is `true` when the message is being sent or `false` when the message is being received, and the second argument is the message.
+There is a special callback with the special value `IRCe.RAW` which is called whenever an IRC message is sent or received. This is useful for printing raw messages to a console or logging them. Its first argument is `true` when the message is being sent or `false` when the message is being received, and the second argument is the message.
 It is used like so:
 ```lua
 irc:set_callback(IRCe.RAW, function(self, send, message)
@@ -173,6 +173,10 @@ end)
 ```
 
 Another special callback is `DISCONNECT` which is not called by this module, but should be called by the host application (using `irc:handle(IRCe.DISCONNECT)`) when the socket is closed or the server disconnects. This allows modules and the host application to do cleanup.
+
+The callback `IRCe.ALL` is called for ALL callbacks in addition as the specific callback. It follows the same calling rules as normal callbacks (not called when handler doesn't return anything). The first argument (after the user object, see below) is the key for the callback that is being called. 
+
+`ALL` is useful for when you want to relay lots of different kinds IRC events without having to make a callback for every single one.
 
 
 ## User objects
