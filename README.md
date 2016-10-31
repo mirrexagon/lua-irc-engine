@@ -16,7 +16,7 @@ To create an IRC object, use `IRCe.new()`:
 ```lua
 local IRCe = require("irce")
 
-local irc = IRC.new()
+local irc = IRCe.new()
 ```
 
 From now on, this README assumes that `irc` is an IRC Engine object created as above.
