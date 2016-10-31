@@ -133,18 +133,22 @@ Sender tables are derived from the message prefix, and are structured like this:
 ```lua
 -- From a user:
 sender = {
+	type = "user",
+	
 	[1] = "Nick",
 	[2] = "username",
-	[3] = "host.name"
+	[3] = "host.name",
 }
 
 -- or from a server:
 sender = {
-	[1] = "irc.server.domain"
+	type = "server",
+	
+	[1] = "irc.server.domain",
 }
 
 -- or no prefix:
-sender = {}
+sender = { type = "none" }
 ```
 
 ---
