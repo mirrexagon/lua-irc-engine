@@ -256,6 +256,8 @@ function Base:handle(command, ...)
 	-- It'll be garbage collected eventually, letting the actual unloaded
 	-- modules be collected too.
 	-- TODO: This is probably terrible in terms of memory usage. Fix it.
+	-- TODO: Hooks should probably be called with handler_return if
+	-- the handler returned something, like callbacks.
 	local modules = util.table.clone(self.modules.modules)
 
 	for mod in pairs(modules) do
