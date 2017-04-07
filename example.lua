@@ -1,5 +1,5 @@
 --[[
-	Example for Lua IRC Engine (https://github.com/legospacy/lua-irc-engine)
+	Example for Lua IRC Engine (https://github.com/mirrexagon/lua-irc-engine)
 	Uses LuaSocket for network communication.
 ]]
 
