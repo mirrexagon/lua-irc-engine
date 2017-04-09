@@ -221,51 +221,40 @@ local function parse_message(message_tagged)
 	return prefix, command, the_rest, tags
 end
 
+local function do_callbacks(self, command, ...)
+	-- Take reference to functions so unloading modules doesn't mess up iteration.
+	local callback = self.callbacks[command]
+	local all_callback = self.callbacks[IRCe.ALL]
+	local hooks = {}
+	for mod in pairs(self.modules.modules) do
+		if mod.hooks and mod.hooks[command] then
+			hooks[mod] = mod.hooks[command]
+		end
+	end
+
+	if callback then callback(self.userobj, ...) end
+	if all_callback then all_callback(self.userobj, command, ...) end
+
+	-- Call module hooks.
+	-- It'll be garbage collected eventually, letting the actual unloaded
+	-- modules be collected too.
+	for mod, hook in pairs(hooks) do
+		local state = self.modules.state[mod] -- or nil
+
+		hook(self, state, ...)
+	end
+end
+
 -- Calls the handler for the command if there is one, then calls the callback.
 function Base:handle(command, ...)
 	local handler = self.handlers[command]
-	local callback = self.callbacks[command]
-	local all_callback = self.callbacks[IRCe.ALL]
-	local handler_return
-
-	-- TODO: nils in the handler return (eg. `return nil, data, data2`)
-	-- will make `#handler_return` undefined. Could be solved using table.pack,
-	-- but it doesn't exist in Lua 5.1.
 
 	-- Call the handler if it exists.
 	if handler then
 		local state = self:get_handler_state(command)
-		handler_return = {handler(self, state, ...)}
-	end
-
-	if handler and #handler_return > 0 then
-		-- Handler exists and returned something, call callback with that.
-		if callback then callback(self.userobj, unpack(handler_return)) end
-		if all_callback then all_callback(self.userobj, command, unpack(handler_return)) end
-
-	elseif not handler then
-		-- Handler doesn't exist, call callback with handler args.
-		if callback then callback(self.userobj, ...) end
-		if all_callback then all_callback(self.userobj, command, ...) end
-
-	end
-		-- Handler exists but didn't return anything, don't call callback.
-
-	-- Call module hooks.
-	-- Clone so unloading modules doesn't mess up iteration.
-	-- It'll be garbage collected eventually, letting the actual unloaded
-	-- modules be collected too.
-	-- TODO: This is probably terrible in terms of memory usage. Fix it.
-	-- TODO: Hooks should probably be called with handler_return if
-	-- the handler returned something, like callbacks.
-	local modules = util.table.clone(self.modules.modules)
-
-	for mod in pairs(modules) do
-		local state = self.modules.state[mod] -- or nil
-
-		if mod.hooks and mod.hooks[command] then
-			mod.hooks[command](self, state, ...)
-		end
+		return do_callbacks(self, command, handler(self, state, ...))
+	else
+		return do_callbacks(self, command, ...)
 	end
 end
 
