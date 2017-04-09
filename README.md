@@ -396,6 +396,8 @@ A module does not need to include both senders and handlers, and so either the `
 
 If a module needs to do something when certain commands are received (eg. cleanup when the IRC object disconnects from the server), this should be put in the appropriate *hook*. See the `hooks` part of the above example.
 
+`TODO: Document hooks properly (eg. what args they take).`
+
 ---
 
 To load a module, use `irc:load_module(module_table)`, for example:
