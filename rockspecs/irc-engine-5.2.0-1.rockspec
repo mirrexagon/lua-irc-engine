@@ -1,6 +1,6 @@
-local _version = "5.1.0"
-local _rock_version = "5.1.0"
-local _release = "2"
+local _version = "5.2.0"
+local _rock_version = "5.2.0"
+local _release = "1"
 
 package = "irc-engine"
 version = _rock_version .. "-" .. _release
@@ -36,6 +36,7 @@ build = {
 		["irce.modules.base"] = "modules/base.lua",
 		["irce.modules.message"] = "modules/message.lua",
 		["irce.modules.channel"] = "modules/channel.lua",
+		["irce.modules.motd"] = "modules/motd.lua",
 
 		-- Utilities.
 		["irce.util"] = "util.lua"
