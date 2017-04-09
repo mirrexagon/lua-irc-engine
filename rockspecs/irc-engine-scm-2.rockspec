@@ -1,5 +1,5 @@
 package = "irc-engine"
-version = "scm-1"
+version = "scm-2"
 
 source = {
 	url = "git://github.com/mirrexagon/lua-irc-engine.git"
@@ -14,7 +14,7 @@ description = {
 		of command content to the host application.
 	]],
 	homepage = "http://github.com/mirrexagon/lua-irc-engine",
-	license = "MIT/X11"
+	license = "CC0"
 }
 
 dependencies = {
