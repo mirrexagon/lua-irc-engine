@@ -394,7 +394,7 @@ end
 function Base:unload_module(module_table)
 	local ERR_PREFIX = "Could not unload module: "
 
-	if not self.modules[module_table] then
+	if not self.modules.modules[module_table] then
 		return false, ERR_PREFIX .. "module not loaded"
 	end
 
