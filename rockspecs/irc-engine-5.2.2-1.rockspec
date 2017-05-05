@@ -1,5 +1,5 @@
-local _version = "5.2.1"
-local _rock_version = "5.2.1"
+local _version = "5.2.2"
+local _rock_version = "5.2.2"
 local _release = "1"
 
 package = "irc-engine"
