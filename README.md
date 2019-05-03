@@ -11,7 +11,7 @@ An example demonstrating basic use of the module can be found in `example.lua`.
 
 ---
 
-I wrote a blog post about this module; you can find that [here](http://www.mirrexagon.com/2016/10/31/lua-irc-engine.html).
+I wrote a blog post about this module; you can find that in this repo.
 
 
 # Usage
