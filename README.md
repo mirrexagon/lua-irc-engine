@@ -45,7 +45,7 @@ At the most basic level, sending raw messages is done by `irc:send_raw(message)`
 irc:send_raw("PRIVMSG #potato :I like potatoes.")
 ```
 
-To allow greater flexibility, this module doesn't make use of a specfic socket system. Instead, you set a function for `irc.send_raw` to use with `irc:set_send_func(func)`:
+To allow greater flexibility, this module doesn't make use of a specific socket system. Instead, you set a function for `irc.send_raw` to use with `irc:set_send_func(func)`:
 ```lua
 -- Using LuaSocket:
 local socket = require("socket.core")
