@@ -22,12 +22,6 @@ local REALNAME = "IRC Engine"
 local CHANNEL = "#example"
 --- ==== ---
 
-
---- Globals ---
-local running = true
---- ==== ---
-
-
 --- IRC object initialisation ---
 local irc = IRCe.new()
 
@@ -68,7 +62,6 @@ end)
 irc:set_callback("PRIVMSG", function(self, sender, origin, message, pm)
 	if message == "?quit" then
 		assert(self:QUIT("And away we go!"))
-		running = false
 	end
 end)
 
@@ -104,12 +97,7 @@ assert(client:connect(SERVER, 6667))
 assert(irc:NICK(NICK))
 assert(irc:USER(USERNAME, REALNAME))
 
-while running do
-    irc:process(client:receive())
-end
---- ==== ---
-
-
---- Deinit ---
-client:close()
---- ==== ---
+repeat
+  local line,err = client:receive()
+  irc:process(line)
+ until err=="closed"
