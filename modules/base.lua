@@ -85,7 +85,7 @@ return {
 
 				-- Do the callback for each separate mode.
 				for i = 1, #modes do
-					self:handle("CHANNELMODE", sender, operation, modes[i], mode_params[i])
+					self:handle("CHANNELMODE", sender, operation, modes[i], mode_params[i], target)
 				end
 			else
 				-- User mode.
