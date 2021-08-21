@@ -39,6 +39,11 @@ return {
 				return ("MODE %s %s"):format(target, modes)
 			end
 		end,
+
+
+		OPER = function(self, state, name, pass)
+			return ("OPER %s %s"):format(name, pass)
+		end,
 	},
 
 	handlers = {
