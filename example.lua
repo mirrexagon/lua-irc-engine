@@ -92,12 +92,26 @@ end)
 
 
 --- Running ---
-assert(client:connect(SERVER, 6667))
+do
+	local line, err = client:connect(SERVER, 6667)
+	irc:NICK(NICK)
+	irc:USER(USERNAME, REALNAME)
+	
+	local ctimeout, timeout, maxtimeout = 0, 5, 200
+	client:settimeout(timeout)
 
-assert(irc:NICK(NICK))
-assert(irc:USER(USERNAME, REALNAME))
-
-repeat
-  local line,err = client:receive()
-  irc:process(line)
- until err=="closed"
+	while
+		line or -- server message received
+		err=="timeout" -- the only error allowed is timeout
+		and
+		ctimeout<maxtimeout -- maxtimeout hasn't been reached
+	do
+		line,err = client:receive() -- if line is set, err is nil, if line is not set, err can be anything
+	 
+		irc:process(line)
+	 
+		ctimeout = line and 0 or ctimeout+timeout
+	end
+	
+	if err~="closed" then print(err) client:close() end
+end
