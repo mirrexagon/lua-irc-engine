@@ -34,7 +34,15 @@ return {
 			else
 				return "TOPIC " .. channel
 			end
-		end
+		end,
+		
+		KICK = function(self, state, channel, user, kick_message)
+			if kick_message then
+				return string.format("KICK %s %s :%s", channel, user, kick_message)
+			else
+				return string.format("KICK %s %s", channel, user)
+			end
+		end,
 	},
 
 	handlers = {
