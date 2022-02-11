@@ -34,7 +34,15 @@ return {
 			else
 				return "TOPIC " .. channel
 			end
-		end
+		end,
+		
+		KICK = function(self, state, channel, user, kick_message)
+			if kick_message then
+				return string.format("KICK %s %s :%s", channel, user, kick_message)
+			else
+				return string.format("KICK %s %s", channel, user)
+			end
+		end,
 	},
 
 	handlers = {
@@ -48,8 +56,14 @@ return {
 			local part_message = params[2]
 			return sender, channel, part_message
 		end,
-
-
+		
+		
+		KICK = function (self, state, sender, params)
+			local channel, user, message = params[1], params[2], params[3]
+			return sender, channel, user, message
+		end,
+		
+		
 		-- RPL_NOTOPIC
 		["331"] = function(self, state, sender, params)
 			local channel = params[2]
