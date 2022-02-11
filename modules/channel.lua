@@ -56,8 +56,14 @@ return {
 			local part_message = params[2]
 			return sender, channel, part_message
 		end,
-
-
+		
+		
+		KICK = function (self, state, sender, params)
+			local channel, user, message = params[1], params[2], params[3]
+			return sender, channel, user, message
+		end,
+		
+		
 		-- RPL_NOTOPIC
 		["331"] = function(self, state, sender, params)
 			local channel = params[2]
