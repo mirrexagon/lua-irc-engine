@@ -70,7 +70,7 @@ end
 
 function Base:send_raw(str)
 	-- Call RAW callback.
-	self:handle(IRCe.RAW, false, str)
+	self:handle(IRCe.RAW, true, str)
 
 	return self.send_func(self.userobj, str .. "\r\n")
 end
@@ -267,7 +267,7 @@ function Base:process(message)
 	if not message then return end
 
 	-- Call RAW callback.
-	self:handle(IRCe.RAW, true, message)
+	self:handle(IRCe.RAW, false, message)
 
 	---
 
